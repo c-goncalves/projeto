@@ -15,10 +15,6 @@ use Mpdf\MpdfException;
 // O caminho do config/db.php foi COMENTADO pois não estamos usando o banco.
 // include '../../../config/db.php'; 
 
-// =================================================================
-// === 1. DADOS DE TESTE (IGNORANDO CONEXÃO COM O BANCO) - COMPLETO ===
-// =================================================================
-
 // --- Dados Estáticos para Teste (Estes dados viriam do banco em produção) ---
 $alunoNome = "Carolina da Silva (TESTE)";
 $alunoProntuario = "2024.1.99.999.9";
@@ -49,7 +45,7 @@ $empresaRepresentante = "Dr. Teste da Silva";
 $empresaCargoRepresentante = "Diretor";
 $empresaFone = "(11) 2345-6789";
 
-$supervisorNome = "Dra. Ana Costa";
+$supervisorNome = "Dra. Ana Costaaa";
 $supervisorCPF = "111.222.333-44";
 $supervisorCargo = "Professor Supervisor";
 $supervisorFormacao = "Pedagogia";
@@ -79,21 +75,15 @@ $apóliceSeguro = ($alunoEstagioTipo === "Obrigatório")
     : "o ESTAGIÁRIO estará coberto pela apólice de seguro n° {$seguroNumero}, da Seguradora {$seguroNome} no valor de {$seguroValor} contra Acidentes Pessoais.";
 
 
-// === 2. INJEÇÃO DE DADOS NO LAYOUT HTML ===
-
 // 2.1. Carrega o template HTML modularizado
-// Usamos '__DIR__ . "/../termo_layout.html"' se o arquivo estiver na pasta forms/
-// Usamos '__DIR__ . "/termo_layout.html"' se o arquivo estiver na pasta pdf/
-$template_path = __DIR__ . '/termo_layout.html'; // Usando o caminho dentro da pasta atual (pdf/)
+$template_path = __DIR__ . '/plano_atividades.html';
 
 if (!file_exists($template_path)) {
-    // Se a primeira tentativa falhar (assumindo que o arquivo está na pasta 'forms/'), tenta subir um nível
-    $template_path = __DIR__ . '/../termo_layout.html'; 
+    $template_path = __DIR__ . '/../plano_atividades.html'; 
     if (!file_exists($template_path)) {
-        // Se a segunda tentativa falhar (assumindo que o arquivo está na pasta 'solicitacoes/'), tenta subir dois níveis
-        $template_path = __DIR__ . '/../../termo_layout.html'; 
+        $template_path = __DIR__ . '/../../plano_atividades.html'; 
         if (!file_exists($template_path)) {
-            die("Erro FATAL: Arquivo de layout do Termo (termo_layout.html) não encontrado. Tente verificar o caminho absoluto: " . $template_path);
+            die("Erro FATAL: Arquivo de layout do Termo (plano_atividades.html) não encontrado. Tente verificar o caminho absoluto: " . $template_path);
         }
     }
 }
@@ -181,7 +171,7 @@ try {
     $mpdf->WriteHTML($html);
 
     // Saída do PDF no navegador (I = Inline/Abrir no navegador)
-    $mpdf->Output("termo_estagio_" . str_replace('.', '_', $alunoProntuario) . ".pdf", 'I');
+    $mpdf->Output("plano_atividades_" . str_replace('.', '_', $alunoProntuario) . ".pdf", 'I');
     
 } catch (MpdfException $e) {
     // Captura erros de geração do PDF
