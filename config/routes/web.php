@@ -18,6 +18,9 @@ $router->get('assest', 'assets');
 // SOLICITAÇÕES 
 $router->get('solicitacoes', 'solicitacoes/index');
 $router->get('solicitacoes/{curso}/form/{step}', 'solicitacoes/index');
+// GERAR PDF (teste temporário)
+$router->get('solicitacoes/form/pdf/gerar-termo', 'solicitacoes/forms/pdf/gerar_termo_estagio');
+
 // $router->get('solicitacoes/{step}', 'solicitacoes/index');
 // $router->get('solicitacoes/cursos/form/{step}', 'solicitacoes/index');
 // $router->get('solicitacoes/cursos/{tipo}/{curso}/{step}', 'solicitacoes/index');

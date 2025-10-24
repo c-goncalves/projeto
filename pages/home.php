@@ -22,19 +22,19 @@ require_once BASE_PATH . '/includes/header.php';
   <h3 class="text-xl font-bold text-[#006633] mb-4">Estágio no IF</h3>
 
   <!-- Info Box estilo "chamada do grêmio" -->
-  <div class="bg-green-100 border-l-8 border-[#006633] p-4 rounded mb-6 shadow-sm animate-pulse">
-    <h4 class="text-[#004d26] font-semibold mb-3 text-lg">O que você precisa saber:</h4>
-    <ul class="list-disc pl-6 space-y-2 text-gray-800 text-sm">
-      <li><strong>Total de horas:</strong> 400 horas, divididas em 4 etapas de 100 horas cada.</li>
-      <li><strong>Local:</strong> Livre, menos para as licenciaturas que devem ser feitas na escolas de educação básica.</li>
-      <li><strong>Início:</strong> Pode começar já no 1º semestre do curso.</li>
-      <li><strong>Orientação:</strong> Um professor orientados irá acompanhas cada etapa. Não se perca!</li>
-      <li><strong>Documentação:</strong>O Termo de Compromisso de Estágio (TCE) e o Plano de Atividades de Estágio deve ser aprovado antes de começar.</li>
-      <li><strong>Documentação:</strong>Durante o seu estágio você deverá preencher a Ficha de Acompanhamento</li>
-      <li><strong>Documentação:</strong>Já no final do seu estágio você deverá entregar </li>
-      <li>📊 <strong>Relatórios:</strong> Devem ser entregues a cada etapa. Fique em dia!</li>
-    </ul>
-  </div>
+<div class="border-l-8 border-[#006633] p-4 rounded mb-6 shadow-sm">
+<h4 class="text-[#004d26] font-semibold mb-3 text-lg">O que você precisa saber:</h4>
+<ul class="list-disc pl-6 space-y-2 text-gray-800 text-sm">
+<li><strong>Total de horas:</strong> 400 horas, divididas em 4 etapas de 100 horas cada.</li>
+<li><strong>Local:</strong> Livre, menos para as licenciaturas que devem ser feitas na escolas de educação básica.</li>
+<li><strong>Início:</strong> Pode começar já no 1º semestre do curso.</li>
+<li><strong>Orientação:</strong> Um professor orientador irá acompanhar cada etapa. Não se perca!</li>
+<li><strong>Início do seu estágio:</strong> O Termo de Compromisso de Estágio (TCE) e o Plano de Atividades de Estágio devem ser aprovados antes de começar.</li>
+<li><strong>Durante:</strong> Você deverá preencher a Ficha de Acompanhamento, entregar o Certificado Individual de Seguro e preencher os relatórios periódicos no sistema SUAP. Em caso de alterações, é necessário preencher um Termo Aditivo.</li>
+<li><strong>Final:</strong> Já no final do seu estágio você deverá entregar o Certificado Individual de Seguro, os relatórios mensais ou semestrais e garantir que todas as telas do SUAP estejam preenchidas.</li>
+<li><strong>Relatórios:</strong> Devem ser entregues a cada etapa, assinados por você e seu supervisor, e enviados em PDF ao seu orientador para posterior anexo no sistema SUAP. Fique em dia!</li>
+</ul>
+</div>
 
   <p class="text-gray-700 text-sm mb-4">
     Aqui você encontra o passo a passo do estágio: do início até o encerramento. Seguindo essas etapas, você garante que tudo seja feito certinho e sem dores de cabeça!

@@ -18,6 +18,9 @@ if ($curso && $step !== 'inicio') {
         case '3':
             $include_file = __DIR__ . '/forms/plano-' . $curso . '.php';
             break;
+        case '4':
+            $include_file = __DIR__ . '/forms/fpdf/gerar_termo_estagio.php';
+            break;
 
     }
 }
