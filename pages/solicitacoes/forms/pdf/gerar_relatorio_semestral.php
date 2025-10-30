@@ -76,14 +76,14 @@ $apóliceSeguro = ($alunoEstagioTipo === "Obrigatório")
 
 
 // 2.1. Carrega o template HTML modularizado
-$template_path = __DIR__ . '../layouts/plano_atividades.html';
+$template_path = __DIR__ . '../layouts/relatorios_semestral.html';
 
 if (!file_exists($template_path)) {
-    $template_path = __DIR__ . '/../../layouts/plano_atividades.html'; 
+    $template_path = __DIR__ . '/../../layouts/relatorios_semestral.html'; 
     if (!file_exists($template_path)) {
-        $template_path = __DIR__ . '/../layouts/plano_atividades.html'; 
+        $template_path = __DIR__ . '/../layouts/relatorios_semestral.html'; 
         if (!file_exists($template_path)) {
-            die("Erro FATAL: Arquivo de layout do Termo (plano_atividades.html) não encontrado. Tente verificar o caminho absoluto: " . $template_path);
+            die("Erro FATAL: Arquivo de layout do Termo (relatorios_semestral.html) não encontrado. Tente verificar o caminho absoluto: " . $template_path);
         }
     }
 }
@@ -171,7 +171,7 @@ try {
     $mpdf->WriteHTML($html);
 
     // Saída do PDF no navegador (I = Inline/Abrir no navegador)
-    $mpdf->Output("plano_atividades_" . str_replace('.', '_', $alunoProntuario) . ".pdf", 'I');
+    $mpdf->Output("relatorios_semestral_" . str_replace('.', '_', $alunoProntuario) . ".pdf", 'I');
     
 } catch (MpdfException $e) {
     // Captura erros de geração do PDF

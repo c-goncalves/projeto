@@ -20,10 +20,11 @@ $feedback = $feedback ?? '';
 
             <?php
             // Chama as funções para imprimir cada seção (fieldset)
-            orientacoes($current_uri, PAGES_PATH);
-            unidade_concedente();
-            supervisor();
             estagiario();
+            unidade_concedente();
+            
+            dados_teste();
+            supervisor();
             dados_complementares();
             ?>
 

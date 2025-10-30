@@ -7,7 +7,6 @@ $step  = $_GET['step']  ?? 'inicio';
 // $tipo  = $_GET['tipo']  ?? null;
 
 $include_file = __DIR__ . '/inicio.php';
-// $include_file = '';
 
 if ($curso && $step !== 'inicio') {
     switch ($step) {
@@ -24,18 +23,9 @@ if ($curso && $step !== 'inicio') {
 
     }
 }
-// if ($step === 'inicio') {
-//     $include_file = __DIR__ . '/cursos/inicio.php';
-// } elseif ($tipo && $curso && $step) {
-//     // $include_file = __DIR__ . '/cursos/' . $step . '-' . $tipo . '-' . $curso . '.php';
-//     $include_file = __DIR__ . '/cursos/' . $tipo . '/' . $curso . '/' . $step . '.php';
-
-// }
-
 if ($include_file && file_exists($include_file)) {
     include $include_file;
 } else {
-    // echo "<div class='msg error'>Etapa não encontrada: " . htmlspecialchars($step) . "</div>";
     include __DIR__ . '/inicio.php';
 }
 

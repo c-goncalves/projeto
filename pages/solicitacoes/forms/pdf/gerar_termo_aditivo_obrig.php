@@ -76,14 +76,14 @@ $apóliceSeguro = ($alunoEstagioTipo === "Obrigatório")
 
 
 // 2.1. Carrega o template HTML modularizado
-$template_path = __DIR__ . '../layouts/plano_atividades.html';
+$template_path = __DIR__ . '../layouts/termo_aditivo_obrig.html';
 
 if (!file_exists($template_path)) {
-    $template_path = __DIR__ . '/../../layouts/plano_atividades.html'; 
+    $template_path = __DIR__ . '/../../layouts/termo_aditivo_obrig.html'; 
     if (!file_exists($template_path)) {
-        $template_path = __DIR__ . '/../layouts/plano_atividades.html'; 
+        $template_path = __DIR__ . '/../layouts/termo_aditivo_obrig.html'; 
         if (!file_exists($template_path)) {
-            die("Erro FATAL: Arquivo de layout do Termo (plano_atividades.html) não encontrado. Tente verificar o caminho absoluto: " . $template_path);
+            die("Erro FATAL: Arquivo de layout do Termo (termo_aditivo_obrig.html) não encontrado. Tente verificar o caminho absoluto: " . $template_path);
         }
     }
 }
@@ -94,11 +94,11 @@ $logoPath = BASE_PATH . 'assets/logo_termo2.jpg';
 // 2.2. Array de Substituições
 $substituicoes = [
     '{{LOGO_PATH}}' => htmlspecialchars($logoPath),
-    '{{ALUNO_NOME}}' => htmlspecialchars($alunoNome),
+    '{{ALUNOOME}}' => htmlspecialchars($alunoNome),
     '{{ALUNO_PRONTUARIO}}' => htmlspecialchars($alunoProntuario),
     '{{ALUNO_RG}}' => htmlspecialchars($alunoRG),
     '{{ALUNO_CPF}}' => htmlspecialchars($alunoCPF),
-    '{{ALUNO_DATA_NASC}}' => $alunoDataNasc,
+    '{{ALUNO_DATAASC}}' => $alunoDataNasc,
     '{{ALUNO_ENDERECO}}' => htmlspecialchars($alunoEndereco),
     '{{ALUNO_CEP}}' => htmlspecialchars($alunoCEP),
     '{{ALUNO_BAIRRO}}' => htmlspecialchars($alunoBairro),
@@ -110,7 +110,7 @@ $substituicoes = [
     '{{ALUNO_CURSO}}' => htmlspecialchars($alunoCurso),
     '{{ALUNO_PERIODO}}' => htmlspecialchars($alunoPeriodo),
     '{{ESTAGIO_OBRIGATORIO_X}}' => $estagioObrigatorioX,
-    '{{ESTAGIO_NAO_OBRIGATORIO_X}}' => $estagioNaoObrigatorioX,
+    '{{ESTAGIOAO_OBRIGATORIO_X}}' => $estagioNaoObrigatorioX,
     '{{PCD_X}}' => $pcdX,
 
     '{{EMPRESA_RAZAO_SOCIAL}}' => htmlspecialchars($empresaRazaoSocial),
@@ -125,7 +125,7 @@ $substituicoes = [
     '{{EMPRESA_ESTADO}}' => htmlspecialchars($empresaEstado),
     '{{EMPRESA_FONE}}' => htmlspecialchars($empresaFone),
 
-    '{{SUPERVISOR_NOME}}' => htmlspecialchars($supervisorNome),
+    '{{SUPERVISOROME}}' => htmlspecialchars($supervisorNome),
     '{{SUPERVISOR_CPF}}' => htmlspecialchars($supervisorCPF),
     '{{SUPERVISOR_CARGO}}' => htmlspecialchars($supervisorCargo),
     '{{SUPERVISOR_FORMACAO}}' => htmlspecialchars($supervisorFormacao),
@@ -140,7 +140,7 @@ $substituicoes = [
     '{{APOLICE_SEGURO_TEXTO}}' => $apóliceSeguro,
     '{{ATIVIDADES_PRINCIPAIS}}' => nl2br(htmlspecialchars($atividadesPrincipais)),
     
-    '{{BOLSA_NUMERICA}}' => $bolsaAuxilioNumerico,
+    '{{BOLSAUMERICA}}' => $bolsaAuxilioNumerico,
     '{{BOLSA_EXTENSO}}' => $bolsaAuxilioExtenso,
     
     '{{DATA_ATUAL_DIA}}' => date("d"),
@@ -171,7 +171,7 @@ try {
     $mpdf->WriteHTML($html);
 
     // Saída do PDF no navegador (I = Inline/Abrir no navegador)
-    $mpdf->Output("plano_atividades_" . str_replace('.', '_', $alunoProntuario) . ".pdf", 'I');
+    $mpdf->Output("termo_aditivo_obrig_" . str_replace('.', '_', $alunoProntuario) . ".pdf", 'I');
     
 } catch (MpdfException $e) {
     // Captura erros de geração do PDF

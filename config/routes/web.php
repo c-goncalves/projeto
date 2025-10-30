@@ -21,6 +21,9 @@ $router->get('solicitacoes/{curso}/form/{step}', 'solicitacoes/index');
 // GERAR PDF (teste temporário)
 $router->get('solicitacoes/form/pdf/gerar-termo', 'solicitacoes/forms/pdf/gerar_termo_estagio');
 $router->get('solicitacoes/form/pdf/gerar-plano', 'solicitacoes/forms/pdf/gerar_plano_atv');
+$router->get('solicitacoes/form/pdf/gerar-relatorio-semestral', 'solicitacoes/forms/pdf/gerar_relatorio_semestral');
+$router->get('solicitacoes/form/pdf/gerar-termo-aditivo-xvi', 'solicitacoes/forms/pdf/gerar_termo_aditivo_n_obrig');
+$router->get('solicitacoes/form/pdf/gerar-termo-aditivo-obrigatorio', 'solicitacoes/forms/pdf/gerar_termo_aditivo_obrig');
 
 // $router->get('solicitacoes/{step}', 'solicitacoes/index');
 // $router->get('solicitacoes/cursos/form/{step}', 'solicitacoes/index');
