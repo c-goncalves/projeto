@@ -1,5 +1,4 @@
 
-
 <section class="intro  mx-auto px-4 py-8">
   <h2 class="text-2xl font-bold text-[#006633] mb-4">Antes de Iniciar o Estágio</h2>
   <p class="text-gray-700 mb-2">Confira abaixo os passos, documentos e orientações essenciais antes de iniciar seu estágio.</p>

@@ -1,6 +1,8 @@
 <?php
 $page_title = "Início - Coordenação de Estágios";
-require_once BASE_PATH . '/includes/header.php';
+require_once PARTIALS_PATH . 'header.php';
+
+
 ?>
 
 <section class="bg-white py-1 px-6 rounded-xl  flex flex-col md:flex-row items-start justify-between gap-4">
@@ -9,82 +11,96 @@ require_once BASE_PATH . '/includes/header.php';
     <p class="text-gray-700">Solicite e acompanhe a documentação do seu Estágio Obrigatório dos cursos da IFSP Campus Guarulhos</p>
   </div>
   <div class="flex-shrink-0">
-    <a href="<?php echo BASE_URL; ?>solicitacoes/"
+    <a href="<?php echo BASE_URL; ?>solicitacao/"
        class="inline-block bg-[#006633] text-white font-bold px-6 py-2 rounded hover:bg-[#004d26] transition-colors">
        Iniciar Solicitação
     </a>
   </div>
 </section>
 
-<div class="mt-2 grid grid-cols-1 lg:grid-cols-3 gap-6">
-  <!-- Conteúdo principal -->
-  <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md border-l-4 border-[#006633] bg-green-50" id="content-area">
-  <h3 class="text-xl font-bold text-[#006633] mb-4">Estágio no IF</h3>
+<section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md shadow-[0_0_15px_rgba(0,0,0,0.1)]" id="content-area">
+    <h3 class="text-xl font-bold text-[#006633] mb-4">Estágio Curricular no IFSP</h3>
 
-  <!-- Info Box estilo "chamada do grêmio" -->
-<div class="border-l-8 border-[#006633] p-4 rounded mb-6 shadow-sm">
-<h4 class="text-[#004d26] font-semibold mb-3 text-lg">O que você precisa saber:</h4>
-<ul class="list-disc pl-6 space-y-2 text-gray-800 text-sm">
-<li><strong>Total de horas:</strong> 400 horas, divididas em 4 etapas de 100 horas cada.</li>
-<li><strong>Local:</strong> Livre, menos para as licenciaturas que devem ser feitas na escolas de educação básica.</li>
-<li><strong>Início:</strong> Pode começar já no 1º semestre do curso.</li>
-<li><strong>Orientação:</strong> Um professor orientador irá acompanhar cada etapa. Não se perca!</li>
-<li><strong>Início do seu estágio:</strong> O Termo de Compromisso de Estágio (TCE) e o Plano de Atividades de Estágio devem ser aprovados antes de começar.</li>
-<li><strong>Durante:</strong> Você deverá preencher a Ficha de Acompanhamento, entregar o Certificado Individual de Seguro e preencher os relatórios periódicos no sistema SUAP. Em caso de alterações, é necessário preencher um Termo Aditivo.</li>
-<li><strong>Final:</strong> Já no final do seu estágio você deverá entregar o Certificado Individual de Seguro, os relatórios mensais ou semestrais e garantir que todas as telas do SUAP estejam preenchidas.</li>
-<li><strong>Relatórios:</strong> Devem ser entregues a cada etapa, assinados por você e seu supervisor, e enviados em PDF ao seu orientador para posterior anexo no sistema SUAP. Fique em dia!</li>
-</ul>
-</div>
+    <p class="text-gray-700 text-sm mb-6">
+        Aqui você encontra o passo a passo completo do estágio, do início ao encerramento. Seguindo as etapas abaixo, você garante que todos os requisitos sejam cumpridos e que o processo seja finalizado sem problemas.
+    </p>
 
-  <p class="text-gray-700 text-sm mb-4">
-    Aqui você encontra o passo a passo do estágio: do início até o encerramento. Seguindo essas etapas, você garante que tudo seja feito certinho e sem dores de cabeça!
-  </p>
+    <div class="flex flex-col gap-6 ">
 
-  <hr class="my-5 border-gray-300">
+        <a href="<?php echo BASE_URL; ?>solicitacao" 
+           class="block transition-all duration-300 ease-in-out shadow-md rounded-lg hover:shadow-xl hover:-translate-y-1">
+            
+            <div class="p-4 rounded-lg"> 
+                <h4 class="font-semibold text-[#09332a] text-lg mb-3">
+                    Início:
+                </h4>
+                
+                <p class="text-sm text-gray-700 mb-3">
+                    Preencha o Termo de Compromisso de Estágio (TCE) e o Plano de Atividades para aprovação. Só inicie suas atividades após a aprovação e assinatura do TCE!
+                </p>
 
-  <h4 class="text-[#006633] font-semibold mb-3">📋 Etapas do Estágio:</h4>
+                <h5 class="text-[#004d26] font-bold text-sm mb-2">O que você precisa saber:</h5>
+                <ul class="list-disc pl-6 space-y-2 text-gray-800 text-sm">
+                  <li><strong>Total de horas:</strong> 400 horas, divididas em 4 etapas de 100 horas cada.</li>
+                  <li><strong>Local:</strong> Livre, menos para as licenciaturas que devem ser feitas na escolas de educação básica.</li>
+                  <li><strong>Início:</strong> Pode começar já no 1º semestre do curso.</li>
+                  <li><strong>Orientação:</strong> Um professor orientador irá acompanhar cada etapa. Não se perca!</li>
+                  <li><strong>Início do seu estágio:</strong> O Termo de Compromisso de Estágio (TCE) devem ser aprovados antes de começar.</li>
+                  
+                </ul>
+            </div>
+        </a>
 
-  <div class="flex flex-col gap-4">
-    <div class="border-l-4 border-[#006633] bg-green-50 p-4 rounded">
-      <a href="<?php echo BASE_URL; ?>solicitacoes"
-         class="font-semibold text-[#09332a] hover:underline block mb-1">
-        🚀 Início do Estágio
-      </a>
-      <p class="text-sm text-gray-700">Preencha o TCE e envie para aprovação. Só depois comece suas atividades!</p>
+        <a href="<?php echo BASE_URL; ?>documentos" class=" text-[#09332a] hover:no-underline block mb-1 text-lg">
+        <div class="transition-all duration-300 ease-in-out shadow-md rounded-lg hover:shadow-xl hover:-translate-y-1">
+                <div class=" p-4 rounded-lg">
+                    <h4 class="font-semibold text-[#09332a] hover:no-underline block mb-1 text-lg">
+                        Acompanhamento e Entrega de Relatórios
+                    </h4>
+                    <p class="text-sm text-gray-700">
+                      Você deverá preencher a Ficha de Acompanhamento, entregar o Certificado Individual de Seguro e preencher os relatórios periódicos no sistema SUAP. Em caso de alterações, é necessário preencher um Termo Aditivo.
+                    </p>
+                </div>
+              </div>
+            </a>
+
+            <a href="<?php echo BASE_URL; ?>aditivos" class="text-[#09332a] hover:no-underline block mb-1 text-lg">
+        <div class="transition-all duration-300 ease-in-out shadow-md rounded-lg hover:shadow-xl hover:-translate-y-1">
+                <div class="p-4 rounded-lg">
+                    <h4 class="font-semibold text-[#09332a] hover:no-underline block mb-1 text-lg">
+                        Termos Aditivos e Mudanças de Contrato
+                    </h4>
+                    <p class="text-sm text-gray-700">
+                        Em caso de mudança na carga horária, atividades ou vigência, é obrigatório preencher um Termo Aditivo. Registre qualquer alteração para manter a validade legal do seu estágio.
+                    </p>
+                </div>
+              </div>
+            </a>
+
+            <a href="<?php echo BASE_URL; ?>encerramento" class=" text-[#09332a] hover:no-underline block mb-1 text-lg">
+        <div class="transition-all duration-300 ease-in-out shadow-md rounded-lg hover:shadow-xl hover:-translate-y-1">
+                <div class="p-4 rounded-lg">
+                    <h4 class="font-semibold text-[#09332a] hover:no-underline block mb-1 text-lg">
+                        Encerramento do Estágio
+                    </h4>
+                    <p class="text-sm text-gray-700">
+                      Já no final do seu estágio você deverá entregar o Certificado Individual de Seguro, os relatórios mensais ou semestrais e garantir que todas as telas do SUAP estejam preenchidas.
+                    </p>
+                </div>
+            </a>
+        </div>
     </div>
-    <div class="border-l-4 border-[#006633] bg-green-50 p-4 rounded">
-      <a href="<?php echo BASE_URL; ?>documentos"
-         class="font-semibold text-[#09332a] hover:underline block mb-1">
-        📌 Acompanhamento
-      </a>
-      <p class="text-sm text-gray-700">Registre suas atividades, entregue relatórios periódicos e mantenha contato com seu orientador.</p>
-    </div>
-    <div class="border-l-4 border-[#006633] bg-green-50 p-4 rounded">
-      <a href="<?php echo BASE_URL; ?>aditivos"
-         class="font-semibold text-[#09332a] hover:underline block mb-1">
-        ✏️ Termos Aditivos
-      </a>
-      <p class="text-sm text-gray-700">Se mudar algo na carga horária ou atividades, registre os aditivos para não ter problemas depois.</p>
-    </div>
-    <div class="border-l-4 border-[#006633] bg-green-50 p-4 rounded">
-      <a href="<?php echo BASE_URL; ?>encerramento"
-         class="font-semibold text-[#09332a] hover:underline block mb-1">
-        🏁 Encerramento
-      </a>
-      <p class="text-sm text-gray-700">Finalize com o relatório, obtenha avaliação do orientador e confirme que todos os documentos foram entregues.</p>
-    </div>
-  </div>
 </section>
 
 
 
+
   <!-- Sidebar / Recursos -->
-<aside class="bg-white p-6 shadow-md border-l-4 border-[#006633] rounded">
-  
+<aside class="bg-white p-6 shadow-md border-l-4 border-[#006633] rounded hidden md:block">  
   <!-- Destaque: Oportunidades de Estágio -->
   <div class="mb-4 p-3 bg-green-100 ">
     <a href="https://gru.ifsp.edu.br/vagas" target="_blank" 
-       class="text-[#006633] font-semibold hover:underline">
+       class="text-[#006633] font-semibold hover:no-underline">
       Oportunidades de estágio
     </a>
   </div>
@@ -94,14 +110,14 @@ require_once BASE_PATH . '/includes/header.php';
 
   <!-- Lista de recursos -->
   <ul class="space-y-2 px-4">
-    <li><a href="#<?php echo BASE_URL; ?>" class="text-sm text-gray-700 hover:underline">Modelos de Documentos</a></li>
-    <li><a href="#<?php echo BASE_URL; ?>" class="text-sm text-gray-700 hover:underline">Normas e Regulamentos</a></li>
-    <li><a href="#<?php echo BASE_URL;?>" class="text-sm text-gray-700 hover:underline">Dúvidas Frequentes</a></li>
+    <li><a href="#<?php echo BASE_URL; ?>" class="text-sm text-gray-700 hover:no-underline">Modelos de Documentos</a></li>
+    <li><a href="#<?php echo BASE_URL; ?>" class="text-sm text-gray-700 hover:no-underline">Normas e Regulamentos</a></li>
+    <li><a href="#<?php echo BASE_URL;?>" class="text-sm text-gray-700 hover:no-underline">Dúvidas Frequentes</a></li>
   </ul>
 
   <!-- Link + Recursos -->
   <div class="mt-4">
-    <a href="<?php echo BASE_URL; ?>/pages/recursos/" class="text-[#006633] font-semibold hover:underline">
+    <a href="<?php echo BASE_URL; ?>/pages/recursos/" class="text-[#006633] font-semibold hover:no-underline">
       + Recursos
     </a>
   </div>
@@ -109,5 +125,5 @@ require_once BASE_PATH . '/includes/header.php';
 
 
 <?php 
-require_once BASE_PATH . '/includes/footer.php';
+require_once PARTIALS_PATH . 'footer.php';
 ?>

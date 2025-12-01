@@ -6,8 +6,8 @@ $current_uri = $_SERVER['REQUEST_URI'];
       class="<?php echo ($current_uri === BASE_URL || $current_uri === BASE_URL . 'index.php') ? 'active' : ''; ?>">
       Início
    </a>
-   <a href="<?php echo BASE_URL; ?>solicitacoes"
-      class="<?php echo strpos($current_uri, '/solicitacoes') !== false ? 'active' : ''; ?>">
+   <a href="<?php echo BASE_URL; ?>solicitacao"
+      class="<?php echo strpos($current_uri, '/solicitacao') !== false ? 'active' : ''; ?>">
       Solicitação
    </a>
    <a href="<?php echo BASE_URL; ?>"

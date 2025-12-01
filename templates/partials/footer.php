@@ -1,29 +1,26 @@
 </main>
-<footer style="background-color: var(--verde-escuro); padding: 18px 0; margin-top: 28px; text-align: center; color: var(--branco);">
-    <div class="container">
-        <p class="small" style="margin-bottom: 8px;">
-            Todo o processo de estágio segue as normativas legais vigentes e os regulamentos internos do IFSP Campus Guarulhos.
-        </p>
-        &copy; <?php echo date('Y'); ?> IFSP - Campus Guarulhos • Coordenação de Estágios.  
-        <br>
-        <a href="<?php echo BASE_URL; ?>politica-privacidade" style="color: var(--verde-claro); text-decoration: none;">Política de Privacidade</a> |
-        <a href="<?php echo BASE_URL; ?>acessibilidade" style="color: var(--verde-claro); text-decoration: none;">Acessibilidade</a>
-    </div>
-</footer>
+
+    <footer class="bg-verde-escuro py-4 mt-7 text-center text-white">
+        
+        <div class="container max-w-[1200px] mx-auto px-5">
+            
+            <p class="small mb-2 opacity-80">
+                Todo o processo de estágio segue as normativas legais vigentes e os regulamentos internos do IFSP Campus Guarulhos.
+            </p>
+            
+            &copy; <?php echo date('Y'); ?> IFSP - Campus Guarulhos • Coordenação de Estágios.  
+            <br>
+            
+            <div class="mt-2 text-sm space-x-2">
+                <a href="<?php echo BASE_URL; ?>politica-privacidade" class="text-verde-claro hover:underline">Política de Privacidade</a> 
+                <span>|</span>
+                <a href="<?php echo BASE_URL; ?>acessibilidade" class="text-verde-claro hover:underline">Acessibilidade</a>
+            </div>
+            
+        </div>
+    </footer>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          'verde-ifsp': '#006633',
-          'verde-claro': '#78BE20',
-          'verde-secundario': '#007a4d',
-          'verde-escuro': '#09332a',
-        }
-      }
-    }
-  }
-</script>
+<?php  
+  echo '<script src="' . ASSETS_URL . 'js/script.js" defer></script>';?>
 </body>
 </html>

@@ -5,7 +5,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // require_once __DIR__ . '/../../../../../vendor/autoload.php';
-$autoload_path = BASE_PATH . 'vendor/autoload.php';
+$autoload_path = BASE_PATH . 'services/mpdf/vendor/autoload.php';
+// $autoload_path = BASE_PATH . 'vendor/autoload.php';
 // require_once BASE_PATH . 'vendor/autoload.php';
 require_once $autoload_path; 
 
@@ -82,22 +83,15 @@ $apóliceSeguro = ($alunoEstagioTipo === "Obrigatório")
     : "o ESTAGIÁRIO estará coberto pela apólice de seguro n° {$seguroNumero}, da Seguradora {$seguroNome} no valor de {$seguroValor} contra Acidentes Pessoais.";
 
 
-// === 2. INJEÇÃO DE DADOS NO LAYOUT HTML ===
-
-// 2.1. Carrega o template HTML modularizado
-// Usamos '__DIR__ . "/../termo_layout.html"' se o arquivo estiver na pasta forms/
-// Usamos '__DIR__ . "/termo_layout.html"' se o arquivo estiver na pasta pdf/
-$template_path = __DIR__ . '../layouts/termo_layout.html'; // Usando o caminho dentro da pasta atual (pdf/)
+$template_path = __DIR__ . '/../../templates/pdfs/termo_layout.html';
 
 if (!file_exists($template_path)) {
-    // Se a primeira tentativa falhar (assumindo que o arquivo está na pasta 'forms/'), tenta subir um nível
-    $template_path = __DIR__ . '/../../layouts/termo_layout.html'; 
+    if (defined('BASE_PATH')) {
+        $template_path = BASE_PATH . 'templates/pdfs/termo_layout.html';
+    }
+    
     if (!file_exists($template_path)) {
-        // Se a segunda tentativa falhar (assumindo que o arquivo está na pasta 'solicitacoes/'), tenta subir dois níveis
-        $template_path = __DIR__ . '/../layouts/termo_layout.html'; 
-        if (!file_exists($template_path)) {
-            die("Erro FATAL: Arquivo de layout do Termo (termo_layout.html) não encontrado. Tente verificar o caminho absoluto: " . $template_path);
-        }
+        die("Erro FATAL: Arquivo de layout do Termo (termo_layout.html) não encontrado. Verifique se o arquivo está em: " . $template_path);
     }
 }
 
