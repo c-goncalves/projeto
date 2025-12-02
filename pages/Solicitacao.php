@@ -12,30 +12,148 @@ function inicio() {
     require_once __DIR__ . '/../templates/solicitacoes/inicio.php';
 }
 
-function termo($documento, $tipo_estagio) {
-    $curso = $_GET['curso'] ?? 'licenciatura';
-    include __DIR__ . "/../templates/solicitacoes/forms/tce_obrigatorio.php";
-    print_termo_licenciatura_page(BASE_URL, $_SERVER['REQUEST_URI']);
 
-    $curso_sufixo = '-lic'; 
-    $template_file = $documento . $curso_sufixo . '.php'; 
-    $include_path = $base_forms . $template_file;
-    global $tipo_estagio_atual;
-    $tipo_estagio_atual = $tipo_estagio; 
+function tce() {
+    $documento_base = 'tce'; 
+    $curso = $_GET['curso'] ?? 'outros';
+    // $curso = $_GET['curso'] ?? 'licenciatura';
+    $base_forms = __DIR__ . "/../templates/solicitacoes/forms/";
+    
+    if (strtolower($curso) === 'lic') {
+        $template_name = $documento_base . '_lic.php';
+    } else {
+        $template_name = $documento_base . '.php';
+    }
+    
+    $include_path = $base_forms . $template_name;
 
     if (file_exists($include_path)) {
         require_once $include_path;
     } else {
-        die("Erro: Formulário {$template_file} não encontrado.");
+        error_log("termo(): Formulário não encontrado: {$include_path}");
+        echo "<div class=\"p-4 bg-red-100 border-l-4 border-red-500 text-red-800\">Erro: O template ({$template_name}) não encontrado.</div>";
+        return;
+    }
+
+    $current_uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (function_exists('print_termo')) {
+        print_termo(BASE_URL, $current_uri, $curso);
+    } else {
+        echo "<div class=\"p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800\">print_termo não está carregada.</div>";
+    }
+}
+
+function pae() {
+    $documento_base = 'pae'; 
+    $curso = $_GET['curso'] ?? 'outros';
+    // $curso = $_GET['curso'] ?? 'licenciatura';
+    $base_forms = __DIR__ . "/../templates/solicitacoes/forms/";
+    
+    if (strtolower($curso) === 'lic') {
+        $template_name = $documento_base . '_lic.php';
+    } else {
+        $template_name = $documento_base . '.php';
     }
     
+    $include_path = $base_forms . $template_name;
+
+    if (file_exists($include_path)) {
+        require_once $include_path;
+    } else {
+        error_log("termo(): Formulário não encontrado: {$include_path}");
+        echo "<div class=\"p-4 bg-red-100 border-l-4 border-red-500 text-red-800\">Erro: O template ({$template_name}) não encontrado.</div>";
+        return;
+    }
+
+    $current_uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (function_exists('print_pae')) {
+        print_pae(BASE_URL, $current_uri, $curso);
+    } else {
+        echo "<div class=\"p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800\">print_pae não está carregada.</div>";
+    }
+
+}
+function rsem() {
+    $documento_base = 'rsem'; 
+    $base_forms = __DIR__ . "/../templates/solicitacoes/forms/";
+    $template_name = $documento_base . '.php';
+    $include_path = $base_forms . $template_name;
+
+    if (file_exists($include_path)) {
+        require_once $include_path;
+    } else {
+        error_log("termo(): Formulário não encontrado: {$include_path}");
+        echo "<div class=\"p-4 bg-red-100 border-l-4 border-red-500 text-red-800\">Erro: O template ({$template_name}) não encontrado.</div>";
+        return;
+    }
+
+    $current_uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (function_exists('print_rsem')) {
+        print_rsem(BASE_URL, $current_uri);
+    } else {
+        echo "<div class=\"p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800\">print_rsem não está carregada.</div>";
+    }
 
 }
 
-function plano() {
-    $curso = $_GET['curso'] ?? 'licenciatura';
-    include __DIR__ . '/../templates/partials/nav.php';
-    include __DIR__ . "/_forms/plano-{$curso}.php";
+function ta() {
+    $documento_base = 'ta'; 
+    $curso = $_GET['curso'] ?? 'outros';
+    // $curso = $_GET['curso'] ?? 'licenciatura';
+    $base_forms = __DIR__ . "/../templates/solicitacoes/forms/";
+    
+    if (strtolower($curso) === 'lic') {
+        $template_name = $documento_base . '_lic.php';
+    } else {
+        $template_name = $documento_base . '.php';
+    }
+    
+    $include_path = $base_forms . $template_name;
+
+    if (file_exists($include_path)) {
+        require_once $include_path;
+    } else {
+        error_log("termo(): Formulário não encontrado: {$include_path}");
+        echo "<div class=\"p-4 bg-red-100 border-l-4 border-red-500 text-red-800\">Erro: O template ({$template_name}) não encontrado.</div>";
+        return;
+    }
+
+    $current_uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (function_exists('print_termo_aditivo')) {
+        print_termo_aditivo(BASE_URL, $current_uri, $curso);
+    } else {
+        echo "<div class=\"p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800\">print_termo_aditivo não está carregada.</div>";
+    }
+}
+
+function trtc() {
+    $documento_base = 'trtc'; 
+    $curso = $_GET['curso'] ?? 'outros';
+    // $curso = $_GET['curso'] ?? 'licenciatura';
+    $base_forms = __DIR__ . "/../templates/solicitacoes/forms/";
+    
+    if (strtolower($curso) === 'lic') {
+        $template_name = $documento_base . '_lic.php';
+    } else {
+        $template_name = $documento_base . '.php';
+    }
+    
+    $include_path = $base_forms . $template_name;
+
+    if (file_exists($include_path)) {
+        require_once $include_path;
+    } else {
+        error_log("termo(): Formulário não encontrado: {$include_path}");
+        echo "<div class=\"p-4 bg-red-100 border-l-4 border-red-500 text-red-800\">Erro: O template ({$template_name}) não encontrado.</div>";
+        return;
+    }
+
+    $current_uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (function_exists('print_rescisao')) {
+        print_rescisao(BASE_URL, $current_uri, $curso);
+    } else {
+        echo "<div class=\"p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800\">print_rescisao não está carregada.</div>";
+    }
 }
 
 function gerar_pdf() {

@@ -17,7 +17,7 @@ $page_title = $page_title ?? "Coordenação de Estágios — IFSP";
 </head>
 <body>
 <header>
-    <div class="container flex flex-wrap items-center justify-between px-10">
+    <div class="flex flex-wrap justify-between px-10">
         
         <a href="<?php echo BASE_URL; ?>" class="brand flex items-center">
             <div class="flex flex-col space-y-0 p-0">
@@ -39,4 +39,4 @@ $page_title = $page_title ?? "Coordenação de Estágios — IFSP";
     </div>
 </header>
 
-<main class="container px-10">
+<main class="px-5 md:px-10 w-full">

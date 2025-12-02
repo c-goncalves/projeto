@@ -22,6 +22,8 @@ $router->get('assest', 'assets');
 // SOLICITAÇÕES 
 // 🔹 Rota modular: aceita /solicitacao e /solicitacao/*
 $router->get('solicitacao', 'Solicitacao');
+$router->get('solicitacao/termo/{tipo}', 'Solicitacao@tce');
+$router->get('solicitacao/termo/{tipo}', 'Solicitacao@pae');
 // $router->get('solicitacoes/{curso}/form/{step}', 'solicitacoes/index');
 
 // GERAR PDF (teste temporário)
