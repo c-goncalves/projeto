@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Termo de Compromisso - {{ALUNO_NOME}}</title>
+    <style>
+        body { font-family: "Open Sans", Arial, sans-serif; font-size: 10pt; line-height: 1.5; }
+        .center { text-align: center; }
+        .header { margin-bottom: 20px; }
+        .header .instituto { font-size: 14pt;  color: #006633; margin-bottom: 5px; }
+        .header-table {width: 100%;border-collapse: collapse;border: 1px solid #000;margin-bottom: 20px;}
+        .header-table td {padding: 5px;vertical-align: top;border: none;}
+        .header-table .logo-cell {width: 15%;}
+        #logo-img{width: 25%;}
+        .header-table .info-cell {
+            padding-left: 10px;
+            font-size: 10pt;
+            line-height: 1.3;
+            text-align: center;
+            font-weight: bold;
+            padding-top: 20px;
+        }
+        .header-table .main-title {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #006633;
+            margin-bottom: 1px;
+        }
+        .clause-text { margin-bottom: 10px; text-align: justify; }
+        .signature-area { margin-top: 50px; text-align: center; }
+        .signature-line { display: inline-block; width: 30%; border-top: 1px solid #000; margin: 0 15px; padding-top: 5px; font-size: 9pt; }
+       
+        .section-title { font-size: large; margin-top: 15px; border: 1px solid #000; text-align: center; margin-bottom: 15px; background-color: grey; }
+
+        .data-table { width: 100%; margin-top: 5px; border: 1px solid #000;padding: 0;border-collapse: collapse;} 
+        .data-title {font-size: large; text-align: center;background-color: grey;}
+        .data-table td { padding: 3px; font-size: 9.5pt; border: 1px solid #000;}
+        .data-label { white-space: break-spaces; width: 1%;text-wrap: pretty; }
+        .bold{font-weight: bold;}
+        .italic{font-style: italic;}
+        
+        #header-title tr {
+            border: none;
+            }
+             .clausula {
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+    .clause-number{
+        float: left; width: 4%; font-weight: bold;
+    }
+    .clause-text .clause-number{
+        float: left; width: 8%; font-weight: bold;
+        letter-spacing: -0.1px;
+    }
+    .clause-text{
+        float: left; width: 93%; text-align: justify;
+    }
+    .clause-text .clause-text{
+        float: left; width: 89%; text-align: justify;
+    }
+    .subitem {
+        margin-left: 20px;
+    }
+    .subsubitem {
+        margin-left: 40px;
+    }
+    .subsubsubitem {
+        margin-left: 60px;
+    }
+    </style>
+</head>
+<body>
+<table class="header-table bold">
+    <tr>
+        <td class="logo-cell">
+            <img src="{{LOGO_PATH}}" alt="Logo IFSP" id="logo-img">
+        </td>        
+        <td class="info-cell">
+            <div class="main-title">Instituto Federal de Educação, Ciência e Tecnologia de São Paulo</div>
+            <div>Diretoria Geral do Câmpus Guarulhos</div>
+            <div>Coordenadoria de Extensão - CEX</div>
+        </td>
+    </tr>
+</table>
+
+<table class="data-table  " id="header-title">
+      <tr style="border: #000 1px solid;">
+        <td class="data-title bold" colspan="2">TERMO ADITIVO</td>
+    </tr>
+    <tr>
+        <td class="data-title bold" colspan="2">INSTITUIÇÃO DE ENSINO</td>
+    </tr>
+     <tr>
+        <td class="data-label" colspan="2"><b>Instituição:</b> INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DE SÃO PAULO - Campus Guarulhos (doravante denominada IFSP).</td>
+    </tr>
+     <tr>
+        <td class="data-label" colspan="2"><b>Endereço:</b> Av. Salgado Filho, 3501 - V. Rio de Janeiro - Guarulhos - SP - 07115-000</td>
+    </tr>
+    <tr>
+        <td class="data-label" style="border-right: none;" ><b>Fone:</b> (11) 2304-4259</td>
+        <td class="data-label" style="border-left: none;"><b>CNPJ:</b>10.882.594/0009-12</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2"><b> Representada</b> pelo Diretor, Prof. Diego Azevedo Siviero</td>
+    </tr>
+</table>
+
+
+<table class="data-table">
+    <tr>
+        <th class="data-title bold" colspan="4">UNIDADE CONCEDENTE</th>
+    </tr>
+    <tr class="bold">
+        <td class="data-label" colspan="4">ESCOLA: {{EMPRESA_RAZAO_SOCIAL}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="4">Diretoria de Ensino: {{EMPRESA_CNPJ}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="4">Endereço: {{EMPRESA_ENDERECO}}</td>
+    </tr>    
+    <tr>
+        <td class="data-label">CEP: {{EMPRESA_CEP}}</td>
+        <td class="data-label">Bairro: {{EMPRESA_BAIRRO}}</td>
+        <td class="data-label">Cidade: {{EMPRESA_CIDADE}}</td>
+        <td class="data-label">Estado: {{EMPRESA_ESTADO}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2">Diretor(a): {{EMPRESA_REPRESENTANTE}}</td>
+        <td class="data-label" colspan="2">Telefone: {{EMPRESA_CARGO_REPRESENTANTE}}</td>
+    </tr>
+</table>
+
+<table class="data-table">
+    <tr>
+        <th class="data-title bold" colspan="12" style="text-align: center; background-color: #f0f0f0;">ESTAGIÁRIO</th>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="6"><span class="data-label bold">Nome:</span> {{ALUNO_NOME}}</td>
+        <td class="data-label" colspan="6">(doravante denominado <span class="bold"> ESTAGIÁRIO</span>)</td>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="12"><span class="data-label bold">Curso:</span> Licenciatura em matemática </td>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="4"><span class="data-label">RG n°:</span> {{ALUNO_RG}}</td>
+        <td class="data-label" colspan="4"><span class="data-label">CPF:</span> {{ALUNO_CPF}}</td>
+        <td class="data-label" colspan="4"><span class="data-label">Data Nasc.:</span> {{ALUNO_DATA_NASC}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="4"><span class="data-label">Fone:</span> {{ALUNO_FONE}}</td>
+        <td class="data-label" colspan="4"><span class="data-label">Cel:</span> {{ALUNO_CEL}}</td>
+        <td class="data-label" colspan="4"><span class="data-label">E-mail:</span> {{ALUNO_EMAIL}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="6">
+            Estágio Obrigatório: <span class="checkbox">( X )</span>
+        </td>
+    </tr>
+</table>
+
+<p style="margin-top: 15px; text-align: justify;">As partes supracitadas celebram o presente TERMO ADITIVO ao Termo de Compromisso de Estágio que foi celebrado para vigência de ____/____/____ a ____/____/____, tudo nos termos da Lei nº 11.788/08 e demais legislações vigentes que dispõem sobre estágio.</p>
+
+<div class="clause-section" style="margin-top: 20px;">
+    <div class="clausula" >
+        <div class="clause-text">
+           <b>CLÁUSULA PRIMEIRA:</b> Por este instrumento de Aditamento ao Termo de Compromisso de Estágio, celebrado nesta data de (Colocar a data do preenchimento) fica aditado para constar que:    DESCREVER AS ALTERAÇOES HAVIDAS.
+        </div>
+    </div>
+    <div class="clausula" >
+        <div class="clause-text">
+            <b>CLÁUSULA SEGUNDA:</b>E, por estarem inteiramente de acordo, com as cláusulas estipuladas, as partes assinam este Termo Aditivo, em 03 (três) vias de igual teor para todos os fins e efeitos de direito, juntamente com as testemunhas
+        </div>
+    </div>
+</div>
+
+<div style="text-align: right;">
+    <p>Guarulhos, {{DATA_ATUAL_DIA}} de {{DATA_ATUAL_MES}} de {{DATA_ATUAL_ANO}}.</p>
+</div>
+<div style="margin-top: 30px;" class="center">
+   <table class="data-table" style="border: none; ">
+        <tr >
+            <td class="center" style="border: none;padding: 30px;">______________________________________________<br>
+                Estagiário(a)</td>
+            <td class="center" style="border: none;padding: 30px;">
+                ______________________________________________<br>UNIDADE CONCEDENTE</td>
+            <td class="center" style="border: none;padding: 30px;">
+                ______________________________________________<br>IFSP - Campus Guarulhos</td>
+        </tr>
+        
+   </table>
+   
+    </div>
+</div>
+<footer style="position: fixed; bottom: 0; width: 100%;height: fit-content;">
+    <p style="text-align: center; color: grey; width: 100%; font-size: small;">1ª via - IFSP, 2ª via - Unidade Concedente, 3ª via - Estagiário	(Este documento não contém rasuras)</p>
+</footer>
+
+</body>
+</html>

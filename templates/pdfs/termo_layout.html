@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Termo de Compromisso - {{ALUNO_NOME}}</title>
+    <style>
+        body { font-family: "Open Sans", Arial, sans-serif; font-size: 10pt; line-height: 1.5; }
+        .center { text-align: center; }
+        .header { margin-bottom: 20px; }
+        .header .instituto { font-size: 14pt;  color: #006633; margin-bottom: 5px; }
+        .title { font-size: 16pt;  margin: 25px 0; text-align: center; border: 1px solid #000;}
+        .section-title { font-size: x-large; margin-top: 15px; border: 1px solid #000; text-align: center; margin-bottom: 15px;}
+        .data-table { width: 100%; margin-top: 5px; border: 1px solid #000;padding: 0;border-collapse: collapse;} 
+        .data-title {text-align: center;font-size: x-large}
+        .data-table td { padding: 3px; font-size: 9.5pt; border: 1px solid #000;}
+        .data-label { white-space: nowrap; width: 1%; }
+        .checkbox { border: 1px solid #000; padding: 0 4px; margin-right: 5px; }
+        .clause-text { margin-bottom: 10px; text-align: justify; }
+        .signature-area { margin-top: 50px; text-align: center; }
+        .signature-line { display: inline-block; width: 30%; border-top: 1px solid #000; margin: 0 15px; padding-top: 5px; font-size: 9pt; }
+        .bold{font-weight: bold;}
+        .italic{font-style: italic;}
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #000; /* Borda que você mencionou */
+            margin-bottom: 20px;
+        }
+        .header-table td {
+            padding: 5px;
+            vertical-align: top;
+            border: none;
+            
+        }
+        .header-table .logo-cell {
+            width: 15%; /* Coluna do logo */
+        }
+        #logo-img{
+            width: 25%; /* logo */
+        }
+        .header-table .info-cell {
+            padding-left: 10px;
+            font-size: 10pt;
+            line-height: 1.3;
+            text-align: center;
+            font-weight: bold;
+            padding-top: 20px;
+        }
+        .header-table .main-title {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #006633;
+            margin-bottom: 1px;
+        }
+         .clausula {
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+    .clause-number{
+        float: left; width: 4%; font-weight: bold;
+    }
+    .clause-text .clause-number{
+        float: left; width: 8%; font-weight: bold;
+        letter-spacing: -0.1px;
+    }
+    .clause-text{
+        float: left; width: 93%; text-align: justify;
+    }
+    .clause-text .clause-text{
+        float: left; width: 89%; text-align: justify;
+    }
+    .subitem {
+        margin-left: 20px;
+    }
+    .subsubitem {
+        margin-left: 40px;
+    }
+    .subsubsubitem {
+        margin-left: 60px;
+    }
+    </style>
+</head>
+<body>
+<table class="header-table bold">
+    <tr>
+        <td class="logo-cell">
+            <img src="{{LOGO_PATH}}" alt="Logo IFSP" id="logo-img">
+        </td>
+        
+        <td class="info-cell">
+            <div class="main-title">Instituto Federal de Educação, Ciência e Tecnologia de São Paulo</div>
+            <div>Diretoria Geral do Câmpus Guarulhos</div>
+            <div>Coordenadoria de Extensão - CEX</div>
+            <div style="font-size: x-large;">ANEXO - I</div>
+        </td>
+    </tr>
+</table>
+
+<div class="section-title bold">TERMO DE COMPROMISSO DE ESTÁGIO</div>
+<table class="data-table">
+    <tr>
+        <th class="data-title" colspan="2">INSTITUIÇÃO DE ENSINO</th>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2"><span class="bold"> Instituição:</span> INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DE SÃO PAULO/IFSP -<span class="italic"> Câmpus Guarulhos</span> <span class="bold">(doravante denominada IFSP) </span></td>
+    </tr>
+    <tr>
+        <td class="data-label bold" colspan="2">Endereço: Av. Salgado Filho, 3501 - V. Rio de Janeiro - Guarulhos - SP - 07115-000</td>
+    </tr>
+    <tr>
+        <td class="data-label bold">Fone:(11) 2304-4254</td>
+        <td class="data-label bold">CNPJ:10.882.594/0009-12</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2"><span class=" bold">Representada</span> pelo(a) Diretor, Prof. Diego Azevedo Siviero</td>
+    </tr>
+</table>
+
+<table class="data-table">
+    <tr>
+        <th class="data-title bold" colspan="4">UNIDADE CONCEDENTE</th>
+    </tr>
+    <tr class="bold">
+        <td class="data-label" colspan="2">Razão Social: {{EMPRESA_RAZAO_SOCIAL}}</td>
+        <td class="data-label" colspan="2">(doravante denominada CONCEDENTE)</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2">CNPJ: {{EMPRESA_CNPJ}}</td>
+        <td class="data-label" colspan="2">Insc. Estadual:{{EMPRESA_INSCRICAO_ESTADUAL}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2">CPF: {{EMPRESA_CPF}}</td>
+        <td class="data-label" colspan="2">Fone:{{EMPRESA_FONE}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="4">Endereço: {{EMPRESA_ENDERECO}}</td>
+    </tr>    
+    <tr>
+        <td class="data-label">CEP: {{EMPRESA_CEP}}</td>
+        <td class="data-label">Bairro: {{EMPRESA_BAIRRO}}</td>
+        <td class="data-label">Cidade: {{EMPRESA_CIDADE}}</td>
+        <td class="data-label">Estado: {{EMPRESA_ESTADO}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2">Representante Legal: {{EMPRESA_REPRESENTANTE}}</td>
+        <td class="data-label" colspan="2">Cargo: {{EMPRESA_CARGO_REPRESENTANTE}}</td>
+    </tr>
+</table>
+
+<table class="data-table">
+     <tr>
+        <th class="data-title bold" colspan="2">Supervisor de Estágio</th>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2">Nome: {{SUPERVISOR_NOME}}</td>
+    </tr>
+    <tr>
+        <td class="data-label">CPF: {{SUPERVISOR_CPF}}</td>
+        <td class="data-label">Cargo: {{SUPERVISOR_CARGO}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2">Formação Acadêmica: {{SUPERVISOR_FORMACAO}}</td>
+    </tr>
+    <tr>
+        <td class="data-label">Reg. Profissional: {{SUPERVISOR_REG_PROF}}</td>
+        <td class="data-label">Órgão: {{SUPERVISOR_ORGAO}}</td>
+    </tr>
+    <tr>
+        <td class="data-label" colspan="2">E-mail: {{SUPERVISOR_EMAIL}}</td>
+    </tr>
+</table>
+
+<table class="data-table">
+    <tr>
+        <th class="data-title bold" colspan="12" style="text-align: center; background-color: #f0f0f0;">ESTAGIÁRIO</th>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="6"><span class="data-label bold">Nome:</span> {{ALUNO_NOME}}</td>
+        <td class="data-label" colspan="6">(doravante denominado <span class="bold"> ESTAGIÁRIO</span>)</td>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="4"><span class="data-label bold">Curso:</span> {{ALUNO_CURSO}} </td>
+        <td class="data-label" colspan="4"><span class="data-label">Semestre:</span> {{ALUNO_PERIODO}}</td>
+        <td class="data-label" colspan="4"><span class="data-label bold">Prontuário:</span> {{ALUNO_PRONTUARIO}}</td>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="4"><span class="data-label">RG n°:</span> {{ALUNO_RG}}</td>
+        <td class="data-label" colspan="4"><span class="data-label">CPF:</span> {{ALUNO_CPF}}</td>
+        <td class="data-label" colspan="4"><span class="data-label">Data Nasc.:</span> {{ALUNO_DATA_NASC}}</td>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="12"><span class="data-label">Endereço:</span> {{ALUNO_ENDERECO}}</td>
+    </tr>
+
+    <tr>
+            <td class="data-label" colspan="3"><span class="data-label">CEP:</span> {{ALUNO_CEP}}</td>
+            <td class="data-label" colspan="3"><span class="data-label">Bairro:</span> {{ALUNO_BAIRRO}}</td>
+            <td class="data-label" colspan="3"><span class="data-label">Cidade:</span> {{ALUNO_CIDADE}}</td>
+            <td class="data-label" colspan="3"><span class="data-label">Estado:</span> {{ALUNO_ESTADO}}</td>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="4"><span class="data-label">Fone:</span> {{ALUNO_FONE}}</td>
+        <td class="data-label" colspan="4"><span class="data-label">Cel:</span> {{ALUNO_CEL}}</td>
+        <td class="data-label" colspan="4"><span class="data-label">E-mail:</span> {{ALUNO_EMAIL}}</td>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="6">
+            Estágio Obrigatório: <span class="checkbox">{{ESTAGIO_OBRIGATORIO_X}}</span>
+        </td>
+        <td class="data-label" colspan="6">
+            Estágio Não Obrigatório: <span class="checkbox">{{ESTAGIO_NAO_OBRIGATORIO_X}}</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="data-label" colspan="12">
+            Portador de Deficiência (PCD): <span class="checkbox">{{PCD_X}}</span> SIM
+            <span style="margin-left: 20px;" class="checkbox"></span> NÃO
+        </td>
+    </tr>
+</table>
+
+<p style="margin-top: 15px; text-align: justify; text-indent: 5em">As partes supracitadas resolvem celebrar o presente Termo de Compromisso de Estágio, para realização de Estágio Curricular, em conformidade com a Lei nº 11.788, de 25 de setembro de 2008, e das cláusulas e condições a seguir estipuladas.</p>
+
+<div class="clause-section" style="margin-top: 20px;">
+   
+    <div class="bold" style="margin-top: 15px;">CLÁUSULA PRIMEIRA - DO OBJETO</div>
+    <div class="clausula" >
+        <div class="clause-number">1.</div>
+        <div class="clause-text">
+            Constitui objeto do presente Termo a concessão de estágio curricular, entendendo-se como tal, o ato educativo escolar supervisionado, desenvolvido no ambiente de trabalho, que visa preparar para a empregabilidade, para a vida cidadã e para o trabalho, por meio do exercício de atividades correlatas à sua pretendida formação profissional, em complementação ao conhecimento teórico adquirido na Instituição de Ensino.
+        </div>
+    </div>
+
+    <div class="bold">CLÁUSULA SEGUNDA - DA VIGÊNCIA</div>
+    <div class="clausula" >
+        <div class="clause-number">2.1 </div>
+        <div class="clause-text">
+            O vínculo de estágio, objeto do presente Termo de Compromisso terá início em __/__/____, e término em __/__/____, desde que mantido o vínculo do ESTAGIÁRIO com a Instituição de Ensino, nos termos da Lei 11.788/2008.
+        </div>
+        <div class="clause-number">2.2 </div>
+        <div class="clause-text">
+            O presente Termo de Compromisso poderá ser prorrogado, mediante a celebração de Termo Aditivo, observado o limite máximo de 02 (dois) anos.
+        </div>
+        <div class="clause-number">2.3 </div>
+        <div class="clause-text">
+            A vigência poderá ser maior que 02 (dois) anos apenas no caso de Estagiário Portador de Deficiência.
+        </div>
+    </div>
+   <!-- <div class="clause-section" style="margin-top: 20px;"> -->
+    
+    
+
+    <div class="bold" style="margin-top: 15px;">CLÁUSULA TERCEIRA - DO HORÁRIO DA JORNADA DO ESTÁGIO</div>
+    <div class="clausula" >
+        <div class="clause-number">3.1</div>
+        <div class="clause-text">
+            O horário de estágio será de (descriminar os dias da semana) das (discriminar o horário de início) às (horário do fim das atividades), totalizando {{JORNADA_DESCRICAO}}.
+        </div>
+        <div class="clause-number">3.2</div>
+        <div class="clause-text">
+            As atividades de estágio não poderão ser superiores ao abaixo definido:
+            <ol style="list-style-type: upper-roman; padding-left: 20px; margin-top: 5px;">
+                <li>04 (quatro) horas diárias e 20 (vinte) horas semanais, no caso de estudantes de educação especial e dos anos finais do ensino fundamental, na modalidade profissional de educação de jovens e adultos;</li>
+                <li>06 (seis) horas diárias e 30 (trinta) horas semanais, no caso de estudantes do ensino superior, da educação profissional de nível médio e do ensino médio regular;</li>
+                <li>08 (oito) horas diárias e 40 (quarenta) horas semanais, no caso de cursos que alternam teoria e prática, nos períodos em que não estão programadas aulas presenciais, desde que esteja previsto no projeto pedagógico do curso e da Instituição de Ensino.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="bold" style="margin-top: 15px;">CLÁUSULA QUARTA - DO DESENVOLVIMENTO DO ESTÁGIO</div>
+    <div class="clausula" >
+        <div class="clause-number">4.1</div>
+        <div class="clause-text">
+            Durante a realização do estágio, {{APOLICE_SEGURO_TEXTO}}.
+        </div>
+    
+        <div class="clause-number">4.2</div>
+        <div class="clause-text">
+            O estágio será desenvolvido com base no Plano de Atividades de Estágio elaborado conjuntamente entre o ESTAGIÁRIO, a INSTITUIÇÃO DE ENSINO e a UNIDADE CONCEDENTE.
+        </div>
+    
+        <div class="clause-number">4.3</div>
+        <div class="clause-text">
+            As atividades principais poderão ser ampliadas, reduzidas, alteradas ou substituídas somente com prévia e expressa anuência do ESTAGIÁRIO e do IFSP, devendo ser realizadas sempre dentro do contexto básico da profissão, do Projeto Pedagógico do Curso e com a concordância do Professor Orientador.
+        </div>
+    
+        <div class="clause-number">4.4</div>
+        <div class="clause-text">
+            O horário de estágio será combinado de acordo com as conveniências mútuas, respeitadas as horas de aulas, de provas e de outros trabalhos didáticos. As atividades de estágio não poderá ser superiores ao definido na cláusula 3.2 deste instrumento.
+        </div>
+    
+        <div class="clause-number">4.5</div>
+        <div class="clause-text">
+            Nos períodos de avaliações, a carga horária do estágio poderá ser reduzida à metade, para garantir o bom desempenho do estudante, desde que o IFSP comunique a CONCEDENTE as datas de realização de tais avaliações.
+        </div>
+    
+        <div class="clause-number">4.6</div>
+        <div class="clause-text">
+            O ESTAGIÁRIO não terá vínculo empregatício de qualquer natureza com a CONCEDENTE, conforme os termos do artigo 3º da Lei 11.788/2008, inclusive para fins de Legislação do Fundo de Garantia por Tempo de Serviço e Seguridade Social.
+        </div>
+    
+        <div class="clause-number">4.7</div>
+        <div class="clause-text">
+            O prazo máximo de realização de estágio, na mesma parte concedente, é de 02 (dois) anos, exceto para os casos de estagiário portador de deficiência.
+        </div>
+    </div>
+
+    <div class="bold" style="margin-top: 15px;">CLÁUSULA QUINTA - DAS OBRIGAÇÕES DAS PARTES</div>
+
+    <div class="clausula" >
+        <div class="clause-number">5.1</div>
+        <div class="clause-text">
+            Compete ao IFSP.
+             <div class="clause-number">5.1.1</div>
+             <div class="clause-text">
+                Avaliar as instalações da CONCEDENTE de Estágio e sua adequação à formação cultural e profissional do ESTAGIÁRIO.
+            </div>
+            <div class="clause-number">5.1.2</div>
+             <div class="clause-text">
+                Indicar Professor Orientador, da área a ser desenvolvida no estágio, como responsável pelo acompanhamento e avaliação das atividades do ESTAGIÁRIO.
+            </div>
+            <div class="clause-number">5.1.3</div>
+             <div class="clause-text">
+                Exigir do ESTAGIÁRIO a apresentação mensal, de Relatório das Atividades.
+            </div>
+            <div class="clause-number">5.1.4</div>
+             <div class="clause-text">
+                Receber e arquivar os Relatórios das Atividades.
+            </div>
+            <div class="clause-number">5.1.5</div>
+             <div class="clause-text">
+                Zelar pelo cumprimento do Termo de Compromisso de Estágio, reorientando o ESTAGIÁRIO para outro local em caso de descumprimento de suas normas;
+            </div>
+            <div class="clause-number">5.1.6</div>
+             <div class="clause-text">
+                Comunicar à CONCEDENTE de Estágio, as datas de realização das avaliações escolares ou acadêmicas.
+            </div>            
+        </div>
+        <div class="clause-number">5.2</div>
+        <div class="clause-text">
+            Compete à UNIDADE CONCEDENTE DE ESTÁGIO:
+            
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.1</div>
+                <div class="clause-text">
+                    Ofertar instalações que tenham condições de proporcionar aos ESTAGIÁRIOS atividades de aprendizagem relacionadas ao seu curso de formação.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.2</div>
+                <div class="clause-text">
+                    Designar um profissional com formação ou experiência profissional na área de conhecimento desenvolvida no curso do ESTAGIÁRIO, orientar e supervisionar as atividades do ESTAGIÁRIO.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.3</div>
+                <div class="clause-text">
+                    Por ocasião do desligamento do ESTAGIÁRIO, entregar termo de realização do estágio com indicação resumida das atividades desenvolvidas, dos períodos e da avaliação de desempenho.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.4</div>
+                <div class="clause-text">
+                    Manter a disposição da fiscalização documentos que comprovem a relação de estágio.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.5</div>
+                <div class="clause-text">
+                    Zelar pela aprendizagem do ESTAGIÁRIO, em conformidade com o currículo de seu curso de formação.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.6</div>
+                <div class="clause-text">
+                    Fornecer à Instituição de Ensino todas as informações necessárias à avaliação e acompanhamento do estágio quando solicitada.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.7</div>
+                <div class="clause-text">
+                    Efetuar pagamento de bolsa-auxílio no valor de R$ {{BOLSA_NUMERICA}} ({{BOLSA_EXTENSO}}) diretamente ao ESTAGIÁRIO, quando prevista.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.8</div>
+                <div class="clause-text">
+                    Efetuar a contratação de seguro contra acidentes pessoais em favor do ESTAGIÁRIO, durante o período do estágio, sem qualquer ônus para este ou para o IFSP.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.9</div>
+                <div class="clause-text">
+                    Subsidiar o IFSP com informações que propiciem aprimoramento do sistema acadêmico e do próprio estágio.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.10</div>
+                <div class="clause-text">
+                    Reduzir a carga horária do estágio em, no mínimo, a metade daquela estabelecida na cláusula 3.1, nos períodos de avaliações previamente informados pelo IFSP, quando solicitado pelo Estagiário.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.11</div>
+                <div class="clause-text">
+                    Conceder ao ESTAGIÁRIO recesso de 30(trinta) dias, preferencialmente, no período de férias escolares, sempre que o estágio tenha duração igual ou superior a 1 (um) ano, devendo ser remunerado conforme o valor atualizado da bolsa.
+                </div>
+            </div>
+            <div class="clausula sub-item">
+                <div class="clause-number">5.2.12</div>
+                <div class="clause-text">
+                    Avaliar e validar o Relatório de Atividades mensal desenvolvido no âmbito da CONCEDENTE.
+                </div>
+            </div>
+        </div>
+    <div class="clause-number">5.3</div>
+    <div class="clause-text">
+        COMPETE AO ESTAGIÁRIO:
+        
+            <div class="clause-number">5.3.1</div>
+            <div class="clause-text">
+                Cumprir com zelo e responsabilidade as tarefas que lhe forem submetidas.
+            </div>
+        
+            <div class="clause-number">5.3.2</div>
+            <div class="clause-text">
+                Cumprir integralmente as horas previstas para o seu estágio, conforme especificado em cláusula própria.
+            </div>
+        
+            <div class="clause-number">5.3.3</div>
+            <div class="clause-text">
+                Apresentar mensalmente Relatório de Atividades de Estágio, devidamente conferido pelo Supervisor de Estágio indicado pela CONCEDENTE, e, após visto, providenciar a entrega do Relatório de Atividades de Estágio ao Professor Orientador do IFSP.
+            </div>
+        
+            <div class="clause-number">5.3.4</div>
+            <div class="clause-text">
+                Manter atualizados os seus dados cadastrais.
+            </div>
+        
+            <div class="clause-number">5.3.5</div>
+            <div class="clause-text">
+                Informar, por escrito, qualquer fato que interrompa, suspenda ou cancele sua matrícula no IFSP, bem como fornecer à CONCEDENTE atestado de matrícula semestralmente.
+            </div>
+        
+            <div class="clause-number">5.3.6</div>
+            <div class="clause-text">
+                Informar ao Professor Orientador do IFSP, descumprimento do estabelecido no Plano de Atividades de Estágio ou qualquer outra cláusula do presente Termo de Compromisso de Estágio pela CONCEDENTE.
+            </div>
+        
+            <div class="clause-number">5.3.7</div>
+            <div class="clause-text">
+                Acatar as normas internas da CONCEDENTE, bem como orientações e recomendações efetuadas por seu Supervisor.
+            </div>
+        
+            <div class="clause-number">5.3.8</div>
+            <div class="clause-text">
+                Assinar, ao término do estágio, o Termo de Desligamento do Estágio, a ser fornecido pela CONCEDENTE de Estágio.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="bold" style="margin-top: 15px;">CLÁUSULA SEXTA - DA RESCISÃO</div>
+    <div class="clausula" >
+        <div class="clause-number">6.1</div>
+        <div class="clause-text">
+            O presente Termo de Compromisso de Estágio extinguir-se-á automaticamente:
+            <ol style="list-style-type: upper-alpha; padding-left: 20px; margin-top: 5px;">
+                <li>Pela conclusão, trancamento, desligamento e abandono do curso;</li>
+                <li>Não cumprimento dos termos de compromisso;</li>
+                <li>Pedido de qualquer uma das partes, a qualquer tempo;</li>
+                <li>Automaticamente, ao término do estágio;</li>
+                <li>Quando atingido o período máximo permitido pela Lei nº 11.788/08 para realização de estágio.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="bold" style="margin-top: 15px;">CLÁUSULA SÉTIMA - DO FORO</div>
+    <div class="clausula" >
+        <div class="clause-number">7.1</div>
+        <div class="clause-text">
+            Fica eleito o Foro da Seção Judiciária de São Paulo da Justiça Federal da 3ª Região com renúncia de qualquer outro por mais privilegiado que seja, para dirimir quaisquer dúvidas que se originarem deste Termo de Compromisso e que não possam ser solucionadas amigavelmente.
+        </div>
+    </div>
+    <div class="clausula" >
+        <div class="clause-number">7.2</div>
+        <div class="clause-text">
+            E por estarem de acordo com os termos do presente instrumento, as partes o assinam em 03 (três) vias, na presença de duas testemunhas, para todos os fins e efeitos de direito.
+        </div>
+    </div>
+</div>
+</div>
+
+<div style="text-align: right;">
+    <p>Guarulhos, {{DATA_ATUAL_DIA}} de {{DATA_ATUAL_MES}} de {{DATA_ATUAL_ANO}}.</p>
+</div>
+<div style="margin-top: 30px;" class="center">
+   <table class="data-table" style="border: none;">
+        <tr >
+            <td class="center" style="border: none;">______________________________________________<br>
+                {{EMPRESA_REPRESENTANTE}}</td>
+            <td class="center" style="border: none;">
+                ______________________________________________<br>{{ALUNO_NOME}}</td>
+        </tr>
+        <tr class="center">
+            <td class="center" style="border: none;">UNIDADE CONCEDENTE</td>
+            <td class="center" style="border: none;">ESTAGIÁRIO</td>
+        </tr>
+        <tr >
+            <td style="padding-top: 90px;border: none;">______________________________________________<br>
+                Representante legal do estagiário<br>
+            (nome e assinatura)</td>
+            <td style="border: none;"></td>
+        </tr>
+        <tr >
+            <td style="padding-top: 90px; border: none;" colspan="2">
+                
+            </td>
+        </tr>
+        <tr >
+            <td style="border: none; text-align: center;" colspan="2">
+                ___________________________________________________________________________________<br>
+                INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DE SÃO PAULO - IFSP
+            </td>
+        </tr>
+        <tr >
+            <td style="padding-top: 50px; border: none;" colspan="2">
+                
+            </td>
+        </tr>
+        <tr >
+            <td style="border: none;" class="bold" colspan="2">TESTEMUNHAS:</td>
+        </tr>
+         <tr >
+            <td style="border: none; ">
+               <span class="bold"> 1.</span>Nome:
+            </td>
+            <td style="border: none; " >
+               <span class="bold"> 2. </span>Nome:  
+            </td>
+        </tr>
+        <tr >
+            <td style="border: none; padding-left: 20px;">
+                RG : 
+            </td>
+            <td style="border: none; padding-left: 20px;" >
+               RG :  
+            </td>
+        </tr>
+        <tr >
+            <td style="border: none; padding-left: 20px;">
+                CPF: 
+            </td>
+            <td style="border: none; padding-left: 20px;" >
+               CPF:  
+            </td>
+        </tr>
+        
+   </table>
+   
+    </div>
+</div>
+
+</body>
+</html>
