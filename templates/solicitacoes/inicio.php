@@ -22,7 +22,7 @@
       <li class="flex items-start gap-2">
         <span class="text-[#006633] mt-0.5">➤</span>
         Mantenha-se informado: 
-        <a href="<?php echo PAGES_PATH; ?>recursos/" class="text-[#007a4d] underline <?php echo strpos($current_uri, '/pages/recursos/') !== false ? 'font-bold' : ''; ?>">
+        <a href="#" class="text-[#007a4d] underline">
           Recursos
         </a>
       </li>
@@ -105,7 +105,7 @@ const cursosInfo = {
         </ul>
       </li>
     </ul>
-    <a href="<?php echo BASE_URL; ?>solicitacao/tce?curso=lic" class="inline-block mt-4 px-5 py-2 bg-[#006633] text-white font-semibold rounded-lg hover:bg-[#004d26] transition">Iniciar Solicitação</a>
+    <a href="<?= $ASSETS_URL ?>solicitacao/tce?curso=lic" class="inline-block mt-4 px-5 py-2 bg-[#006633] text-white font-semibold rounded-lg hover:bg-[#004d26] transition">Iniciar Solicitação</a>
   `,
   ads: `
     <h3>Tecnologia em Análise e Desenvolvimento de Sistemas</h3>
@@ -113,7 +113,7 @@ const cursosInfo = {
       <li>Documentos obrigatórios: Termo de Compromisso e Plano de Atividades padrão.</li>
       <li>Prazo de análise: até 5 dias úteis.</li>
     </ul>
-    <a href="<?php echo BASE_URL; ?>solicitacao/tce?curso=ads" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
+    <a href="<?= $ASSETS_URL ?>solicitacao/tce?curso=ads" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
   `,
   automacao: `
     <h3>Tecnologia em Automação Industrial</h3>
@@ -121,7 +121,7 @@ const cursosInfo = {
       <li>Documentos obrigatórios: Termo de Compromisso e Plano de Atividades padrão.</li>
       <li>É necessário apresentar plano de atividades detalhado com supervisão da empresa.</li>
     </ul>
-    <a href="<?php echo BASE_URL; ?>solicitacao/tce?curso=tai" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
+    <a href="<?= $ASSETS_URL ?>solicitacao/tce?curso=tai" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
   `,
   engenharia_computacao: `
     <h3>Engenharia de Computação</h3>
@@ -129,7 +129,7 @@ const cursosInfo = {
       <li>Termo de Compromisso e Plano de Atividades padrão.</li>
       <li>Coordenação recomenda envio de cronograma de atividades antes do início do estágio.</li>
     </ul>
-    <a href="<?php echo BASE_URL; ?>solicitacao/tce?curso=eg" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
+    <a href="<?= $ASSETS_URL ?>solicitacao/tce?curso=eg" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
   `,
   engenharia_controle: `
     <h3>Engenharia de Controle e Automação</h3>
@@ -137,7 +137,7 @@ const cursosInfo = {
       <li>Termo de Compromisso e Plano de Atividades padrão.</li>
       <li>Documentação deve ser assinada pela empresa e aluno antes do início do estágio.</li>
     </ul>
-    <a href="<?php echo BASE_URL; ?>solicitacao/tce?curso=eca" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
+    <a href="<?= $ASSETS_URL ?>solicitacao/tce?curso=eca" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
   `,
   nao_obrigatorio: `
     <h3>Estágio Não Obrigatório (Pago)</h3>
@@ -150,7 +150,7 @@ const cursosInfo = {
       </li>
       <li>Plano de Atividades deve ser enviado e aprovado antes do início.</li>
     </ul>
-    <a href="<?php echo BASE_URL; ?>solicitacao/tce" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
+    <a href="<?= $ASSETS_URL ?>solicitacao/tce" class="btn" style="margin-top:10px; display:inline-block;">Iniciar Solicitação</a>
   `
 };
 

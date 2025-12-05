@@ -57,7 +57,7 @@ function orientacoes($current_uri, $pages_path) { ?>
     <ul class="space-y-2 text-sm text-gray-700 list-inside">
         <li class="flex gap-2 items-start "><span class="text-[#006633]">➤</span>
             Tenha todas as informações obrigatórias em mãos. Baixe o checklist
-            <a href="<?php echo BASE_URL; ?>solicitacao/form/pdf/checklist-termo" class="font-semibold <?php echo strpos($current_uri, '/solicitacao') !== false ? 'active' : ''; ?>">aqui</a>
+            <a href="<?= $ASSETS_URL ?>solicitacao/form/pdf/checklist-termo" class="font-semibold <?php echo strpos($current_uri, '/solicitacao') !== false ? 'active' : ''; ?>">aqui</a>
         </li>
         <li class="flex gap-2 items-start"><span class="text-[#006633]">➤</span>
             Carga Horária (Cláusula 3.2): O limite máximo de horas é de 6h/dia ou 30h/semana. A jornada <strong>NUNCA</strong> pode coincidir com seu horário de aulas no IFSP.

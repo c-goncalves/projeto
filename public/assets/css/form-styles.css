@@ -1,0 +1,38 @@
+
+#nav-form { flex: 0 0 13rem; max-width: 13rem; box-sizing: border-box; }
+
+#content-area > form,
+#content-area fieldset {
+  width: 100%;
+  min-width: 0;              
+  box-sizing: border-box;
+}
+
+#content-area input,
+#content-area select,
+#content-area textarea {
+  max-width: 100%;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#horarios_tbody, table#w-horarios, .w-full table {
+  table-layout: fixed;
+  width: 100%;
+  word-break: break-word;
+}
+
+.select-chip {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#stepsNav .step { display: block; padding: .25rem .75rem; font-size: .875rem; border-radius: .25rem; }
+#stepsNav .step.active { background-color: #006633; color: #fff; }
+@media (max-width: 768px) {
+  #nav-form { display: none; }
+  #content-area { max-width: 100%; }
+}
+

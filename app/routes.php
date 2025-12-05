@@ -2,41 +2,43 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Routing\RouteCollectorProxy;
-use App\Middlewares\AuthMiddleware;
+// corrija a namespace conforme a sua classe real
+use App\Middleware\AuthMiddleware; 
+use App\Middleware\UrlSlashMiddleware; 
 
 return function (\Slim\App $app) {
-    
-    //home
-    // $app->get('/', 'App\Controllers\SiteController:home');
-    $app->get('/', 'App\Controllers\SiteController:home')->setName('site.home');
-    // teste de rota
-    // $app->get('/', function (Request $request, Response $response) {
-    //     $response->getBody()->write("Bem-vindo! Esta é a página inicial da sua aplicação.");
-    //     return $response;
-    // });
-    $app->get('/test', function (Request $request, Response $response) {
-         $response->getBody()->write("TESTE OK");
-         return $response;
-    });
-    
 
-    $app->group('/solicitacao', function (RouteCollectorProxy $group) {
-        $group->get('/termo/{tipo}', '\App\Controllers\SolicitacaoController:termo');
-        $group->get('/plano/{tipo}', '\App\Controllers\SolicitacaoController:plano');
-        $group->get('/checklist', '\App\Controllers\SolicitacaoController:gerarChecklist');
-        
+    $controllerNamespace = 'App\\Controllers\\';
+
+    // home
+    $app->get('/', $controllerNamespace . 'SiteController:index')->setName('site.index');
+
+    $slashMiddleware = new \App\Middleware\UrlSlashMiddleware('remove', 301);
+
+    $app->group('/solicitacao', function (RouteCollectorProxy $group) use ($controllerNamespace) {
+        $group->get('', $controllerNamespace . 'SolicitacaoController:home')->setName('solicitacao.index');
+        $group->get('/termo/{tipo}', $controllerNamespace . 'SolicitacaoController:termo')->setName('solicitacao.termo');
+        $group->get('/plano/{tipo}', $controllerNamespace . 'SolicitacaoController:plano')->setName('solicitacao.plano');
+        $group->get('/checklist', $controllerNamespace . 'SolicitacaoController:gerarChecklist')->setName('solicitacao.checklist');
+
         // POST
-        $group->post('/enviar', '\App\Controllers\SolicitacaoController:processarEnvio');
-        
+        $group->post('/enviar', $controllerNamespace . 'SolicitacaoController:processarEnvio')->setName('solicitacao.enviar');
+    })->add($slashMiddleware);
+
+    $app->get('/recursos', $controllerNamespace . 'SiteController:recursos')->setName('site.recursos');
+
+    $app->group('/acompanhamento', function (RouteCollectorProxy $group) use ($controllerNamespace) {
+        $group->get('', $controllerNamespace . 'AcompanhamentoController:index')->setName('acompanhamento.index');
     });
-    
-    $app->get('/login', '\App\Controllers\AuthController:showLogin');
 
-    // rotas protegidas
-    $app->group('/coordenador', function (RouteCollectorProxy $group) {
-        $group->get('/dashboard', 'App\Controllers\CoordenadorController:showDashboard');
-        $group->get('/estagios', 'App\Controllers\CoordenadorController:listEstagios');
-    })->add(new AuthMiddleware());
+    $app->group('/noticias', function (RouteCollectorProxy $group) use ($controllerNamespace) {
+        $group->get('', $controllerNamespace . 'NoticiasController:index')->setName('noticias.index');
+    });
 
-    
+    $app->get('/login', $controllerNamespace . 'AuthController:showLogin')->setName('login.show');
+
+    // rotas protegidas (exemplo de uso do AuthMiddleware)
+    // $app->group('/dashboard', function (RouteCollectorProxy $group) use ($controllerNamespace) {
+    //     $group->get('', $controllerNamespace . 'DashboradController:showDashboard')->setName('dashboard.index');
+    // })->add(new AuthMiddleware('/login'));
 };

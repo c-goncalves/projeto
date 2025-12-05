@@ -1,41 +1,67 @@
 <?php
 
 use Psr\Container\ContainerInterface;
-use Slim\App;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\Interfaces\RouteParserInterface;
 use App\Controllers\SiteController;
-use App\Controllers\DocumentoController;
+use App\Controllers\SolicitacaoController;
 
 return [
-    
-    // 1. Dependências essenciais)
-    
-    // obter a instância do RouteParser
-    RouteParserInterface::class => function (ContainerInterface $container): RouteParserInterface {
-        $app = $container->get(App::class); 
-        return $app->getRouteCollector()->getRouteParser();
+
+    // 0) ResponseFactory necessário para Slim 4 (PSR-17)
+    ResponseFactoryInterface::class => function (ContainerInterface $c) {
+        return new \Slim\Psr7\Factory\ResponseFactory();
     },
 
-    // 2. CONTROLLERS
-    
-    SiteController::class => function (ContainerInterface $container) {
-        $routeParser = $container->get(RouteParserInterface::class);
-        return new SiteController($routeParser);
+    // 1) PDO (db) — com sugestões de segurança e fallback
+    'db' => function (ContainerInterface $c) {
+        $host = getenv('DB_HOST') ?: '127.0.0.1';
+        $name = getenv('DB_NAME') ?: 'estagio_db';
+        $user = getenv('DB_USER') ?: 'user';
+        $pass = getenv('DB_PASS') ?: 'password_secret';
+        $dsn = "mysql:host={$host};dbname={$name};charset=utf8mb4";
+
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+            // PDO::ATTR_PERSISTENT => true, // habilite só se quiser
+        ];
+
+        try {
+            return new PDO($dsn, $user, $pass, $options);
+        } catch (\PDOException $e) {
+            throw new \RuntimeException('Falha ao conectar ao banco de dados: ' . $e->getMessage(), 0, $e);
+        }
     },
 
-    DocumentoController::class => function (ContainerInterface $container) {
-        $routeParser = $container->get(RouteParserInterface::class);
-        // $dbConnection = $container->get(DB::class);
-        return new DocumentoController($routeParser); 
+    // permitir injeção por type-hint PDO::class
+    PDO::class => function (ContainerInterface $c) {
+        return $c->get('db');
     },
 
-    // 3. VARIÁVEIS GLOBAIS
-    'db.settings' => [
-        'host' => 'db', 
-        'user' => 'user',
-        'pass' => 'password_secret',
-        'dbname' => 'estagio_db',
-    ],
-    
-    // outros serviços(logs, renderização de Twig, etc.)
+    // try {
+    //     return new PDO($dsn, $user, $pass, $options);
+    // } catch (\PDOException $e) {
+    //     // Lança uma RuntimeException com contexto (pode logar aqui se desejar)
+    //     throw new \RuntimeException('Falha ao conectar ao banco de dados: ' . $e->getMessage(), 0, $e);
+    // }
+
+    // 2) CONTROLLERS 
+    SiteController::class => function (Psr\Container\ContainerInterface $c) {
+        $routeParser = $c->has(RouteParserInterface::class)
+            ? $c->get(RouteParserInterface::class)
+            : null;
+        $db = $c->has(PDO::class) ? $c->get(PDO::class) : null;
+        return new SiteController($routeParser, $db);
+    },
+
+    SolicitacaoController::class => function (ContainerInterface $c) {
+        $routeParser = $c->has(RouteParserInterface::class)
+            ? $c->get(RouteParserInterface::class)
+            : null;
+        $db = $c->has(PDO::class) ? $c->get(PDO::class) : null;
+        return new SolicitacaoController($routeParser, $db);
+    },
+
 ];
