@@ -20,6 +20,8 @@
         </div>
     </footer>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="<?= htmlspecialchars($BASE_URL . 'assets/js/script.js', ENT_QUOTES, 'UTF-8') ?>"></script>
+<script src="<?= htmlspecialchars($BASE_URL . 'assets/js/form-scripts.js', ENT_QUOTES, 'UTF-8') ?>"></script>
 
 </body>
 </html>

@@ -16,14 +16,36 @@ return function (\Slim\App $app) {
     $slashMiddleware = new \App\Middleware\UrlSlashMiddleware('remove', 301);
 
     $app->group('/solicitacao', function (RouteCollectorProxy $group) use ($controllerNamespace) {
-        $group->get('', $controllerNamespace . 'SolicitacaoController:home')->setName('solicitacao.index');
-        $group->get('/termo/{tipo}', $controllerNamespace . 'SolicitacaoController:termo')->setName('solicitacao.termo');
-        $group->get('/plano/{tipo}', $controllerNamespace . 'SolicitacaoController:plano')->setName('solicitacao.plano');
-        $group->get('/checklist', $controllerNamespace . 'SolicitacaoController:gerarChecklist')->setName('solicitacao.checklist');
+    // index
+        $group->get('', $controllerNamespace . 'SolicitacaoController:home')
+            ->setName('solicitacao.index');
+
+        // TERMO / TCE  — rota legada ('termo') + rota técnica ('tce')
+        $group->get('/termo[/{tipo}]', $controllerNamespace . 'SolicitacaoController:termo')
+            ->setName('solicitacao.termo'); // nome legado
+        $group->get('/tce[/{tipo}]', $controllerNamespace . 'SolicitacaoController:termo')
+            ->setName('solicitacao.tce');   // nome "técnico" (usado nos templates)
+
+        // PLANO / PAE — rota legada ('plano') + rota técnica ('pae')
+        $group->get('/plano[/{tipo}]', $controllerNamespace . 'SolicitacaoController:plano')
+            ->setName('solicitacao.plano'); // nome legado
+        $group->get('/pae[/{tipo}]', $controllerNamespace . 'SolicitacaoController:plano')
+            ->setName('solicitacao.pae');   // nome "pae" (usado nos templates)
+
+        // demais documentos
+        $group->get('/ta[/{tipo}]',   $controllerNamespace . 'SolicitacaoController:ta')->setName('solicitacao.ta');
+        $group->get('/trtc[/{tipo}]', $controllerNamespace . 'SolicitacaoController:trtc')->setName('solicitacao.trtc');
+
+        // checklist (mantive)
+        $group->get('/checklist', $controllerNamespace . 'SolicitacaoController:gerarChecklist')
+            ->setName('solicitacao.checklist');
 
         // POST
-        $group->post('/enviar', $controllerNamespace . 'SolicitacaoController:processarEnvio')->setName('solicitacao.enviar');
+        $group->post('/enviar', $controllerNamespace . 'SolicitacaoController:processarEnvio')
+            ->setName('solicitacao.enviar');
     })->add($slashMiddleware);
+
+
 
     $app->get('/recursos', $controllerNamespace . 'SiteController:recursos')->setName('site.recursos');
 

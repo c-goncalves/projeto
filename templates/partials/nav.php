@@ -1,66 +1,74 @@
 <?php
-if (!isset($routeParser) || !$routeParser) {
-    echo "<!-- nav: routeParser não disponível -->";
-    return;
+$routeParser = $routeParser ?? null;
+
+$current_uri  = $current_uri ?? ($_SERVER['REQUEST_URI'] ?? '/');
+if ($current_uri === null) {
+    $current_uri = '/';
 }
+$current_path = strtok((string) $current_uri, '?') ?: '/';
+$current_path = (string) $current_path;
 
-$currentPath = $current_uri ?? ($_SERVER['REQUEST_URI'] ?? '/');
-$currentPath = strtok($currentPath, '?');
-
-$is_active = function (string $routeName) use ($routeParser, $currentPath) : string {
+function navIsActive($routeParser, string $routeName, string $current_path): string
+{
     try {
         $url = $routeParser->urlFor($routeName);
-        $u = rtrim($url, '/');
-        $p = rtrim($currentPath, '/');
-        if ($u === '') $u = '/';
-        if ($p === '') $p = '/';
-        return ($p === $u || strpos($p, $u) === 0) ? 'active' : '';
+        $path = parse_url($url, PHP_URL_PATH) ?: '/';
     } catch (\Throwable $e) {
         return '';
     }
-};
 
-$navItemClass = function(string $routeName) use ($is_active) {
-    $base = 'flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors';
-    $active = $is_active($routeName) ? 'bg-gray-100 text-sky-700' : 'text-gray-700 hover:bg-gray-50 hover:text-sky-600';
-    return $base . ' ' . $active;
-};
+    $path = rtrim($path, '/') ?: '/';
+    $cur  = rtrim($current_path, '/') ?: '/';
+
+    $is = ($cur === $path) || strpos($cur . '/', $path . '/') === 0;
+
+    return $is ? : '';
+}
+
+function navUrl($routeParser, string $routeName): string
+{
+    try {
+        return $routeParser->urlFor($routeName);
+    } catch (\Throwable $e) {
+        return '#';
+    }
+}
 ?>
 
 <nav aria-label="Principal" class="w-full">
   <ul class="flex flex-col md:flex-row md:space-x-4 md:items-center">
     <li>
-      <a href="<?= $routeParser->urlFor('site.index'); ?>"
-         class="<?= $navItemClass('site.index'); ?>">
-         <span>Início</span>
+      <a href="<?= navUrl($routeParser, 'site.index') ?>"
+        class="block px-3 py-2 font-medium <?= navIsActive($routeParser, 'site.index', $current_path) ?>">
+         Início
       </a>
     </li>
 
     <li>
-      <a href="<?= $routeParser->urlFor('solicitacao.index'); ?>"
-         class="<?= $navItemClass('solicitacao.index'); ?>">
-         <span>Solicitação</span>
+      <a href="<?= navUrl($routeParser, 'solicitacao.index') ?>"
+           class="block px-3 py-2 font-medium <?= navIsActive($routeParser, 'solicitacao.index', $current_path) ?>">
+            Solicitação
       </a>
     </li>
 
     <li>
-      <a href="<?= $routeParser->urlFor('acompanhamento.index'); ?>"
-         class="<?= $navItemClass('acompanhamento.index'); ?>">
-         <span>Acompanhamento</span>
+      <a href="<?= navUrl($routeParser, 'acompanhamento.index') ?>"
+           class="block px-3 py-2 font-medium <?= navIsActive($routeParser, 'acompanhamento.index', $current_path) ?>">
+            Acompanhamento
       </a>
     </li>
 
     <li>
-      <a href="<?= $routeParser->urlFor('noticias.index'); ?>"
-         class="<?= $navItemClass('noticias.index'); ?>">
-         <span>Notícias</span>
+       <a href="<?= navUrl($routeParser, 'noticias.index') ?>"
+           class="block px-3 py-2 font-medium <?= navIsActive($routeParser, 'noticias.index', $current_path) ?>">
+            Notícias
       </a>
     </li>
 
     <li>
-      <a href="<?= $routeParser->urlFor('site.recursos'); ?>"
-         class="<?= $navItemClass('site.recursos'); ?>">
-         <span>Recursos</span>
+       <a href="<?= navUrl($routeParser, 'site.recursos') ?>"
+           class="block px-3 py-2 font-medium <?= navIsActive($routeParser, 'site.recursos', $current_path) ?>">
+            Recursos
       </a>
     </li>
   </ul>
