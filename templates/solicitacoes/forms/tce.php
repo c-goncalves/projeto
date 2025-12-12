@@ -1,6 +1,6 @@
 <?php
 
-function print_termo($BASE_URL, $SERVER_URI, $curso = null) {
+function print_tce($BASE_URL, $SERVER_URI, $curso = null) {
     switch ($curso){
         case 'ads': $curso = 'Tecnologia em Análise e Desenvolvimento de Sistemas'; break;
         case 'tai': $curso = 'Tecnologia em Automação Industrial'; break;

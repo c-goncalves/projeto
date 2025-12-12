@@ -8,12 +8,11 @@ use App\Controllers\SolicitacaoController;
 
 return [
 
-    // 0) ResponseFactory necessário para Slim 4 (PSR-17)
+    // PSR-17
     ResponseFactoryInterface::class => function (ContainerInterface $c) {
         return new \Slim\Psr7\Factory\ResponseFactory();
     },
 
-    // 1) PDO (db) — com sugestões de segurança e fallback
     'db' => function (ContainerInterface $c) {
         $host = getenv('DB_HOST') ?: '127.0.0.1';
         $name = getenv('DB_NAME') ?: 'estagio_db';
@@ -25,7 +24,7 @@ return [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
-            // PDO::ATTR_PERSISTENT => true, // habilite só se quiser
+            // PDO::ATTR_PERSISTENT => true, // opcional
         ];
 
         try {
@@ -47,7 +46,7 @@ return [
     //     throw new \RuntimeException('Falha ao conectar ao banco de dados: ' . $e->getMessage(), 0, $e);
     // }
 
-    // 2) CONTROLLERS 
+    // Controllers
     SiteController::class => function (Psr\Container\ContainerInterface $c) {
         $routeParser = $c->has(RouteParserInterface::class)
             ? $c->get(RouteParserInterface::class)

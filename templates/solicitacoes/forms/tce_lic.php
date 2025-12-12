@@ -1,5 +1,5 @@
 <?php
-function print_termo($BASE_URL, $SERVER_URI) { ?>
+function print_tce($BASE_URL, $SERVER_URI) { ?>
     <div class="w-full mt-4">
         <div id="form-layout" class="flex flex-col md:flex-row items-start mx-auto gap-8 w-full sm:p-1">
             <nav id="nav-form" class="hidden md:block w-1/4 pt-4">
