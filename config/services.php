@@ -63,4 +63,12 @@ return [
         return new SolicitacaoController($routeParser, $db);
     },
 
+    AcompanhamentoCOntroller::class => function (ContainerInterface $c) {
+        $routeParser = $c->has(RouteParserInterface::class)
+            ? $c->get(RouteParserInterface::class)
+            : null;
+        $db = $c->has(PDO::class) ? $c->get(PDO::class) : null;
+        return new AcompanhamentoCOntroller($routeParser, $db);
+    },
+
 ];

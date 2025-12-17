@@ -15,6 +15,7 @@ function esc($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
     <link rel="icon" type="image/x-icon" href="<?= $ASSETS_URL ?>favicon.ico">
     <link rel="stylesheet" href="<?= esc($ASSETS_URL) ?>css/tailwind_output.css">
     <link rel="stylesheet" href="<?= esc($ASSETS_URL) ?>css/style.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="<?= esc($ASSETS_URL) ?>css/form-styles.css?v=<?= time() ?>">
 
     <script>
         const BASE_URL   = <?= json_encode($BASE_URL) ?>;

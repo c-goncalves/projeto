@@ -23,20 +23,14 @@ class SolicitacaoController
         $this->routeParser = $routeParser;
     }
 
-    /**
-     * Carrega um documento (tce/pae/ta/trtc etc).
-     * Usa $request para obter query params e URI atual.
-     * Garantias:
-     *  - disponibiliza $BASE_URL e $ASSETS_URL para os templates incluídos;
-     *  - não usa require_once (evita inclusão bloqueada);
-     *  - trata erros e registra logs claros.
-     */
-    private function loadDocument(Request $request, Response $response, string $doc_base, ?string $tipo_estagio = null): Response
-    {
-        // pegar query params de forma segura
+    private function loadDocument(Request $request, Response $response, string $doc_base, ?string $tipo_estagio = null, array $extraData = []): Response {
         $query = $request->getQueryParams();
         $curso = isset($query['curso']) && $query['curso'] !== '' ? $query['curso'] : 'outros';
         $template_name = $doc_base;
+
+        $old_post = $_SESSION['old_post'] ?? [];
+        $erro_api = $_SESSION['erro_api'] ?? null;
+        unset($_SESSION['erro_api']);
 
         if (in_array($doc_base, ['tce', 'pae', 'ta', 'trtc']) && strtolower($curso) === 'lic') {
             $template_name .= '_lic';
@@ -44,84 +38,48 @@ class SolicitacaoController
         $template_name .= '.php';
 
         $include_path = $this->baseFormsPath . $template_name;
-
-        // computa BASE_URL/ASSETS_URL antes de incluir o template
-        $computed = $this->computeBaseUrls(); // retorna ['BASE_URL'=>..., 'ASSETS_URL'=>...]
+        $computed = $this->computeBaseUrls(); 
         $BASE_URL   = $computed['BASE_URL']   ?? '/';
-        $ASSETS_URL = $computed['ASSETS_URL'] ?? rtrim($BASE_URL, '/') . '/assets/';
-
-        // buffer para captura da saída do template
+        
         ob_start();
 
         if (!file_exists($include_path) || !is_readable($include_path)) {
-            error_log("SolicitacaoController: Template não encontrado ou não legível: {$include_path}");
             ob_end_clean();
-            $response->getBody()->write("<div class=\"p-4 bg-red-100 border-l-4 border-red-500 text-red-800\">Erro: O template ({$template_name}) não foi encontrado.</div>");
+            $response->getBody()->write("Erro: Template não encontrado.");
             return $response->withStatus(404);
         }
 
-        // Inclui o arquivo do template. Ele deve declarar a função print_<doc_base>.
-        // Expor $BASE_URL/$ASSETS_URL/$routeParser no escopo do require para compatibilidade.
         try {
-            // disponibiliza as variáveis no escopo do template
-            $routeParserLocal = $this->routeParser ?? null;
-            // incluir — usamos require (não require_once) para evitar "já incluído" em requests distintos
             require $include_path;
         } catch (\Throwable $e) {
             ob_end_clean();
-            error_log("SolicitacaoController: Falha ao incluir template {$include_path}: " . $e->getMessage());
-            $response->getBody()->write("<div class=\"p-4 bg-red-100 border-l-4 border-red-500 text-red-800\">Erro ao carregar template.</div>");
             return $response->withStatus(500);
         }
 
-        // chama a função geradora de conteúdo (print_<doc_base>)
         $current_uri = (string) $request->getUri();
         $function_name = 'print_' . $doc_base;
 
-        if (!function_exists($function_name)) {
-            ob_end_clean();
-            error_log("SolicitacaoController: Função {$function_name} não encontrada após incluir {$include_path}");
-            $response->getBody()->write("<div class=\"p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800\">Aviso: Função {$function_name} não está carregada no template.</div>");
-            return $response->withStatus(500);
+        if (function_exists($function_name)) {
+            try {
+                $function_name($BASE_URL, $current_uri, $curso, $old_post, $erro_api);
+            } catch (\Throwable $e) {
+                ob_end_clean();
+                error_log("Erro ao executar {$function_name}: " . $e->getMessage());
+                return $response->withStatus(500);
+            }
         }
 
-        // Execute a função que imprimirá o HTML do formulário no buffer.
-        try {
-            // passamos $BASE_URL (string), $current_uri e $curso conforme interface esperada
-            $function_name($BASE_URL, $current_uri, $curso);
-        } catch (\Throwable $e) {
-            ob_end_clean();
-            error_log("SolicitacaoController: Erro ao executar {$function_name}: " . $e->getMessage());
-            $response->getBody()->write("<div class=\"p-4 bg-red-100 border-l-4 border-red-500 text-red-800\">Erro ao processar template.</div>");
-            return $response->withStatus(500);
-        }
-
-        // pega o HTML gerado pelo print_*
         $html_content = ob_get_clean();
-
-        // agora monta as variáveis para o layout (inclui routeParser para que templates usem urlFor)
         $vars = $computed + [
-            'routeParser'   => $this->routeParser ?? null,
-            'doc_base'      => $doc_base,
-            'curso'         => $curso,
-            // outras vars->layout/templates
+            'routeParser' => $this->routeParser,
+            'doc_base'    => $doc_base,
+            'curso'       => $curso,
         ];
 
-        // renderiza layout (header, nav, footer) com o conteúdo do formulário no corpo
-        try {
-            $final_html = $this->renderLayout($html_content, $vars);
-        } catch (\Throwable $e) {
-            // se renderLayout falhar, tentamos servir o conteúdo direto como último recurso
-            error_log("SolicitacaoController: renderLayout falhou: " . $e->getMessage());
-            $response->getBody()->write($html_content);
-            return $response->withStatus(200);
-        }
-        
-        $response->getBody()->write($final_html);
+        $response->getBody()->write($this->renderLayout($html_content, $vars));
         return $response;
     }
 
-    // home mantém renderTemplate + renderLayout (idem anterior)
     public function home(Request $request, Response $response): Response
     {
         $templatePath = $this->baseTemplatesPath . 'solicitacoes/inicio.php';
@@ -132,12 +90,11 @@ class SolicitacaoController
             return $response->withStatus(404);
         }
 
-        // computa BASE/ASSETS e rotaParser para injetar no template
         $computed = $this->computeBaseUrls();
         $baseUrl = $computed['BASE_URL'] ?? '/';
         $assetsUrl = $computed['ASSETS_URL'] ?? rtrim($baseUrl, '/') . '/assets/';
+        $mensagem_erro = $extraData['erro'] ?? null;
 
-        // tenta gerar mapa de rotas se o trait fornecer generateRoutes()
         $routesMap = [];
         if (method_exists($this, 'generateRoutes')) {
             try {
@@ -148,7 +105,6 @@ class SolicitacaoController
             }
         }
 
-        // Passe as variáveis necessárias pro template: routeParser, BASE_URL, ASSETS_URL, ROUTES
         $dataForTemplate = [
             'title'      => 'Página Inicial',
             'routeParser'=> $this->routeParser ?? null,
@@ -156,9 +112,9 @@ class SolicitacaoController
             'ASSETS_URL' => $assetsUrl,
             'ROUTES'     => $routesMap,
             'current_uri'=> $_SERVER['REQUEST_URI'] ?? '/',
+            'mensagem_erro'=>$mensagem_erro,
         ];
 
-        // renderiza o conteúdo do template (agora com routeParser disponível)
         try {
             $content = $this->renderTemplate($templatePath, $dataForTemplate);
         } catch (\Throwable $e) {
@@ -167,11 +123,9 @@ class SolicitacaoController
             return $response->withStatus(500);
         }
 
-        // agora renderLayout - renderLayout também injetará os mesmos computed vars
         $vars = $computed + [
             'routeParser' => $this->routeParser ?? null,
             'title'       => 'Página Inicial',
-            // manter também ROUTES para partials se quiser
             'ROUTES'      => $routesMap,
         ];
 
@@ -179,7 +133,6 @@ class SolicitacaoController
             $finalHtml = $this->renderLayout($content, $vars);
         } catch (\Throwable $e) {
             error_log("SolicitacaoController::home: renderLayout falhou: " . $e->getMessage());
-            // fallback: servir o conteúdo simples
             $response->getBody()->write($content);
             return $response->withStatus(200);
         }
@@ -219,4 +172,47 @@ class SolicitacaoController
         $response->getBody()->write("Geração de PDF ativada.");
         return $response;
     }
+
+    public function processarEnvio(Request $request, Response $response): Response
+        {
+                
+            $params = (array)$request->getParsedBody();
+            $_SESSION['old_post'] = $params;
+
+            $apiUrl = 'https://coordenadoria-de-extensao-api.vercel.app/validacao/';
+            $ch = curl_init($apiUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Accept: application/json']);
+
+            $apiResult = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            error_log("DEBUG API STATUS: " . $httpCode);
+            error_log("DEBUG API RESPONSE: " . $apiResult);
+
+            curl_close($ch);
+
+            if ($httpCode === 200) {
+                unset($_SESSION['old_post'], $_SESSION['erro_api']);
+                session_write_close();
+                return $response->withHeader('Location', $this->routeParser->urlFor('solicitacao.checklist'))->withStatus(302);
+            }
+
+            $errorData = json_decode($apiResult, true);
+            if (isset($errorData['errors']) && is_array($errorData['errors'])) {
+                $mensagens = [];
+                foreach ($errorData['errors'] as $campo => $erro) {
+                    $mensagens[] = is_array($erro) ? implode(', ', $erro) : $erro;
+                }
+                $_SESSION['erro_api'] = implode(' | ', $mensagens);
+            } else {
+                $_SESSION['erro_api'] = $errorData['message'] ?? 'Erro de validação desconhecido.';
+            }
+
+            session_write_close();
+            $referer = $request->getHeaderLine('Referer');
+            return $response->withHeader('Location', $referer)->withStatus(302);
+        }
 }

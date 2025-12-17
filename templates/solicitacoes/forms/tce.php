@@ -4,462 +4,210 @@ function print_tce($BASE_URL, $SERVER_URI, $curso = null) {
     switch ($curso){
         case 'ads': $curso = 'Tecnologia em Análise e Desenvolvimento de Sistemas'; break;
         case 'tai': $curso = 'Tecnologia em Automação Industrial'; break;
-        case 'eg': $curso = 'Engenharia de Computação'; break;
+        case 'eg':  $curso = 'Engenharia de Computação'; break;
         case 'eca': $curso = 'Engenharia de Controle e Automação'; break;
-        default: $curso = ''; break;
+        default:    $curso = 'Geral'; break;
     }
     ?>
 
-    <div class="mt-4">
-        <div id="form-layout" class="flex flex-col md:flex-row items-start w-full gap-8 mx-auto max-w-[1200px]">
-            <nav id="nav-form" class="hidden md:block flex-shrink-0 w-52 pt-4">
-                <div class="flex flex-col gap-2">
-                    <?php imprimir_steps_nav(); ?>
-                </div>
-            </nav>
-
-            <section id="content-area" class="flex-1 min-w-0 box-border bg-white p-6 rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)]">
-
+    <div class="w-full mt-4">
+        <div id="form-layout" class="flex flex-col items-start w-full gap-8 mx-auto max-w-[1200px]">
+            
+            <section id="content-area" class="w-full bg-white p-8 rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)]">
+                
+                
+                
                 <h3 class="text-green-800 text-xl font-semibold mb-4 text-center">
                     TCE: Termo de Compromisso de Estágio<br> <?php echo $curso; ?>
                 </h3>
+                <form id="termoForm" action="<?= $BASE_URL ?>solicitacao/enviar" method="POST" enctype="multipart/form-data" class="space-y-10">
+                    <input type="hidden" name="doc_type" value="tce">
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg border">
+                        <?php orientacoes($SERVER_URI, $BASE_URL); ?>
+                    </div>
 
-                <form id="termoForm" action="<?= $BASE_URL ?>solicitacoes/form/enviar" method="POST" enctype="multipart/form-data">
-                    <?php
-                    orientacoes($SERVER_URI, $BASE_URL);
-                    unidade_instituicao_concedente();
-                    supervisor();
-                    estagiario();
-                    dados_complementares();
-                    assinaturas_section();
-                    ?>
+                    <div>
+                        <?php unidade_instituicao_concedente(); ?>
+                    </div>
+
+                    <div class="pt-6 border-t">
+                        <?php supervisor(); ?>
+                    </div>
+
+                    <div class="pt-6 border-t">
+                        <?php estagiario(); ?>
+                    </div>
+
+                    <div class="pt-6 border-t">
+                        <?php dados_complementares(); ?>
+                    </div>
+
+                    <div class="pt-8 border-t flex flex-col items-center">
+                        <div id="error-message-container" class="hidden w-full mb-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700 text-sm flex items-center shadow-sm">
+                            <span id="error-message-text"></span>
+                        </div>
+                        
+                        <button type="submit" class="w-full md:w-1/2 bg-[#006633] text-white font-bold py-4 rounded-lg hover:bg-[#004d26] transition-all text-lg shadow-lg">
+                            Validar e Gerar Documento (PDF)
+                        </button>
+                    </div>
                 </form>
             </section>
         </div>
     </div>
 <?php }
 
-function imprimir_steps_nav() { ?>
-    <div id="stepsNav">
-        <a href="#" class="step text-sm font-medium text-gray-500 px-3 py-1 rounded" data-step="0">Orientações</a>
-        <a href="#" class="step text-sm font-medium text-gray-500 px-3 py-1 rounded" data-step="1">Instituição / Concedente</a>
-        <a href="#" class="step text-sm font-medium text-gray-500 px-3 py-1 rounded" data-step="2">Supervisor</a>
-        <a href="#" class="step text-sm font-medium text-gray-500 px-3 py-1 rounded" data-step="3">Estagiário</a>
-        <a href="#" class="step text-sm font-medium text-gray-500 px-3 py-1 rounded" data-step="4">Período e Atividades</a>
-        <a href="#" class="step text-sm font-medium text-gray-500 px-3 py-1 rounded" data-step="5">Assinaturas</a>
-    </div>
-<?php }
-
 function orientacoes($current_uri, $pages_path) { ?>
-   <fieldset data-step="0" class="mb-4">
-    <h5 class="text-[#09332a] font-semibold mb-3 text-base text-left">Orientações</h5>
-
+    <h5 class="text-[#09332a] font-semibold mb-3 text-base">Orientações Iniciais</h5>
     <ul class="space-y-2 text-sm text-gray-700 list-inside">
-        <li class="flex gap-2 items-start "><span class="text-[#006633]">➤</span>
-            Tenha todas as informações obrigatórias em mãos. Baixe o checklist
-            <a href="<?= $ASSETS_URL ?>solicitacao/form/pdf/checklist-termo" class="font-semibold <?php echo strpos($current_uri, '/solicitacao') !== false ? 'active' : ''; ?>">aqui</a>
-        </li>
-        <li class="flex gap-2 items-start"><span class="text-[#006633]">➤</span>
-            Carga Horária (Cláusula 3.2): O limite máximo de horas é de 6h/dia ou 30h/semana. A jornada <strong>NUNCA</strong> pode coincidir com seu horário de aulas no IFSP.
-        </li>
-        <li class="flex gap-2 items-start"><span class="text-[#006633]">➤</span>
-            Vigência Máxima (Cláusula 2.2): O prazo máximo de estágio na mesma concedente é de 2 (dois) anos, exceto para estagiários PCD.
-        </li>
-        <li class="flex gap-2 items-start"><span class="text-[#006633]">➤</span>
-            Rubrica: Verifique se o Termo foi rubricado em TODAS as páginas pelas partes envolvidas.
-        </li>
-        <li class="flex gap-2 items-start"><span class="text-[#006633]">➤</span>
-            Vínculo: Lembre-se que o estágio não cria vínculo empregatício (Cláusula 4.6).
-        </li>
-        <li class="flex gap-2 items-start"><span class="text-[#006633]">➤</span>
-            Seguro e documentação: confirme a exigência de apólice de seguro ou declaração de responsabilidade conforme normas internas antes de iniciar o estágio.
-        </li>
+        <li><span class="text-[#006633] font-bold">➤</span> Limite de 6h/dia ou 30h/semana.</li>
+        <li><span class="text-[#006633] font-bold">➤</span> Vigência máxima de 2 anos na mesma concedente.</li>
+        <li><span class="text-[#006633] font-bold">➤</span> O estágio não cria vínculo empregatício.</li>
     </ul>
-
-    <div class="mt-4 p-3 bg-red-50 text-red-700 border-l-4 border-red-500">
-        <strong>INÍCIO DO ESTÁGIO:</strong> O estágio somente pode ser iniciado após a aprovação e a obtenção de todas as assinaturas no Termo de Compromisso e no Plano de Atividades.
+    <div class="mt-4 p-3 bg-red-50 text-red-700 border-l-4 border-red-500 text-xs">
+        <strong>IMPORTANTE:</strong> O estágio só inicia após todas as assinaturas colhidas.
     </div>
-
-    <div class="mt-4 text-sm text-gray-700">
-        <div>
-            Documentação: Para modelos, normas e mais informações (incluindo seguro), acesse:
-            <a href="<?= $pages_path; ?>recursos/" class="text-[#007a4d] underline font-semibold">Área de Recursos</a>
-        </div>
-    </div>
-
-    <div class="mt-4 text-sm text-gray-700 text-right">
-        <button type="button" data-next class="bg-[#006633] text-white font-bold px-4 py-2 rounded hover:bg-[#004d26] transition-colors">Li e Continuar</button>
-    </div>
-</fieldset>
 <?php }
 
 function unidade_instituicao_concedente() { ?>
-    <fieldset data-step="1" class="mb-4" style="display:none">
-        <h4 class="text-[#006633] font-semibold mb-4">Dados da Instituição / Unidade Concedente</h4>
+    <h4 class="text-[#006633] font-semibold mb-4 flex items-center gap-2 text-lg">
+        <span class="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+        Dados da Instituição / Unidade Concedente
+    </h4>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <!-- Instituição -->
-            <div class="md:col-span-2 border-t pt-3">
-                <h5 class="font-medium">Dados da Instituição (se aplicável)</h5>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
-                    <div>
-                        <label class="font-semibold text-sm">Nome da Instituição</label>
-                        <input name="nome_instituicao" class="w-full border rounded px-3 py-2 text-sm">
-                    </div>
-                    <div>
-                        <label class="font-semibold text-sm">CNPJ</label>
-                        <input name="cnpj_instituicao" class="w-full border rounded px-3 py-2 text-sm">
-                    </div>
-                    <div>
-                        <label class="font-semibold text-sm">Endereço</label>
-                        <input name="endereco_instituicao" class="w-full border rounded px-3 py-2 text-sm">
-                    </div>
-                    <div>
-                        <label class="font-semibold text-sm">Telefone</label>
-                        <input name="fone_instituicao" class="w-full border rounded px-3 py-2 text-sm" placeholder="99 9999-9999">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="font-semibold text-sm">Representante Legal</label>
-                        <input name="representante_instituicao" class="w-full border rounded px-3 py-2 text-sm">
-                    </div>
-                </div>
+    <div class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded border">
+            <h5 class="md:col-span-2 font-bold text-gray-600 text-sm uppercase tracking-wider">Instituição de Ensino</h5>
+            <div class="md:col-span-2">
+                <label class="font-semibold text-xs text-gray-500 uppercase">Nome da Instituição</label>
+                <input name="nome_instituicao" class="w-full border rounded px-3 py-2 text-sm">
             </div>
-
-            <!-- Concedente -->
-            <div class="md:col-span-2 border-t pt-3">
-                <h5 class="font-medium">Dados da Unidade Concedente</h5>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
-                    <div>
-                        <label class="font-semibold text-sm">Nome / Razão Social *</label>
-                        <input name="nome_razao_social_concedente" class="w-full border rounded px-3 py-2 text-sm" required>
-                    </div>
-                    <div>
-                        <label class="font-semibold text-sm">Diretoria de Ensino</label>
-                        <input name="diretoria_ensino" class="w-full border rounded px-3 py-2 text-sm" placeholder="(Se particular, informe também CNPJ)">
-                    </div>
-                    <div>
-                        <label class="font-semibold text-sm">CNPJ</label>
-                        <input name="cnpj_concedente" class="w-full border rounded px-3 py-2 text-sm">
-                    </div>
-                    <div>
-                        <label class="font-semibold text-sm">Telefone</label>
-                        <input name="fone_concedente" class="w-full border rounded px-3 py-2 text-sm" placeholder="99 99999-9999">
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label class="font-semibold text-sm">Endereço (Logradouro + Número)</label>
-                        <input name="endereco_concedente" class="w-full border rounded px-3 py-2 text-sm">
-                    </div>
-
-                    <div>
-                        <label class="font-semibold text-sm">CEP</label>
-                        <input name="cep_concedente" class="w-full border rounded px-3 py-2 text-sm" placeholder="99999-999">
-                    </div>
-                    <div>
-                        <label class="font-semibold text-sm">Bairro</label>
-                        <input name="bairro_concedente" class="w-full border rounded px-3 py-2 text-sm">
-                    </div>
-                    <div>
-                        <label class="font-semibold text-sm">Cidade</label>
-                        <input name="cidade_concedente" class="w-full border rounded px-3 py-2 text-sm" required>
-                    </div>
-                    <div>
-                        <label class="font-semibold text-sm">Estado</label>
-                        <input name="estado_concedente" class="w-full border rounded px-3 py-2 text-sm" required>
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label class="font-semibold text-sm">Nome da Diretora / Responsável</label>
-                        <input name="diretora_concedente" class="w-full border rounded px-3 py-2 text-sm">
-                    </div>
-                </div>
+            <div>
+                <label class="font-semibold text-xs text-gray-500 uppercase">CNPJ</label>
+                <input name="cnpj_instituicao" class="w-full border rounded px-3 py-2 text-sm">
             </div>
-
+            <div>
+                <label class="font-semibold text-xs text-gray-500 uppercase">Telefone</label>
+                <input name="fone_instituicao" class="w-full border rounded px-3 py-2 text-sm" placeholder="99 9999-9999">
+            </div>
         </div>
 
-        <div class="flex justify-between mt-4">
-            <button type="button" data-prev class="bg-gray-100 text-[#006633] font-bold px-4 py-2 rounded hover:bg-gray-200">Anterior</button>
-            <button type="button" data-next class="bg-[#006633] text-white font-bold px-4 py-2 rounded hover:bg-[#004d26]">Continuar</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded border">
+            <h5 class="md:col-span-2 font-bold text-gray-600 text-sm uppercase tracking-wider">Unidade Concedente (Empresa/Escola)</h5>
+            <div class="md:col-span-2">
+                <label class="font-semibold text-xs text-gray-500 uppercase">Nome / Razão Social *</label>
+                <input name="nome_razao_social_concedente" class="w-full border rounded px-3 py-2 text-sm" required>
+            </div>
+            <div>
+                <label class="font-semibold text-xs text-gray-500 uppercase">CNPJ</label>
+                <input name="cnpj_concedente" class="w-full border rounded px-3 py-2 text-sm">
+            </div>
+            <div>
+                <label class="font-semibold text-xs text-gray-500 uppercase">Cidade *</label>
+                <input name="cidade_concedente" class="w-full border rounded px-3 py-2 text-sm" required>
+            </div>
+            <div class="md:col-span-2">
+                <label class="font-semibold text-xs text-gray-500 uppercase">Endereço Completo</label>
+                <input name="endereco_concedente" class="w-full border rounded px-3 py-2 text-sm">
+            </div>
         </div>
-    </fieldset>
+    </div>
 <?php }
 
 function supervisor() { ?>
-    <fieldset data-step="2" class="mb-4" style="display:none">
-        <h4 class="text-[#006633] font-semibold mb-4">Dados do Supervisor de Estágio</h4>
-
+    <h4 class="text-[#006633] font-semibold mb-4 flex items-center gap-2 text-lg">
+        <span class="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+        Dados do Supervisor
+    </h4>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+            <label class="font-semibold text-xs text-gray-500 uppercase">Nome completo *</label>
+            <input name="nome_professor_estagio" required class="w-full border rounded px-3 py-2 text-sm">
+        </div>
         <div>
-            <label class="font-semibold text-sm">Nome completo *</label>
-            <input name="nome_professor_estagio" class="w-full border rounded px-3 py-2 text-sm">
+            <label class="font-semibold text-xs text-gray-500 uppercase">CPF *</label>
+            <input name="cpf_supervisor" required class="w-full border rounded px-3 py-2 text-sm" placeholder="999.999.999-99">
         </div>
-
-        <div class="grid grid-cols-2 gap-3 mt-3">
-            <div>
-                <label class="font-semibold text-sm">CPF *</label>
-                <input name="cpf_supervisor" class="w-full border rounded px-3 py-2 text-sm" placeholder="999.999.999-99">
-            </div>
-            <div>
-                <label class="font-semibold text-sm">Cargo *</label>
-                <input name="cargo_supervisor" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
+        <div>
+            <label class="font-semibold text-xs text-gray-500 uppercase">Cargo *</label>
+            <input name="cargo_supervisor" required class="w-full border rounded px-3 py-2 text-sm">
         </div>
-
-        <div class="mt-3">
-            <label class="font-semibold text-sm">Formação Acadêmica</label>
-            <input name="formacao_supervisor" class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 mt-3">
-            <div>
-                <label class="font-semibold text-sm">Registro Profissional</label>
-                <input name="registro_supervisor" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-            <div>
-                <label class="font-semibold text-sm">Órgão</label>
-                <input name="orgao_supervisor" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-        </div>
-
-        <div class="mt-3">
-            <label class="font-semibold text-sm">E-mail</label>
-            <input name="email_supervisor" class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-
-        <div class="flex justify-between mt-4">
-            <button type="button" data-prev class="bg-gray-100 text-[#006633] font-bold px-4 py-2 rounded hover:bg-gray-200">Anterior</button>
-            <button type="button" data-next class="bg-[#006633] text-white font-bold px-4 py-2 rounded hover:bg-[#004d26]">Continuar</button>
-        </div>
-    </fieldset>
+    </div>
 <?php }
 
 function estagiario() { ?>
-    <fieldset data-step="3" class="mb-4" style="display:none">
-        <h4 class="text-[#006633] font-semibold mb-4">Dados do Estagiário</h4>
-
-        <div class="mb-3">
-            <label class="font-medium text-sm">Nome Completo *</label>
-            <input name="nome_aluno" class="w-full border rounded px-3 py-2 text-sm">
+    <h4 class="text-[#006633] font-semibold mb-4 flex items-center gap-2 text-lg">
+        <span class="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
+        Dados do Estagiário
+    </h4>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="md:col-span-2">
+            <label class="font-medium text-xs text-gray-500 uppercase">Nome Completo *</label>
+            <input name="nome_aluno" required class="w-full border rounded px-3 py-2 text-sm">
         </div>
-
-        <div class="grid grid-cols-3 gap-3">
-            <div>
-                <label class="font-medium text-sm">Curso *</label>
-                <input name="curso_aluno" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-            <div>
-                <label class="font-medium text-sm">Semestre / Período *</label>
-                <input name="semestre_aluno" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-            <div>
-                <label class="font-medium text-sm">Prontuário *</label>
-                <input name="prontuario_aluno" class="w-full border rounded px-3 py-2 text-sm" placeholder="GU9999999">
-            </div>
+        <div>
+            <label class="font-medium text-xs text-gray-500 uppercase">Prontuário *</label>
+            <input name="prontuario_aluno" required class="w-full border rounded px-3 py-2 text-sm" placeholder="GU9999999">
         </div>
-
-        <div class="grid grid-cols-3 gap-3 mt-3">
-            <div>
-                <label class="font-medium text-sm">RG</label>
-                <input name="rg_aluno" class="w-full border rounded px-3 py-2 text-sm" placeholder="99.999.999-9">
-            </div>
-            <div>
-                <label class="font-medium text-sm">CPF</label>
-                <input name="cpf_aluno" class="w-full border rounded px-3 py-2 text-sm" placeholder="999.999.999-99">
-            </div>
-            <div>
-                <label class="font-medium text-sm">Data Nascimento</label>
-                <input name="dns_aluno" type="date" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
+        <div>
+            <label class="font-medium text-xs text-gray-500 uppercase">CPF *</label>
+            <input name="cpf_aluno" required class="w-full border rounded px-3 py-2 text-sm">
         </div>
-
-        <div class="mt-3">
-            <label class="font-semibold text-sm">CEP *</label>
-            <input name="cep_aluno" class="w-full border rounded px-3 py-2 text-sm">
+        <div class="md:col-span-2">
+            <label class="font-medium text-xs text-gray-500 uppercase">E-mail *</label>
+            <input name="email_aluno" type="email" required class="w-full border rounded px-3 py-2 text-sm">
         </div>
-
-        <div class="grid grid-cols-4 gap-3 mt-3">
-            <div class="col-span-3">
-                <label class="font-semibold text-sm">Endereço *</label>
-                <input name="endereco_aluno" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-            <div>
-                <label class="font-semibold text-sm">Número</label>
-                <input name="numero_endereco_aluno" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-            <div class="col-span-2">
-                <label class="font-semibold text-sm">Bairro</label>
-                <input name="bairro_aluno" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-            <div class="col-span-2">
-                <label class="font-semibold text-sm">Cidade</label>
-                <input name="cidade_aluno" class="w-full border rounded px-3 py-2 text-sm" required>
-            </div>
-            <div class="col-span-4">
-                <label class="font-semibold text-sm">Estado</label>
-                <input name="estado_aluno" class="w-full border rounded px-3 py-2 text-sm" required>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-4 gap-3 mt-3">
-            <div>
-                <label class="font-semibold text-sm">Fone</label>
-                <input name="fone_aluno" class="w-full border rounded px-3 py-2 text-sm" placeholder="99 9999-9999">
-            </div>
-            <div>
-                <label class="font-semibold text-sm">Celular</label>
-                <input name="celular_aluno" class="w-full border rounded px-3 py-2 text-sm" placeholder="99 99999-9999">
-            </div>
-            <div class="col-span-2">
-                <label class="font-semibold text-sm">E-mail *</label>
-                <input name="email_aluno" type="email" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-        </div>
-
-        <div class="mt-3 flex items-center gap-2">
-            <input type="checkbox" id="estagiario_pcd" name="estagiario_pcd">
-            <label class="text-sm" for="estagiario_pcd">Pessoa com deficiência (PCD)</label>
-        </div>
-
-        <div class="flex justify-between mt-4">
-            <button type="button" data-prev class="bg-gray-100 text-[#006633] font-bold px-4 py-2 rounded hover:bg-gray-200">Anterior</button>
-            <button type="button" data-next class="bg-[#006633] text-white font-bold px-4 py-2 rounded hover:bg-[#004d26]">Continuar</button>
-        </div>
-    </fieldset>
+    </div>
 <?php }
 
 function dados_complementares() { ?>
-    <fieldset data-step="4" class="mb-4" style="display:none">
-            <h4 class="text-[#006633] font-semibold mb-3">Período e Atividades do Estágio</h4>
-            <div class="p-3 rounded border-l-4 border-red-500 bg-red-50 text-red-700 mb-3">
-                <strong>ATENÇÃO:</strong> Garanta que a carga horária <strong>NÃO EXCEDA 6 horas diárias / 30 horas semanais</strong> e não conflite com o horário de aulas.
-            </div>
+    <h4 class="text-[#006633] font-semibold mb-4 flex items-center gap-2 text-lg">
+        <span class="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">4</span>
+        Período e Carga Horária
+    </h4>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+            <label class="font-semibold text-xs text-gray-500 uppercase">Data Início *</label>
+            <input name="data_inicio_estagio" type="date" required class="w-full border rounded px-3 py-2 text-sm"/>
+        </div>
+        <div>
+            <label class="font-semibold text-xs text-gray-500 uppercase">Data Término *</label>
+            <input name="data_termino_estagio" type="date" required class="w-full border rounded px-3 py-2 text-sm"/>
+        </div>
+    </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                    <label for="data_inicio_estagio" class="font-semibold text-sm">Data Início <span class="text-red-500">*</span></label>
-                    <input id="data_inicio_estagio" name="data_inicio_estagio" type="date" required class="w-full border rounded px-3 py-2 text-sm"/>
-                </div>
-                <div>
-                    <label for="data_termino_estagio" class="font-semibold text-sm">Data Término <span class="text-red-500">*</span></label>
-                    <input id="data_termino_estagio" name="data_termino_estagio" type="date" required class="w-full border rounded px-3 py-2 text-sm"/>
-                </div>
-            </div>
-
-            <div class="mt-4 p-4 border rounded-md bg-gray-50">
-                <h5 class="font-semibold text-sm text-[#006633] mb-3">Definição da Carga Horária Semanal:</h5>
-                
-                <h6 class="font-medium text-sm text-gray-700 mb-2">Adicionar Horários:</h6>
-                
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end mb-3">
-                    <div class="md:col-span-2"> <label class="font-medium text-sm mb-1 block">Dia(s) da Semana</label>
-                        <div id="dias_checkbox_group" class="flex flex-wrap gap-2">
-                            <?php 
-                            $dias = [
-                                'Segunda' => 'Segunda',
-                                'Terca' => 'Terça', 
-                                'Quarta' => 'Quarta', 
-                                'Quinta' => 'Quinta', 
-                                'Sexta' => 'Sexta', 
-                                'Sabado' => 'Sábado'
-                            ]; 
-                            foreach ($dias as $value => $label): 
-                            ?>
-                                <div class="chip-container">
-                                    <input 
-                                        type="checkbox" 
-                                        id="dia_<?php echo strtolower($value); ?>" 
-                                        value="<?php echo $value; ?>" 
-                                        name="selected_days[]"
-                                        class="hidden" 
-                                    />
-                                    <label 
-                                        for="dia_<?php echo strtolower($value); ?>" 
-                                        class="select-chip"
-                                    >
-                                        <?php echo $label; ?>
-                                    </label>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="input_hora_inicio" class="font-medium text-sm">Início</label>
-                        <input type="time" id="input_hora_inicio" class="w-full p-2 border rounded text-sm"/>
-                    </div>
-
-                    <div>
-                        <label for="input_hora_fim" class="font-medium text-sm">Fim</label>
-                        <input type="time" id="input_hora_fim" class="w-full p-2 border rounded text-sm"/>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end mb-3">
-                    <div class="md:col-span-2"></div>
-                    <div class="md:col-span-2">
-                        <button type="button" id="adicionar_horario" class="w-full bg-[#006633] text-white font-bold p-2 rounded hover:bg-[#004d26] transition-colors mt-2 md:mt-0">
-                            Adicionar Horário(s)
-                        </button>
-                    </div>
-                </div>
-                <table class="w-full text-left border border-gray-200 rounded-lg">
-                    <thead>
-                        <tr><th class="px-3 py-2 border">Dia</th><th class="px-3 py-2 border">Início</th><th class="px-3 py-2 border">Fim</th><th class="px-3 py-2 border">Ações</th></tr>
-                        </thead>
-                    <tbody id="horarios_tbody">
-                    </tbody>
-                </table>
-
-                <input type="hidden" id="estagio_horario_json" name="dias_estagio" value="[]" />
-
-                <p id="total_horas" class="text-lg font-semibold text-gray-700">Total Semanal: 00:00h</p>
-                <div class="flex justify-between mt-4">
-                    <button type="button" data-prev class="bg-gray-100 text-[#006633] font-bold px-4 py-2 rounded hover:bg-gray-200">Anterior</button>
-                    <button type="button" data-next class="bg-[#006633] text-white font-bold px-4 py-2 rounded hover:bg-[#004d26]">Continuar</button>
-                </div>
-            </div>
-    </fieldset>
-<?php }
-
-function assinaturas_section(){ ?>
-    <fieldset data-step="5" class="mb-4" style="display:none">
-        <h4 class="text-[#006633] font-semibold mb-4">Assinaturas</h4>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div class="bg-gray-50 p-6 rounded-lg border border-dashed border-gray-300 space-y-4">
+        <label class="block text-sm font-bold text-gray-700">Configuração de Horário Semanal</label>
+        
+        <select id="select_dias" name="selected_days[]" multiple class="w-full p-2 border rounded text-sm h-32 bg-white focus:ring-2 focus:ring-green-500">
+            <option value="Segunda-feira">Segunda-feira</option>
+            <option value="Terça-feira">Terça-feira</option>
+            <option value="Quarta-feira">Quarta-feira</option>
+            <option value="Quinta-feira">Quinta-feira</option>
+            <option value="Sexta-feira">Sexta-feira</option>
+            <option value="Sábado">Sábado</option>
+        </select>
+        
+        <div class="grid grid-cols-2 gap-4">
             <div>
-                <label class="font-semibold text-sm">Data de Assinatura do Contrato</label>
-                <input name="data_assinatura_contrato" type="date" class="w-full border rounded px-3 py-2 text-sm">
+                <label class="text-[10px] font-bold text-gray-400 uppercase">Início</label>
+                <input type="time" id="hora_inicio_unico" class="w-full p-2 border rounded text-sm">
             </div>
-
             <div>
-                <label class="font-semibold text-sm">Assinatura do Aluno (nome)</label>
-                <input name="assinatura_aluno" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-
-            <div>
-                <label class="font-semibold text-sm">Arquivo Assinatura do Aluno (scan/opcional)</label>
-                <input type="file" name="assinatura_aluno_file" accept="image/*,application/pdf" class="w-full">
-            </div>
-
-            <div>
-                <label class="font-semibold text-sm">Assinatura do Concedente (nome)</label>
-                <input name="assinatura_concedente" class="w-full border rounded px-3 py-2 text-sm">
-            </div>
-
-            <div>
-                <label class="font-semibold text-sm">Arquivo Assinatura do Concedente (scan/opcional)</label>
-                <input type="file" name="assinatura_concedente_file" accept="image/*,application/pdf" class="w-full">
-            </div>
-
-            <div class="md:col-span-2">
-                <label class="font-semibold text-sm">Assinaturas Adicionais / Observações</label>
-                <textarea name="assinaturas" class="w-full border rounded px-3 py-2 text-sm" rows="3"></textarea>
+                <label class="text-[10px] font-bold text-gray-400 uppercase">Término</label>
+                <input type="time" id="hora_fim_unico" class="w-full p-2 border rounded text-sm">
             </div>
         </div>
 
-        <div class="flex justify-between mt-4">
-            <button type="button" data-prev class="bg-gray-100 text-[#006633] font-bold px-4 py-2 rounded hover:bg-gray-200">Anterior</button>
-            <button type="submit" class="bg-[#006633] text-white font-bold px-4 py-2 rounded hover:bg-[#004d26]">Enviar</button>
+        <div class="flex justify-between items-center p-4 bg-white border rounded shadow-inner">
+            <div>
+                <p id="total_horas" class="text-xl font-black text-green-800">00:00h</p>
+            </div>
+            <span id="msg_limite" class="hidden bg-red-600 text-white text-[10px] px-2 py-1 rounded-full font-bold animate-pulse">LIMITE EXCEDIDO</span>
         </div>
-    </fieldset>
-<?php }
-
-?>
+        
+        <input type="hidden" id="estagio_horario_json" name="dias_estagio" value="[]" />
+    </div>
+<?php } ?>

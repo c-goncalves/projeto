@@ -1,4 +1,5 @@
 
+
 <section class="intro  mx-auto px-4 py-8">
   <h2 class="text-2xl font-bold text-[#006633] mb-4">Antes de Iniciar o Estágio</h2>
   <p class="text-gray-700 mb-2">Confira abaixo os passos, documentos e orientações essenciais antes de iniciar seu estágio.</p>
@@ -9,22 +10,34 @@
     <ul class="list-none space-y-1 text-gray-700">
       <li class="flex items-start gap-2">
         <span class="text-[#006633] mt-0.5">➤</span>
-        Prazo de análise: até 5 dias úteis após envio completo.
+        Preencha o formulario abaixo.
       </li>
       <li class="flex items-start gap-2">
         <span class="text-[#006633] mt-0.5">➤</span>
+        Baixe o Termo de Compromisso com os seus dados preenchidos e recolha as assinaturas da unidade concedente.
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-[#006633] mt-0.5">➤</span>
+        Acesse o acompanhamento do processo, anexe os documentos assinados e envie para analise.
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-[#006633] mt-1">➤</span>
+        Prazo de análise: até 5 dias úteis após envio completo.
+      </li>
+    <li class="flex items-start gap-2">
+      <span class="text-[#006633] mt-0.5">➤</span>
+      Aguarde a devolutiva do Instituto para iniciar o seu estágio.
+    </li>
+    <li class="flex items-start gap-2">
+      <li class="flex items-start gap-2">
+        <span class="text-[#006633] mt-1">➤</span>
         A CEX não assina documentos com data retroativa.
       </li>
       <li class="flex items-start gap-2">
-        <span class="text-[#006633] mt-0.5">➤</span>
+        <span class="text-[#006633] mt-1">➤</span>
         O estágio não pode ser iniciado sem assinatura de todas as partes.
       </li>
-      <li class="flex items-start gap-2">
-        <span class="text-[#006633] mt-0.5">➤</span>
-        Mantenha-se informado: 
-        <a href="#" class="text-[#007a4d] underline">
-          Recursos
-        </a>
+      
       </li>
     </ul>
 </section>
