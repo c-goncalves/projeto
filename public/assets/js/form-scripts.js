@@ -218,3 +218,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// MASKS
+document.addEventListener('DOMContentLoaded', function() {
+    const masks = {
+        cnpj: { mask: '00.000.000/0000-00', len: 18 },
+        cpf: { mask: '000.000.000-00', len: 14 },
+        cep: { mask: '00000-000', len: 9 },
+        tel: { mask: '(00) 0000-0000', len: 14 } 
+    };
+
+    document.querySelectorAll('input[name*="cnpj"], input[name*="cpf"]').forEach(input => {
+        input.addEventListener('blur', function() {
+            this.value = this.value.trim(); 
+        });
+        
+        const type = input.name.includes('cnpj') ? 'cnpj' : 'cpf';
+        input.setAttribute('maxlength', masks[type].len);
+    });
+});

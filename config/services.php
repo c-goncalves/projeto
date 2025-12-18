@@ -63,12 +63,18 @@ return [
         return new SolicitacaoController($routeParser, $db);
     },
 
-    AcompanhamentoCOntroller::class => function (ContainerInterface $c) {
+   GerarPDFController::class => function (ContainerInterface $c) {
+        $routeParser = $c->get(RouteParserInterface::class);
+        $db = $c->get(PDO::class); 
+        return new GerarPDFController($routeParser, $db);
+    },
+
+    AcompanhamentoController::class => function (ContainerInterface $c) {
         $routeParser = $c->has(RouteParserInterface::class)
             ? $c->get(RouteParserInterface::class)
             : null;
         $db = $c->has(PDO::class) ? $c->get(PDO::class) : null;
-        return new AcompanhamentoCOntroller($routeParser, $db);
+        return new AcompanhamentoController($routeParser, $db);
     },
 
 ];

@@ -1,13 +1,12 @@
+<?php
 
-
-   <?php
 function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
-    switch ($curso){
-        case 'ads': $curso = 'Tecnologia em Análise e Desenvolvimento de Sistemas'; break;
-        case 'tai': $curso = 'Tecnologia em Automação Industrial'; break;
-        case 'eg':  $curso = 'Engenharia de Computação'; break;
-        case 'eca': $curso = 'Engenharia de Controle e Automação'; break;
-        default:    $curso = 'Geral'; break;
+    switch ($curso) {
+        case 'ads': $curso_nome = 'Tecnologia em Análise e Desenvolvimento de Sistemas'; break;
+        case 'tai': $curso_nome = 'Tecnologia em Automação Industrial'; break;
+        case 'eg':  $curso_nome = 'Engenharia de Computação'; break;
+        case 'eca': $curso_nome = 'Engenharia de Controle e Automação'; break;
+        default:    $curso_nome = 'Geral'; break;
     }
     ?>
     <div class="w-full mt-4">
@@ -28,7 +27,7 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
                 </div>
             <?php endif; ?>
 
-            <form id="termoForm" action="<?= $BASE_URL ?>solicitacao/enviar" method="POST" class="space-y-10">
+            <form id="termoForm" action="<?= $BASE_URL ?>solicitacao/enviar" method="POST" class="space-y-10" target="_blank">
                 <input type="hidden" name="doc_type" value="tce">
                 <input type="hidden" name="estagiario[curso]" value="<?= $curso_nome ?>">
 
@@ -47,7 +46,11 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
                             <input name="unidade_concedente[cnpj]" value="<?= htmlspecialchars($old['unidade_concedente']['cnpj'] ?? '') ?>" placeholder="00.000.000/0000-00" class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold uppercase text-gray-500">Telefone * (XX) XXXX-XXXX</label>
+                            <label class="text-[10px] font-bold uppercase text-gray-500">Inscrição Estadual</label>
+                            <input name="unidade_concedente[insc_estadual]" value="<?= htmlspecialchars($old['unidade_concedente']['insc_estadual'] ?? '') ?>" placeholder="Isento ou Número" class="w-full border p-2 rounded text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold uppercase text-gray-500">Telefone *</label>
                             <input name="unidade_concedente[telefone]" value="<?= htmlspecialchars($old['unidade_concedente']['telefone'] ?? '') ?>" placeholder="(11) 2222-3333" required class="w-full border p-2 rounded text-sm">
                         </div>
                         
@@ -57,7 +60,7 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
                                 <input name="unidade_concedente[endereco][endereco]" value="<?= htmlspecialchars($old['unidade_concedente']['endereco']['endereco'] ?? '') ?>" required class="w-full border p-2 rounded text-sm bg-white">
                             </div>
                             <div>
-                                <label class="text-[10px] font-bold uppercase text-gray-400">CEP * (XXXXX-XXX)</label>
+                                <label class="text-[10px] font-bold uppercase text-gray-400">CEP *</label>
                                 <input name="unidade_concedente[endereco][cep]" value="<?= htmlspecialchars($old['unidade_concedente']['endereco']['cep'] ?? '') ?>" placeholder="01001-000" required class="w-full border p-2 rounded text-sm bg-white">
                             </div>
                             <div>
@@ -98,7 +101,7 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
                             <input name="supervisor[nome]" value="<?= htmlspecialchars($old['supervisor']['nome'] ?? '') ?>" required class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold uppercase text-gray-500">CPF * (XXX.XXX.XXX-XX)</label>
+                            <label class="text-[10px] font-bold uppercase text-gray-500">CPF *</label>
                             <input name="supervisor[cpf]" value="<?= htmlspecialchars($old['supervisor']['cpf'] ?? '') ?>" placeholder="111.222.333-44" required class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
@@ -141,11 +144,11 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
                             <input name="estagiario[prontuario]" value="<?= htmlspecialchars($old['estagiario']['prontuario'] ?? '') ?>" required class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold uppercase text-gray-500">CPF * (XXX.XXX.XXX-XX)</label>
+                            <label class="text-[10px] font-bold uppercase text-gray-500">CPF *</label>
                             <input name="estagiario[cpf]" value="<?= htmlspecialchars($old['estagiario']['cpf'] ?? '') ?>" required class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold uppercase text-gray-500">RG * (XX.XXX.XXX-X)</label>
+                            <label class="text-[10px] font-bold uppercase text-gray-500">RG *</label>
                             <input name="estagiario[rg]" value="<?= htmlspecialchars($old['estagiario']['rg'] ?? '') ?>" required class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
@@ -155,14 +158,15 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
                         <div>
                             <label class="text-[10px] font-bold uppercase text-gray-500">Período *</label>
                             <select name="estagiario[periodo]" required class="w-full border p-2 rounded text-sm">
-                                <option value="Matutino" <?= ($old['estagiario']['periodo'] ?? '') == 'Matutino' ? 'selected' : '' ?>>Matutino</option>
-                                <option value="Vespertino" <?= ($old['estagiario']['periodo'] ?? '') == 'Vespertino' ? 'selected' : '' ?>>Vespertino</option>
-                                <option value="Noturno" <?= ($old['estagiario']['periodo'] ?? '') == 'Noturno' ? 'selected' : '' ?>>Noturno</option>
-                                <option value="Diurno" <?= ($old['estagiario']['periodo'] ?? '') == 'Diurno' ? 'selected' : '' ?>>Diurno</option>
+                                <?php $p = $old['estagiario']['periodo'] ?? ''; ?>
+                                <option value="Matutino" <?= $p == 'Matutino' ? 'selected' : '' ?>>Matutino</option>
+                                <option value="Vespertino" <?= $p == 'Vespertino' ? 'selected' : '' ?>>Vespertino</option>
+                                <option value="Noturno" <?= $p == 'Noturno' ? 'selected' : '' ?>>Noturno</option>
+                                <option value="Diurno" <?= $p == 'Diurno' ? 'selected' : '' ?>>Diurno</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold uppercase text-gray-500">Celular * (XX) XXXXX-XXXX</label>
+                            <label class="text-[10px] font-bold uppercase text-gray-500">Celular *</label>
                             <input name="estagiario[celular]" value="<?= htmlspecialchars($old['estagiario']['celular'] ?? '') ?>" required class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
@@ -196,10 +200,10 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
 
                     <div class="flex gap-6 mt-2">
                         <label class="flex items-center gap-2 text-xs font-bold uppercase cursor-pointer">
-                            <input type="checkbox" name="estagiario[estagio_obrigatorio]" value="1" <?= ($old['estagiario']['estagio_obrigatorio'] ?? '') ? 'checked' : '' ?>> Estágio Obrigatório
+                            <input type="checkbox" name="estagiario[estagio_obrigatorio]" value="1" <?= ($old['estagiario']['estagio_obrigatorio'] ?? false) ? 'checked' : '' ?>> Estágio Obrigatório
                         </label>
                         <label class="flex items-center gap-2 text-xs font-bold uppercase cursor-pointer">
-                            <input type="checkbox" name="estagiario[portador_de_deficiencia]" value="1" <?= ($old['estagiario']['portador_de_deficiencia'] ?? '') ? 'checked' : '' ?>> Portador de Deficiência
+                            <input type="checkbox" name="estagiario[portador_de_deficiencia]" value="1" <?= ($old['estagiario']['portador_de_deficiencia'] ?? false) ? 'checked' : '' ?>> Portador de Deficiência
                         </label>
                     </div>
                 </div>
@@ -219,11 +223,11 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
                             <input name="dados_estagio[data_termino]" type="date" value="<?= htmlspecialchars($old['dados_estagio']['data_termino'] ?? '') ?>" required class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold uppercase text-gray-500">Horário Início * (HH:MM)</label>
+                            <label class="text-[10px] font-bold uppercase text-gray-500">Horário Início *</label>
                             <input name="dados_estagio[horario_inicio]" type="time" value="<?= htmlspecialchars($old['dados_estagio']['horario_inicio'] ?? '') ?>" required class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold uppercase text-gray-500">Horário Término * (HH:MM)</label>
+                            <label class="text-[10px] font-bold uppercase text-gray-500">Horário Término *</label>
                             <input name="dados_estagio[horario_termino]" type="time" value="<?= htmlspecialchars($old['dados_estagio']['horario_termino'] ?? '') ?>" required class="w-full border p-2 rounded text-sm">
                         </div>
                         <div>
@@ -254,7 +258,7 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
                 </div>
 
                 <div class="flex flex-col items-center pt-10">
-                    <button type="submit" class="w-full md:w-1/2 bg-[#006633] text-white font-bold py-4 rounded-lg hover:bg-[#004d26] shadow-xl text-lg transition-all">
+                    <button type="submit" target="_blank" class="w-full md:w-1/2 bg-[#006633] text-white font-bold py-4 rounded-lg hover:bg-[#004d26] shadow-xl text-lg transition-all">
                         Validar e Gerar PDF
                     </button>
                 </div>

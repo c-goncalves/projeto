@@ -43,29 +43,51 @@
 </section>
 
 
-  <h3 class="text-lg font-semibold mb-2">Selecione o seu curso:</h3>
-    <select id="cursoSelect" class="block w-full p-3 border-2 border-[#006633] rounded-lg bg-white text-gray-800 font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#78BE20] focus:border-[#78BE20] transition-all">
-      <option value="">Selecione seu curso</option>
-      <option value="matematica">Licenciatura em Matemática</option>
-      <option value="ads">Tecnologia em Análise e Desenvolvimento de Sistemas</option>
-      <option value="automacao">Tecnologia em Automação Industrial</option>
-      <option value="engenharia_computacao">Engenharia de Computação</option>
-      <option value="engenharia_controle">Engenharia de Controle e Automação</option>
-      <option value="nao_obrigatorio">Estágio Não Obrigatório</option>
-    </select>
 
-  <div id="informacoesCurso" class="mt-4"></div>
+
+<section class="bg-gray-50 p-6 rounded-xl shadow-md border-l-4 border-[#78BE20] mb-6">
+    <div class="flex items-center space-x-4">
+        <div class="bg-[#78BE20] p-3 rounded-full text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+        </div>
+        <div>
+            <h3 class="text-lg font-bold text-gray-800">Preencha o formulario:</h3>
+            <p class="text-sm text-gray-600">Inicie o processo gerando o seu Termo de Compromisso</p>
+        </div>
+    </div>
+    <div class="mt-4">
+        <select id="cursoSelect" class="block w-full p-3 border-2 border-[#006633] rounded-lg bg-white text-gray-800 font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#78BE20] focus:border-[#78BE20] transition-all">
+        <option value="">Selecione seu curso</option>
+        <option value="lic">Licenciatura em Matemática</option>
+        <option value="ads">Tecnologia em Análise e Desenvolvimento de Sistemas</option>
+        <option value="tai">Tecnologia em Automação Industrial</option>
+        <option value="eg">Engenharia de Computação</option>
+        <option value="eca">Engenharia de Controle e Automação</option>
+        <option value="tce">Outros / Estágio Não Obrigatório</option>
+    </select>
+    </div>
 </section>
 
-
-<!-- Modal -->
-<div id="cursoModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-  <div class="bg-white rounded-xl p-8 w-11/12 max-w-lg relative shadow-2xl">
-    <button class="absolute top-3 right-4 text-3xl font-bold text-gray-600 hover:text-[#006633] close">&times;</button>
-    <div id="modalBody" class="space-y-4 text-gray-700"></div>
-  </div>
-</div>
-
+<section class="bg-gray-50 p-6 rounded-xl shadow-md border-l-4 border-[#78BE20]">
+    <div class="flex items-center space-x-4">
+        <div class="bg-[#78BE20] p-3 rounded-full text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+        </div>
+        <div>
+            <h3 class="text-lg font-bold text-gray-800">Já possui o documento assinado?</h3>
+            <p class="text-sm text-gray-600">Se você já preencheu o formulário e coletou as assinaturas, envie o Documento aqui para análise.</p>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a href="<?= $routeParser->urlFor('acompanhamento.index') ?>" class="inline-block px-6 py-2 bg-[#006633] text-white font-bold rounded-lg hover:bg-[#004d26] transition shadow-md">
+            Ir para Envio de Arquivos
+        </a>
+    </div>
+</section>
 
 
 <style>
@@ -105,97 +127,17 @@
 </style>
 
 <script>
-const cursosInfo = {
-    matematica: `
-    <h3 class="text-xl font-bold text-[#006633] mb-3">Licenciatura em Matemática</h3>
-    <ul class="list-disc list-inside space-y-2">
-      <li>Termo de Compromisso específico para licenciaturas.</li>
-      <li>Plano de Atividades específico para licenciaturas.</li>
-      <li>Documentos obrigatórios:
-        <ul class="list-decimal list-inside ml-5 mt-1 space-y-1">
-          <li><a href="https://gru.ifsp.edu.br/images/CEX/TermoDeCompromissoLicenciaturasEstagioObrigatorio_Abril2025.docx" target="_blank" class="text-[#007a4d] underline hover:text-[#004d26]">Termo de Compromisso (docx)</a></li>
-          <li><a href="https://gru.ifsp.edu.br/images/CEX/AnexoIV-PlanoDeAtividadesDoEstagiario_MAT_1.doc" target="_blank" class="text-[#007a4d] underline hover:text-[#004d26]">Plano de Atividades do Estagiário (docx)</a></li>
-        </ul>
-      </li>
-    </ul>
-    <a href="<?= htmlspecialchars($routeParser->urlFor('solicitacao.tce', [], ['curso' => 'lic']), ENT_QUOTES, 'UTF-8') ?>" class="inline-block mt-4 px-5 py-2 bg-[#006633] text-white font-semibold rounded-lg hover:bg-[#004d26] transition">Iniciar Solicitação</a>
+  document.getElementById('cursoSelect').addEventListener('change', function() {
+    const curso = this.value;
+    if (!curso) return;
 
-    
-  `,
-  ads: `
-    <h3>Tecnologia em Análise e Desenvolvimento de Sistemas</h3>
-    <ul>
-      <li>Documentos obrigatórios: Termo de Compromisso e Plano de Atividades padrão.</li>
-      <li>Prazo de análise: até 5 dias úteis.</li>
-    </ul>
-        <a href="<?= htmlspecialchars($routeParser->urlFor('solicitacao.tce', [], ['curso' => 'ads']), ENT_QUOTES, 'UTF-8') ?>" class="inline-block mt-4 px-5 py-2 bg-[#006633] text-white font-semibold rounded-lg hover:bg-[#004d26] transition">Iniciar Solicitação</a>
-
-  `,
-  automacao: `
-    <h3>Tecnologia em Automação Industrial</h3>
-    <ul>
-      <li>Documentos obrigatórios: Termo de Compromisso e Plano de Atividades padrão.</li>
-      <li>É necessário apresentar plano de atividades detalhado com supervisão da empresa.</li>
-    </ul>
-       <a href="<?= htmlspecialchars($routeParser->urlFor('solicitacao.tce', [], ['curso' => 'tai']), ENT_QUOTES, 'UTF-8') ?>" class="inline-block mt-4 px-5 py-2 bg-[#006633] text-white font-semibold rounded-lg hover:bg-[#004d26] transition">Iniciar Solicitação</a>
-
-  `,
-  engenharia_computacao: `
-    <h3>Engenharia de Computação</h3>
-    <ul>
-      <li>Termo de Compromisso e Plano de Atividades padrão.</li>
-      <li>Coordenação recomenda envio de cronograma de atividades antes do início do estágio.</li>
-    </ul>
-        <a href="<?= htmlspecialchars($routeParser->urlFor('solicitacao.tce', [], ['curso' => 'eg']), ENT_QUOTES, 'UTF-8') ?>" class="inline-block mt-4 px-5 py-2 bg-[#006633] text-white font-semibold rounded-lg hover:bg-[#004d26] transition">Iniciar Solicitação</a>
-
-  `,
-  engenharia_controle: `
-    <h3>Engenharia de Controle e Automação</h3>
-    <ul>
-      <li>Termo de Compromisso e Plano de Atividades padrão.</li>
-      <li>Documentação deve ser assinada pela empresa e aluno antes do início do estágio.</li>
-    </ul>
-        <a href="<?= htmlspecialchars($routeParser->urlFor('solicitacao.tce', [], ['curso' => 'eca']), ENT_QUOTES, 'UTF-8') ?>" class="inline-block mt-4 px-5 py-2 bg-[#006633] text-white font-semibold rounded-lg hover:bg-[#004d26] transition">Iniciar Solicitação</a>
-
-  `,
-  nao_obrigatorio: `
-    <h3>Estágio Não Obrigatório (Pago)</h3>
-    <ul>
-      <li>Estágio remunerado, opcional para o aluno.</li>
-      <li>Documentos obrigatórios:
-        <ul>
-          <li><a href="https://gru.ifsp.edu.br/images/CEX/AnexoI-TermoDeCompromissoDeEstagioNaoObrigatorio_Abril2025.docx" target="_blank">Termo de Compromisso</a></li>
-        </ul>
-      </li>
-      <li>Plano de Atividades deve ser enviado e aprovado antes do início.</li>
-    </ul>
-        <a href="<?= htmlspecialchars($routeParser->urlFor('solicitacao.tce'), ENT_QUOTES, 'UTF-8') ?>" class="inline-block mt-4 px-5 py-2 bg-[#006633] text-white font-semibold rounded-lg hover:bg-[#004d26] transition">Iniciar Solicitação</a>
-
-  `
-};
-
-
-
-const select = document.getElementById('cursoSelect');
-const modal = document.getElementById('cursoModal');
-const modalBody = document.getElementById('modalBody');
-const closeBtn = document.querySelector('.modal .close');
-select.addEventListener('change', () => {
-  const valor = select.value;
-  if (valor && cursosInfo[valor]) {
-    modalBody.innerHTML = cursosInfo[valor];
-    modal.style.display = 'flex'; 
-  }
+    const baseUrl = "<?= $routeParser->urlFor('solicitacao.tce') ?>";
+    if (curso === 'tce') {
+        window.location.href = baseUrl;
+    } else {
+        window.location.href = baseUrl + '?curso=' + curso;
+    }
 });
 
-closeBtn.addEventListener('click', () => {
-  modal.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-  if (e.target === modal) {
-    modal.style.display = 'none';
-  }
-});
 
 </script>

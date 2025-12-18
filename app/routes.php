@@ -25,6 +25,8 @@ return function (\Slim\App $app) {
             ->setName('solicitacao.termo'); // nome legado
         $group->get('/tce[/{tipo}]', $controllerNamespace . 'SolicitacaoController:termo')
             ->setName('solicitacao.tce');   // nome "técnico" (usado nos templates)
+        $group->get('/enviar[/{tipo}]', $controllerNamespace . 'SolicitacaoController:enviarDocumento')
+            ->setName('solicitacao.enviar');   // nome "técnico" (usado nos templates)
 
         // PLANO / PAE — rota legada ('plano') + rota técnica ('pae')
         $group->get('/plano[/{tipo}]', $controllerNamespace . 'SolicitacaoController:plano')
@@ -39,13 +41,20 @@ return function (\Slim\App $app) {
         // checklist (mantive)
         $group->get('/checklist', $controllerNamespace . 'SolicitacaoController:gerarChecklist')
             ->setName('solicitacao.checklist');
+        // $group->get('/pdf', $controllerNamespace . 'SolicitacaoController:gerarpdf')
+        //     ->setName('solicitacao.gerarpdf');
 
         // POST
+        
         $group->post('/enviar', $controllerNamespace . 'SolicitacaoController:processarEnvio')
             ->setName('solicitacao.enviar');
     })->add($slashMiddleware);
 
-
+    if (!method_exists(\App\Controllers\GerarPDFController::class, 'gerarDocumento')) {
+            die("Erro: O PHP não encontra o método 'gerarDocumento' na classe 'GerarPDFController'. Verifique o arquivo físico.");
+        }
+    $app->get('/documento/{tipo}', $controllerNamespace . 'GerarPDFController:gerarDocumento')
+        ->setName('pdf.gerar');
 
     $app->get('/recursos', $controllerNamespace . 'SiteController:recursos')->setName('site.recursos');
 
