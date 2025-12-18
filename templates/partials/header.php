@@ -13,20 +13,20 @@ function esc($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="<?= $ASSETS_URL ?>favicon.ico">
-    <link rel="stylesheet" href="<?= esc($ASSETS_URL) ?>css/tailwind_output.css">
+    <!-- <link rel="stylesheet" href="<?= esc($ASSETS_URL) ?>css/tailwind_output.css"> -->
     <link rel="stylesheet" href="<?= esc($ASSETS_URL) ?>css/style.css?v=<?= time() ?>">
     <link rel="stylesheet" href="<?= esc($ASSETS_URL) ?>css/form-styles.css?v=<?= time() ?>">
 
     <script>
         const BASE_URL   = <?= json_encode($BASE_URL) ?>;
         const ASSETS_URL = <?= json_encode($ASSETS_URL) ?>;
-        const ROUTES     = {
-            siteIndex: <?= isset($routeParser) ? json_encode($routeParser->urlFor('site.index')) : '"/"' ?>,
-            solicitacaoIndex: <?= isset($routeParser) ? json_encode($routeParser->urlFor('solicitacao.index')) : '"#"' ?>,
-            acompanhamentoIndex: <?= isset($routeParser) ? json_encode($routeParser->urlFor('acompanhamento.index')) : '"#"' ?>,
-            noticiasIndex: <?= isset($routeParser) ? json_encode($routeParser->urlFor('noticias.index')) : '"#"' ?>,
-            recursos: <?= isset($routeParser) ? json_encode($routeParser->urlFor('site.recursos')) : '"#"' ?>
-        };
+        const ROUTES = {
+    siteIndex: <?= isset($routeParser) ? json_encode($routeParser->urlFor('site.index')) : '"/"' ?>,
+    solicitacaoIndex: <?= isset($routeParser) ? json_encode($routeParser->urlFor('solicitacao.index')) : '"#"' ?>,
+    acompanhamentoIndex: <?= isset($routeParser) ? json_encode($routeParser->urlFor('acompanhamento.index')) : '"#"' ?>,
+    noticiasIndex: <?= isset($routeParser) ? json_encode($routeParser->urlFor('noticias.index')) : '"#"' ?>,
+    recursos: <?= isset($routeParser) ? json_encode($routeParser->urlFor('site.recursos')) : '"#"' ?>
+};
     </script>
 
 </head>

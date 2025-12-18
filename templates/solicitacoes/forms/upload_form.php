@@ -1,5 +1,5 @@
 <form action="<?= $routeParser->urlFor('solicitacao.upload') ?>" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    
+        
     <div class="md:col-span-2 bg-blue-50 p-4 rounded-lg mb-4 text-blue-800 text-sm">
         <strong>Atenção:</strong> Preencha os dados abaixo exatamente como constam no documento assinado.
     </div>

@@ -5,7 +5,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Interfaces\RouteParserInterface;
 use App\Traits\ViewRendererTrait;
-use \Ramsey\Uuid\Uuid;
+use PDO; 
 
 class SolicitacaoController
 {
@@ -15,14 +15,37 @@ class SolicitacaoController
     private string $basePartialsPath;
     private string $baseTemplatesPath;
     private ?RouteParserInterface $routeParser = null;
+    
+    
+    private string $dataPath;
 
-    public function __construct(?RouteParserInterface $routeParser = null)
-    {
+    
+
+    public function __construct(?RouteParserInterface $routeParser = null)    {
         $this->baseFormsPath     = __DIR__ . "/../../templates/solicitacoes/forms/";
         $this->basePartialsPath  = __DIR__ . "/../../templates/partials/";
         $this->baseTemplatesPath = __DIR__ . "/../../templates/";
         $this->routeParser = $routeParser;
+        $this->dataPath          = __DIR__ . "/../../data/";
     }
+        
+        
+    
+    private function readJson(string $filename): array {
+        $file = $this->dataPath . $filename . '.json';
+        if (!file_exists($file)) return [];
+        return json_decode(file_get_contents($file), true) ?: [];
+    }
+
+    private function saveJson(string $filename, array $data): void {
+        $file = $this->dataPath . $filename . '.json';
+        
+        if (!is_dir($this->dataPath)) {
+            mkdir($this->dataPath, 0777, true);
+        }
+        file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }
+    
 
     private function loadDocument(Request $request, Response $response, string $doc_base, ?string $tipo_estagio = null, array $extraData = []): Response {
         $query = $request->getQueryParams();
@@ -82,65 +105,48 @@ class SolicitacaoController
     }
 
     public function home(Request $request, Response $response): Response
-    {
-        $templatePath = $this->baseTemplatesPath . 'solicitacoes/inicio.php';
-
-        if (!file_exists($templatePath)) {
-            error_log("SolicitacaoController::home: Template não encontrado em: {$templatePath}");
-            $response->getBody()->write("<h1>Erro 404: Template {$templatePath} não encontrado.</h1>");
-            return $response->withStatus(404);
-        }
-
-        $computed = $this->computeBaseUrls();
-        $baseUrl = $computed['BASE_URL'] ?? '/';
-        $assetsUrl = $computed['ASSETS_URL'] ?? rtrim($baseUrl, '/') . '/assets/';
-        $mensagem_erro = $extraData['erro'] ?? null;
-
-        $routesMap = [];
-        if (method_exists($this, 'generateRoutes')) {
-            try {
-                $routesMap = $this->generateRoutes($computed);
-            } catch (\Throwable $e) {
-                error_log("SolicitacaoController::home: generateRoutes falhou: " . $e->getMessage());
-                $routesMap = [];
-            }
-        }
-
-        $dataForTemplate = [
-            'title'      => 'Página Inicial',
-            'routeParser'=> $this->routeParser ?? null,
-            'BASE_URL'   => $baseUrl,
-            'ASSETS_URL' => $assetsUrl,
-            'ROUTES'     => $routesMap,
-            'current_uri'=> $_SERVER['REQUEST_URI'] ?? '/',
-            'mensagem_erro'=>$mensagem_erro,
-        ];
-
-        try {
-            $content = $this->renderTemplate($templatePath, $dataForTemplate);
-        } catch (\Throwable $e) {
-            error_log("SolicitacaoController::home: renderTemplate falhou: " . $e->getMessage());
-            $response->getBody()->write("<h1>Erro ao renderizar template da página inicial.</h1>");
-            return $response->withStatus(500);
-        }
-
-        $vars = $computed + [
-            'routeParser' => $this->routeParser ?? null,
-            'title'       => 'Página Inicial',
-            'ROUTES'      => $routesMap,
-        ];
-
-        try {
-            $finalHtml = $this->renderLayout($content, $vars);
-        } catch (\Throwable $e) {
-            error_log("SolicitacaoController::home: renderLayout falhou: " . $e->getMessage());
-            $response->getBody()->write($content);
-            return $response->withStatus(200);
-        }
-
-        $response->getBody()->write($finalHtml);
-        return $response;
+{
+    
+    $templatePath = $this->baseTemplatesPath . 'solicitacoes/inicio.php';
+    
+    
+    if (!file_exists($templatePath)) {
+        $response->getBody()->write("<h1>Erro: Arquivo inicio.php não encontrado.</h1>");
+        return $response->withStatus(404);
     }
+
+    $computed = $this->computeBaseUrls();
+    
+    // Dados para o corpo (inicio.php)
+    $dataForTemplate = $computed + [
+        'title'       => 'Página Inicial',
+        'routeParser' => $this->routeParser,
+        'current_uri' => $_SERVER['REQUEST_URI'] ?? '/',
+    ];
+
+    try {
+        // Renderiza o miolo da página
+        $content = $this->renderTemplate($templatePath, $dataForTemplate);
+    } catch (\Throwable $e) {
+        // Se houver erro de rota dentro do inicio.php, ele aparecerá aqui
+        $response->getBody()->write("<h1>Erro no conteúdo:</h1><p>" . $e->getMessage() . "</p>");
+        return $response->withStatus(500);
+    }
+
+    // Variáveis para o LAYOUT (Header/Footer)
+    // Passamos o $computed para que o header.php tenha $ASSETS_URL e $BASE_URL
+    $varsForLayout = $computed + [
+        'routeParser' => $this->routeParser,
+        'title'       => 'Página Inicial',
+        'basePartialsPath' => $this->basePartialsPath, 
+        'BASE_URL'         => $computed['BASE_URL'],   
+        'ASSETS_URL'       => $computed['ASSETS_URL']
+    ];
+
+$finalHtml = $this->renderLayout($content, $varsForLayout);
+    $response->getBody()->write($finalHtml);
+    return $response;
+}
 
 
     public function termo(Request $request, Response $response, array $args): Response
@@ -187,8 +193,8 @@ class SolicitacaoController
     public function enviarDocumento(Request $request, Response $response, array $args): Response {
         $tipo = $args['tipo'] ?? 'documento';
         
-        // Caminho para o template de upload
-        $templatePath = $this->baseTemplatesPath . 'solicitacoes/upload_form.php';
+        
+        $templatePath = $this->baseTemplatesPath . 'solicitacoes/forms/upload_form.php';
         
         $computed = $this->computeBaseUrls();
         $data = $computed + [
@@ -203,64 +209,55 @@ class SolicitacaoController
     }
 
     public function processarUpload(Request $request, Response $response): Response {
-        $params = (array)$request->getParsedBody();
-        $uploadedFiles = $request->getUploadedFiles();
-        $arquivo = $uploadedFiles['documento_pdf'] ?? null;
+    $params = (array)$request->getParsedBody();
+    $uploadedFiles = $request->getUploadedFiles();
+    $arquivo = $uploadedFiles['documento_pdf'] ?? null;
 
-        if (!$arquivo || $arquivo->getError() !== UPLOAD_ERR_OK) {
-            $_SESSION['erro_api'] = "O arquivo PDF é obrigatório.";
-            return $response->withHeader('Location', $this->routeParser->urlFor('solicitacao.enviar'))->withStatus(302);
-        }
-
-        try {
-            $chaveAluno = bin2hex(random_bytes(16));
-            $chaveOrientador = bin2hex(random_bytes(16));
-
-            $sql = "INSERT INTO solicitacoes_estagio 
-                    (chave_acesso_aluno, chave_acesso_orientador, status_id, aluno_nome, aluno_email, 
-                    aluno_prontuario, curso_id, empresa_razao_social, empresa_cnpj, data_inicio, data_fim) 
-                    VALUES (:ca, :co, :status, :nome, :email, :prontu, :curso, :empresa, :cnpj, :inicio, :fim)";
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
-                ':ca'      => $chaveAluno,
-                ':co'      => $chaveOrientador,
-                ':status'  => 1, // 'Aguardando Orientador'
-                ':nome'    => $params['aluno_nome'],
-                ':email'   => $params['aluno_email'],
-                ':prontu'  => $params['aluno_prontuario'],
-                ':curso'   => $params['curso_id'],
-                ':empresa' => $params['empresa_razao_social'],
-                ':cnpj'    => $params['empresa_cnpj'],
-                ':inicio'  => $params['data_inicio'],
-                ':fim'     => $params['data_fim']
-            ]);
-
-            $solicitacaoId = $this->db->lastInsertId();
-
-            $stmtHist = $this->db->prepare("INSERT INTO historico_solicitacao (solicitacao_id, ator, status_novo_id, comentario) VALUES (?, 'Aluno', 1, 'Documento assinado enviado pelo aluno.')");
-            $stmtHist->execute([$solicitacaoId]);
-
-            // 4. Envio de E-mail
-            // Aqui você chamaria sua função de e-mail passando o $arquivo e as chaves.
-            // O arquivo é lido diretamente da pasta temporária do PHP e enviado.
-
-            $_SESSION['sucesso'] = "Documento enviado com sucesso! Guarde sua chave de acesso: " . $chaveAluno;
-            return $response->withHeader('Location', $this->routeParser->urlFor('solicitacao.index'))->withStatus(302);
-
-        } catch (\Exception $e) {
-            error_log("Erro no banco: " . $e->getMessage());
-            $_SESSION['erro_api'] = "Erro ao processar o registro no banco de dados.";
-            return $response->withHeader('Location', $this->routeParser->urlFor('solicitacao.enviar'))->withStatus(302);
-        }
+    if (!$arquivo || $arquivo->getError() !== UPLOAD_ERR_OK) {
+        $_SESSION['erro_api'] = "O arquivo PDF é obrigatório.";
+        return $response->withHeader('Location', $this->routeParser->urlFor('solicitacao.enviar'))->withStatus(302);
     }
 
+    try {
+        $chaveAluno = bin2hex(random_bytes(16));
+        
+        $to = $params['aluno_email'];
+        $subject = "Confirmação de Envio - Protocolo de Estágio";
+        
+        $message = "
+        <html>
+        <head><title>Confirmação de Envio</title></head>
+        <body style='font-family: Arial, sans-serif;'>
+            <h2 style='color: #006633;'>Olá, {$params['aluno_nome']}!</h2>
+            <p>Seu documento para a empresa <strong>{$params['empresa_razao_social']}</strong> foi enviado com sucesso.</p>
+            <p>Sua chave de acesso para acompanhar o processo é: <br>
+               <span style='background: #eee; padding: 5px; font-weight: bold;'>{$chaveAluno}</span></p>
+            <p>Acesse a página de acompanhamento para ver o status.</p>
+            <hr>
+            <p style='font-size: 12px;'>Coordenadoria de Extensão - IFSP Campus Guarulhos</p>
+        </body>
+        </html>
+        ";
 
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: Coordenadoria de Estágios <no-reply@ifsp.edu.br>" . "\r\n";
+
+        mail($to, $subject, $message, $headers);
+
+        $_SESSION['sucesso'] = "Documento enviado! Verifique seu e-mail: " . $to;
+        return $response->withHeader('Location', $this->routeParser->urlFor('solicitacao.index'))->withStatus(302);
+
+    } catch (\Exception $e) {
+    }
+}
+
+   
     
 
    public function processarEnvio(Request $request, Response $response): Response
     {
-        // 1. Prepara e limpa os dados
+        
         $params = (array)$request->getParsedBody();
 
         array_walk_recursive($params, function (&$item) {
@@ -279,7 +276,7 @@ class SolicitacaoController
 
         $_SESSION['old_post'] = $params;
 
-        // 3. Executa a chamada cURL
+        
         $apiUrl = 'https://coordenadoria-de-extensao-api.vercel.app/validacao/';
         $ch = curl_init($apiUrl);
 
@@ -324,7 +321,7 @@ class SolicitacaoController
         error_log("DEBUG API STATUS: " . $httpCode);
         error_log("DEBUG API RESPONSE: " . $apiResult);
 
-        // 4. Trata o sucesso (200 OK)
+        
 
         if ($httpCode === 200) {
             $_SESSION['dados_validados'] = $params; 
@@ -342,13 +339,13 @@ class SolicitacaoController
     //         return $response->withHeader('Location', $this->routeParser->urlFor('pdf.gerar', ['tipo' => 'tce']))->withStatus(302);
     //     }
 
-        // 5. Trata os erros detalhados da API v3-1 (padrão Pydantic/detail)
+        
         $errorData = json_decode($apiResult, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             $_SESSION['erro_api'] = "Erro bruto da API: " . strip_tags($apiResult);
         } elseif (isset($errorData['detail'])) { 
-            // A API v3-1 usa 'detail' para erros de validação
+            
             $detalhes = [];
             foreach ($errorData['detail'] as $err) {
                 $campo = implode(' -> ', $err['loc']);
@@ -359,7 +356,7 @@ class SolicitacaoController
             $_SESSION['erro_api'] = $errorData['message'] ?? 'Erro de validação desconhecido.';
         }
 
-        // session_write_close();
+        
         $referer = $request->getHeaderLine('Referer');
         return $response->withHeader('Location', $referer)->withStatus(302);
     }

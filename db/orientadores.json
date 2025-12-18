@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "nome": "Professor de Teste",
+    "email": "orientador@ifsp.edu.br",
+    "cursos_atendidos": [1, 4]
+  },
+  {
+    "id": 2,
+    "nome": "Coordenador de Extensão",
+    "email": "extensao@ifsp.edu.br",
+    "cursos_atendidos": [1, 2, 3, 4]
+  }
+]

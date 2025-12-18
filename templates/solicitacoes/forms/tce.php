@@ -27,7 +27,7 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
                 </div>
             <?php endif; ?>
 
-            <form id="termoForm" action="<?= $BASE_URL ?>solicitacao/enviar" method="POST" class="space-y-10" target="_blank">
+            <form id="termoForm" action="<?= $BASE_URL ?>solicitacao/processar" method="POST" class="space-y-10" target="_blank">
                 <input type="hidden" name="doc_type" value="tce">
                 <input type="hidden" name="estagiario[curso]" value="<?= $curso_nome ?>">
 

@@ -17,12 +17,12 @@ class SiteController
     /** @var \PDO|null */
     private $db;
 
-    public function __construct(?RouteParserInterface $routeParser = null, ?\PDO $db = null)
+   public function __construct(?RouteParserInterface $routeParser = null) 
     {
         $this->baseTemplatesPath = __DIR__ . "/../../templates/";
         $this->basePartialsPath = __DIR__ . "/../../templates/partials/";
         $this->routeParser = $routeParser;
-        $this->db = $db;
+        // $this->db = $db;
     }
 
     public function index(Request $request, Response $response): Response

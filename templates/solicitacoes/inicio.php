@@ -83,7 +83,7 @@
         </div>
     </div>
     <div class="mt-4">
-        <a href="<?= $routeParser->urlFor('acompanhamento.index') ?>" class="inline-block px-6 py-2 bg-[#006633] text-white font-bold rounded-lg hover:bg-[#004d26] transition shadow-md">
+        <a href="<?= $routeParser->urlFor('solicitacao.enviar') ?>" class="inline-block px-6 py-2 bg-[#006633] text-white font-bold rounded-lg hover:bg-[#004d26] transition shadow-md">
             Ir para Envio de Arquivos
         </a>
     </div>
@@ -131,13 +131,24 @@
     const curso = this.value;
     if (!curso) return;
 
-    const baseUrl = "<?= $routeParser->urlFor('solicitacao.tce') ?>";
+    <?php 
+    $urlTce = "#";
+    if (isset($routeParser)) {
+        try {
+            $urlTce = $routeParser->urlFor('solicitacao.tce', ['tipo' => 'obrigatorio']);
+        } catch (\Exception $e) {
+            $urlTce = $BASE_URL . "solicitacao/tce/obrigatorio";
+        }
+    }
+    ?>
+
+    const baseUrl = "<?= $urlTce ?>";
+    if (baseUrl === "#") return;
+
     if (curso === 'tce') {
         window.location.href = baseUrl;
     } else {
         window.location.href = baseUrl + '?curso=' + curso;
     }
 });
-
-
 </script>

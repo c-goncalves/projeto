@@ -15,12 +15,11 @@ class GerarPDFController {
     private $baseLayoutsPath;
     protected $tempPath;
 
-   public function __construct(RouteParserInterface $routeParser, PDO $db = null) {
-        $this->routeParser = $routeParser;
-        $this->db = $db;
-        $this->baseLayoutsPath = __DIR__ . "/../../templates/pdf/";
-        $this->tempPath = __DIR__ . "/../../storage/tmp/";
-    }
+   public function __construct(RouteParserInterface $routeParser) {
+    $this->routeParser = $routeParser;
+    $this->baseLayoutsPath = __DIR__ . "/../../templates/pdf/";
+    $this->tempPath = __DIR__ . "/../../storage/tmp/";
+}
 
     public function gerarDocumento(Request $request, Response $response, array $args): Response {
         $tipo = $args['tipo']; 

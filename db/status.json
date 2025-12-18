@@ -1,0 +1,6 @@
+[
+  { "id": 1, "nome": "Aguardando Orientador" },
+  { "id": 2, "nome": "Aprovado pelo Orientador" },
+  { "id": 3, "nome": "Recusado com Pendência" },
+  { "id": 4, "nome": "Finalizado" }
+]

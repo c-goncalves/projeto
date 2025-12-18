@@ -17,15 +17,21 @@ trait ViewRendererTrait
         return ob_get_clean();
     }
 
+    
    private function renderLayout(string $content, array $vars = []): string
     {
         $computed = $this->computeBaseUrls();
-        $vars = $vars + $computed;
+    $vars = array_merge($computed, $vars);
 
-        $vars['PARTIALS_PATH']  = rtrim($this->basePartialsPath ?? (__DIR__ . '/../../templates/partials/'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $vars['TEMPLATES_PATH'] = rtrim($this->baseTemplatesPath ?? (__DIR__ . '/../../templates/'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $vars['current_uri'] = $_SERVER['REQUEST_URI'] ?? '/';
-        $vars['routeParser'] = $vars['routeParser'] ?? $this->routeParser ?? null;
+
+    $baseP = $vars['basePartialsPath'] ?? $this->basePartialsPath ?? (__DIR__ . '/../../templates/partials/');
+    $baseT = $vars['baseTemplatesPath'] ?? $this->baseTemplatesPath ?? (__DIR__ . '/../../templates/');
+
+    $vars['PARTIALS_PATH']  = rtrim($baseP, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+    $vars['TEMPLATES_PATH'] = rtrim($baseT, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+    
+    $vars['current_uri'] = $_SERVER['REQUEST_URI'] ?? '/';
+    $vars['routeParser'] = $vars['routeParser'] ?? $this->routeParser ?? null;
 
         $navPath = $vars['PARTIALS_PATH'] . 'nav.php';
         $navHtml = '';
