@@ -177,6 +177,15 @@ class SolicitacaoController
         {
                 
             $params = (array)$request->getParsedBody();
+
+            if (isset($params['dados_estagio'])) {
+                $params['dados_estagio']['valor_bolsa_auxilio'] = (float)$params['dados_estagio']['valor_bolsa_auxilio'];
+                $params['dados_estagio']['valor_seguro'] = (float)$params['dados_estagio']['valor_seguro'];
+                $params['dados_estagio']['horas_semanais'] = (int)($params['dados_estagio']['horas_semanais'] ?? 0);
+            }
+            
+            $params['estagiario']['estagio_obrigatorio'] = isset($params['estagiario']['estagio_obrigatorio']);
+            $params['estagiario']['portador_de_deficiencia'] = isset($params['estagiario']['portador_de_deficiencia']);
             $_SESSION['old_post'] = $params;
 
             $apiUrl = 'https://coordenadoria-de-extensao-api.vercel.app/validacao/';
