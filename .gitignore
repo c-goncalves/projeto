@@ -1,2 +1,13 @@
 .env
-vendor
+*.log
+/vendor/
+# mPDF
+/storage/tmp/mpdf/ttfontdata/*
+!/storage/tmp/mpdf/ttfontdata/.gitkeep
+
+# /db/*.json
+# /bd.sql
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

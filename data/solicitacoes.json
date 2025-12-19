@@ -1,0 +1,41 @@
+[
+    {
+        "aluno_nome": "Quis in molestiae es",
+        "aluno_email": "madubukin@mailinator.com",
+        "aluno_prontuario": "Natus impedit sequi",
+        "curso_id": "4",
+        "empresa_razao_social": "Odio et ipsam sit te",
+        "empresa_cnpj": "Delectus enim id",
+        "data_inicio": "1997-06-28",
+        "data_fim": "2023-03-02",
+        "chave_acesso_aluno": "01844c9b5e253b7293d5f74418430208",
+        "status_id": 1,
+        "created_at": "2025-12-19 13:54:07"
+    },
+    {
+        "aluno_nome": "Quia aut velit sapie",
+        "aluno_email": "ciraw@mailinator.com",
+        "aluno_prontuario": "Officia voluptatem m",
+        "curso_id": "1",
+        "empresa_razao_social": "Ducimus voluptas an",
+        "empresa_cnpj": "Ea aliquip volupta",
+        "data_inicio": "1991-02-24",
+        "data_fim": "1991-10-07",
+        "chave_acesso_aluno": "30a69008f62e8922129b07303a8091c8",
+        "status_id": 1,
+        "created_at": "2025-12-19 14:00:33"
+    },
+    {
+        "aluno_nome": "Qui nobis vel et ex ",
+        "aluno_email": "kiriqobigu@mailinator.com",
+        "aluno_prontuario": "Non deserunt et quos",
+        "curso_id": "4",
+        "empresa_razao_social": "Occaecat iusto sit f",
+        "empresa_cnpj": "Omnis occaecat qui",
+        "data_inicio": "1993-06-24",
+        "data_fim": "1972-01-14",
+        "chave_acesso_aluno": "8f885597a4c73508496c6d924e06eada",
+        "status_id": 1,
+        "created_at": "2025-12-19 14:03:13"
+    }
+]

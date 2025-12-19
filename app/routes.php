@@ -46,8 +46,9 @@ return function (\Slim\App $app) {
     $app->get('/recursos', $controllerNamespace . 'SiteController:recursos')->setName('site.recursos');
 
     
-    $app->group('/acompanhamento', function (RouteCollectorProxy $group) use ($controllerNamespace) {
+   $app->group('/acompanhamento', function (RouteCollectorProxy $group) use ($controllerNamespace) {
         $group->get('', $controllerNamespace . 'AcompanhamentoController:index')->setName('acompanhamento.index');
+        $group->post('/resultado', $controllerNamespace . 'AcompanhamentoController:consultar')->setName('acompanhamento.consultar');
     });
 
     $app->group('/noticias', function (RouteCollectorProxy $group) use ($controllerNamespace) {

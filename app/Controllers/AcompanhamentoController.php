@@ -5,47 +5,65 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Interfaces\RouteParserInterface;
 use App\Traits\ViewRendererTrait;
+use App\Services\Repository;
 
 class AcompanhamentoController
 {
     use ViewRendererTrait;
 
     private ?RouteParserInterface $routeParser;
+    private Repository $repository;
     private string $baseTemplatesPath;
-    private string $dataPath;
 
-    public function __construct(?RouteParserInterface $routeParser = null)
+    public function __construct(?RouteParserInterface $routeParser = null, Repository $repository)
     {
         $this->routeParser = $routeParser;
+        $this->repository = $repository;
         $this->baseTemplatesPath = __DIR__ . "/../../templates/";
-        $this->dataPath = __DIR__ . "/../../data/";
     }
 
     public function index(Request $request, Response $response): Response
     {
-        $file = $this->dataPath . 'solicitacoes.json';
-        $solicitacoes = [];
-        
-        if (file_exists($file)) {
-            $solicitacoes = json_decode(file_get_contents($file), true) ?: [];
-        }
-
-        $computed = $this->computeBaseUrls();
-        $data = $computed + [
+        $data = $this->computeBaseUrls() + [
             'title' => 'Acompanhamento de Solicitações',
-            'solicitacoes' => $solicitacoes,
             'routeParser' => $this->routeParser
         ];
 
-        $templatePath = $this->baseTemplatesPath . 'acompanhamento/lista.php';
+        $content = $this->renderTemplate($this->baseTemplatesPath . 'acompanhamento/index.php', $data);
+        $html = $this->renderLayout($content, $data);
         
-        if (!file_exists($templatePath)) {
-            $content = "<h1>Lista de Solicitações</h1><p>Em breve os dados do JSON aparecerão aqui.</p>";
-        } else {
-            $content = $this->renderTemplate($templatePath, $data);
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    public function consultar(Request $request, Response $response): Response 
+    {
+        $params = (array)$request->getParsedBody();
+        $chaveBuscada = trim($params['chave'] ?? '');
+        $todas = $this->repository->all();
+        $solicitacaoEncontrada = null;
+
+        foreach ($todas as $item) {
+            if (isset($item['chave_acesso_aluno']) && $item['chave_acesso_aluno'] === $chaveBuscada) {
+                $solicitacaoEncontrada = $item;
+                break;
+            }
         }
 
+        if (!$solicitacaoEncontrada) {
+            $_SESSION['erro_acompanhamento'] = "Protocolo não encontrado.";
+            return $response->withHeader('Location', $this->routeParser->urlFor('acompanhamento.index'))->withStatus(302);
+        }
+
+        $data = $this->computeBaseUrls() + [
+            'title' => 'Dashboard da Solicitação',
+            'dados' => $solicitacaoEncontrada,
+            'routeParser' => $this->routeParser
+        ];
+
+        $content = $this->renderTemplate($this->baseTemplatesPath . 'acompanhamento/dashboard.php', $data);
         $html = $this->renderLayout($content, $data);
+
         $response->getBody()->write($html);
         return $response;
     }

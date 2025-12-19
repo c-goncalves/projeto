@@ -1,14 +1,14 @@
-
 {
     "name": "admin/sge",
     "description": "Sistema de Gestão de Estágio",
     "type": "project",
     "require": {
         "php": ">=8.2",
-        "slim/slim": "4.*",
-        "slim/psr7": "^1.6",
         "mpdf/mpdf": "^8.2",
-        "php-di/php-di": "^6.0"
+        "php-di/php-di": "^6.0",
+        "phpmailer/phpmailer": "^7.0",
+        "slim/psr7": "^1.6",
+        "slim/slim": "4.*"
     },
     "autoload": {
         "psr-4": {

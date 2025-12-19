@@ -5,11 +5,15 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\Interfaces\RouteParserInterface;
 use App\Controllers\SiteController;
 use App\Controllers\SolicitacaoController;
+use App\Services\MailService;
+use App\Services\Repository;
 use App\Controllers\GerarPDFController;
 use App\Controllers\AcompanhamentoController;
+use PHPMailer\PHPMailer\PHPMailer;
 
-return [
+$basePath = dirname(__DIR__);
 
+return [  
     
     ResponseFactoryInterface::class => function (ContainerInterface $c) {
         return new \Slim\Psr7\Factory\ResponseFactory();
@@ -41,31 +45,56 @@ return [
         return $c->get('db');
     },
 
+    PHPMailer::class => function (ContainerInterface $c) {
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        // $mail->Host       = getenv('SMTP_HOST') ?: 'sandbox.smtp.mailtrap.io';
+        // $mail->SMTPAuth   = true;
+        // $mail->Username   = getenv('SMTP_USER');
+        // $mail->Password   = getenv('SMTP_PASS');
+        // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+        // $mail->Port       = getenv('SMTP_PORT') ?: 2525;
+        $mail->Host       = 'mailhog';
+        $mail->Port       = 1025;
+        $mail->SMTPAuth   = false;
+        $mail->CharSet    = 'UTF-8';
+        $mail->setFrom(getenv('SMTP_FROM') ?: 'no-reply@teste.edu.br', 'CEX IFSP');
+        
+        return $mail;
+    },
+
+    MailService::class => function (ContainerInterface $c) {
+        return new MailService($c->get(PHPMailer::class));
+    },
+
+    Repository::class => function (ContainerInterface $c) use ($basePath) {
+        $dataPath = $basePath . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
+        return new Repository($dataPath);
+    },
+
     
     SiteController::class => function (ContainerInterface $c) {
         $routeParser = $c->has(RouteParserInterface::class) ? $c->get(RouteParserInterface::class) : null;
-        
         $db = $c->has(PDO::class) ? $c->get(PDO::class) : null;
         return new SiteController($routeParser, null);
     },
 
     SolicitacaoController::class => function (ContainerInterface $c) {
         $routeParser = $c->has(RouteParserInterface::class) ? $c->get(RouteParserInterface::class) : null;
-        
-        return new SolicitacaoController($routeParser);
+        $mailService = $c->get(MailService::class);  
+        $repo = $c->get(Repository::class);
+        return new SolicitacaoController($routeParser, $mailService, $repo);
     },
 
    GerarPDFController::class => function (ContainerInterface $c) {
-        $routeParser = $c->get(RouteParserInterface::class);
-        
-        
+        $routeParser = $c->get(RouteParserInterface::class);       
         return new GerarPDFController($routeParser);
     },
 
     AcompanhamentoController::class => function (ContainerInterface $c) {
         $routeParser = $c->has(RouteParserInterface::class) ? $c->get(RouteParserInterface::class) : null;
-        
-        return new AcompanhamentoController($routeParser);
+        $repo = $c->get(Repository::class);
+        return new AcompanhamentoController($routeParser, $repo);
     },
 
 ];
