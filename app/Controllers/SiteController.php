@@ -19,8 +19,8 @@ class SiteController
 
    public function __construct(?RouteParserInterface $routeParser = null) 
     {
-        $this->baseTemplatesPath = __DIR__ . "/../../templates/";
-        $this->basePartialsPath = __DIR__ . "/../../templates/partials/";
+        $this->baseTemplatesPath = realpath(__DIR__ . '/../../templates') . '/';
+        $this->basePartialsPath = $this->baseTemplatesPath . 'partials/';
         $this->routeParser = $routeParser;
         // $this->db = $db;
     }
@@ -48,12 +48,20 @@ class SiteController
 
     public function recursos(Request $request, Response $response): Response
     {
-        $template_path = $this->baseTemplatesPath . 'site/recursos.php';
+        $templatePath = $this->baseTemplatesPath . 'site/recursos.php';
+        if (!file_exists($templatePath)) {
+            throw new \Exception("Erro Crítico: O arquivo não foi encontrado no caminho: " . $templatePath);
+        }
 
-        $page_content = $this->renderTemplate($template_path, ['pageTitle' => 'Recursos e Normas']);
-        $final_html = $this->renderLayout($page_content);
+        $data = $this->computeBaseUrls() + [
+            'pageTitle'   => 'Recursos e Normas',
+            'routeParser' => $this->routeParser
+        ];
 
-        $response->getBody()->write($final_html);
+        $content = $this->renderTemplate($templatePath, $data);
+        $html = $this->renderLayout($content, $data);
+
+        $response->getBody()->write($html);
         return $response;
     }
 }

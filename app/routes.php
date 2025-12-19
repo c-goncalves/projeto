@@ -11,7 +11,7 @@ return function (\Slim\App $app) {
 
     // home
     $app->get('/', $controllerNamespace . 'SiteController:index')->setName('site.index');
-
+    
     $slashMiddleware = new \App\Middleware\UrlSlashMiddleware('remove', 301);
 
     $app->group('/solicitacao', function (RouteCollectorProxy $group) use ($controllerNamespace) {

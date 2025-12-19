@@ -58,12 +58,6 @@ function navUrl($routeParser, string $routeName): string
       </a>
     </li>
 
-    <li>
-       <a href="<?= navUrl($routeParser, 'noticias.index') ?>"
-           class="block px-3 py-2 font-medium <?= navIsActive($routeParser, 'noticias.index', $current_path) ?>">
-            Notícias
-      </a>
-    </li>
 
     <li>
        <a href="<?= navUrl($routeParser, 'site.recursos') ?>"

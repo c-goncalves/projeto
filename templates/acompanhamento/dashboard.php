@@ -1,92 +1,89 @@
-<div class="container-fluid py-4" style="background-color: #f1f3f5; min-height: 90vh;">
-    <div class="row justify-content-center">
-        <div class="col-12 col-xl-11">
-            
-            <div class="row flex justify-between items-center mb-4 bg-white py-3 px-4 rounded shadow-sm border-bottom border-success mx-0">
-                    <a href="/" class="text-success text-decoration-none">Voltar </a>
-                    <button onclick="window.print()" class="btn btn-success px-4 shadow-sm"><i class="fas fa-print me-2"></i>Imprimir Protocolo</button>
-                </div>
-            </div>
-            
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="card shadow-sm border-0 mb-4">
-                        <div class="card-body text-center p-5">
-                            <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                                <i class="fas fa-file-contract fa-2x text-success"></i>
-                            </div>
-                            <h4 class="fw-bold"><?= htmlspecialchars($dados['aluno_nome']) ?></h4>
-                            <p class="text-muted small"><?= htmlspecialchars($dados['aluno_email']) ?></p>
-                            
-                            <hr>
-                            
-                            <label class="small text-uppercase fw-bold text-muted d-block mb-2">Status da Solicitação</label>
+<div class="w-full py-8 px-6" style="background-color: #f1f3f5; min-height: 90vh;">
+    
+    <div class="w-full flex justify-between items-center mb-6 bg-white py-4 px-6 rounded-xl shadow-sm border-b-4 border-[#006633]">
+        <a href="/acompanhamento" class="text-[#006633] font-bold hover:underline flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Voltar para Consulta
+        </a>
+        <button onclick="window.print()" class="bg-[#006633] text-white px-6 py-2 rounded-lg font-bold shadow-md hover:bg-green-700 transition-all flex items-center">
+            <i class="fas fa-print mr-2"></i> Imprimir Protocolo
+        </button>
+    </div>
+
+    <div class="w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-gray-800 text-white py-4 px-8">
+            <h3 class="text-xl font-bold flex items-center">
+                <i class="fas fa-file-invoice mr-3"></i> Detalhes da Solicitação de Estágio
+            </h3>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50 border-b">
+                        <th class="px-8 py-5 text-sm font-bold text-gray-600 uppercase">Aluno</th>
+                        <th class="px-8 py-5 text-sm font-bold text-gray-600 uppercase">Prontuário</th>
+                        <th class="px-8 py-5 text-sm font-bold text-gray-600 uppercase">Protocolo (Chave)</th>
+                        <th class="px-8 py-5 text-sm font-bold text-gray-600 uppercase text-center">Status Atual</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-8 py-6">
+                            <div class="font-bold text-lg text-gray-900"><?= htmlspecialchars($dados['aluno_nome']) ?></div>
+                            <div class="text-sm text-gray-500"><?= htmlspecialchars($dados['aluno_email']) ?></div>
+                        </td>
+                        
+                        <td class="px-8 py-6 text-gray-700 font-medium">
+                            <?= htmlspecialchars($dados['aluno_prontuario'] ?? 'Não informado') ?>
+                        </td>
+                        
+                        <td class="px-8 py-6">
+                            <code class="bg-gray-100 p-2 rounded text-[#006633] font-mono text-sm break-all">
+                                <?= $dados['chave_acesso_aluno'] ?>
+                            </code>
+                        </td>
+
+                        <td class="px-8 py-6 text-center">
                             <?php 
                                 $statusLabel = 'Em Análise';
-                                $statusClass = 'bg-warning text-dark';
-                                if (($dados['status_id'] ?? 1) == 2) { $statusLabel = 'Deferido'; $statusClass = 'bg-success'; }
-                                if (($dados['status_id'] ?? 1) == 3) { $statusLabel = 'Indeferido'; $statusClass = 'bg-danger'; }
+                                $statusClass = 'bg-amber-100 text-amber-800 border-amber-200';
+                                if (($dados['status_id'] ?? 1) == 2) { 
+                                    $statusLabel = 'Deferido'; 
+                                    $statusClass = 'bg-green-100 text-green-800 border-green-200'; 
+                                }
+                                if (($dados['status_id'] ?? 1) == 3) { 
+                                    $statusLabel = 'Indeferido'; 
+                                    $statusClass = 'bg-red-100 text-red-800 border-red-200'; 
+                                }
                             ?>
-                            <div class="badge <?= $statusClass ?> fs-5 w-100 py-3 mb-3">
+                            <span class="px-6 py-2 rounded-full font-black uppercase text-xs border <?= $statusClass ?>">
                                 <?= $statusLabel ?>
-                            </div>
-                            
-                            <p class="small text-muted italic">Última atualização: <?= date('d/m/Y H:i', strtotime($dados['created_at'])) ?></p>
-                        </div>
-                    </div>
-
-                    <div class="card shadow-sm border-0">
-                        <div class="card-header bg-white fw-bold">Chave de Segurança</div>
-                        <div class="card-body">
-                            <code class="text-break" style="font-size: 0.85rem;"><?= $dados['chave_acesso_aluno'] ?></code>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-8">
-                    <div class="card shadow-sm border-0 mb-4">
-                        <div class="card-header bg-white py-3">
-                            <h5 class="mb-0"><i class="fas fa-info-circle me-2 text-success"></i>Informações da Solicitação</h5>
-                        </div>
-                        <div class="card-body p-0">
-                            <table class="table table-striped table-hover mb-0">
-                                <tbody>
-                                    <tr>
-                                        <th class="ps-4 py-3" style="width: 30%;">Empresa</th>
-                                        <td class="py-3"><?= htmlspecialchars($dados['empresa_razao_social']) ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th class="ps-4 py-3">CNPJ da Empresa</th>
-                                        <td class="py-3"><?= htmlspecialchars($dados['empresa_cnpj'] ?? 'Não informado') ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th class="ps-4 py-3">Tipo de Estágio</th>
-                                        <td class="py-3"><?= ($dados['estagio_obrigatorio'] ?? true) ? 'Obrigatório' : 'Não Obrigatório' ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th class="ps-4 py-3">Data de Envio</th>
-                                        <td class="py-3"><?= date('d/m/Y', strtotime($dados['created_at'])) ?> às <?= date('H:i', strtotime($dados['created_at'])) ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <?php if (($dados['status_id'] ?? 1) == 1): ?>
-                    <div class="alert alert-info border-0 shadow-sm d-flex align-items-center p-4">
-                        <i class="fas fa-clock fa-2x me-4"></i>
-                        <div>
-                            <h5 class="alert-heading fw-bold">Aguardando Avaliação</h5>
-                            <p class="mb-0">Sua documentação foi recebida pela Coordenadoria de Extensão (CEX). O prazo médio de análise é de 5 dias úteis.</p>
-                        </div>
-                    </div>
-                    <?php endif; ?>
-
-                    <div class="text-end mt-4">
-                        <a href="/solicitacao/acompanhamento" class="btn btn-secondary px-4">Sair do Dashboard</a>
-                    </div>
-                </div>
-            </div>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+
+        <div class="bg-gray-50 px-8 py-4 flex justify-between items-center text-xs text-gray-500 border-t">
+            <span><strong>Data de Envio:</strong> <?= date('d/m/Y H:i', strtotime($dados['created_at'])) ?></span>
+            <span><strong>Última Atualização:</strong> <?= date('d/m/Y H:i', strtotime($dados['created_at'])) ?></span>
+        </div>
+    </div>
+
+    <?php if (($dados['status_id'] ?? 1) == 1): ?>
+    <div class="w-full mt-6 bg-blue-50 border-l-8 border-blue-500 p-6 rounded-xl shadow-sm flex items-center">
+        <div class="text-3xl mr-6">🕒</div>
+        <div>
+            <h4 class="text-blue-900 font-bold text-lg">Aguardando Avaliação pela CEX</h4>
+            <p class="text-blue-800">Sua documentação já está na fila de análise da Coordenadoria de Extensão. O prazo médio de retorno é de 5 dias úteis.</p>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <div class="mt-8 text-center">
+        <a href="/acompanhamento" class="text-gray-500 hover:text-gray-800 font-medium">
+            <i class="fas fa-sign-out-alt mr-1"></i> Sair do Painel de Consulta
+        </a>
     </div>
 </div>

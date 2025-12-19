@@ -15,7 +15,7 @@ class AcompanhamentoController
     private Repository $repository;
     private string $baseTemplatesPath;
 
-    public function __construct(?RouteParserInterface $routeParser = null, Repository $repository)
+    public function __construct(Repository $repository, ?RouteParserInterface $routeParser = null)
     {
         $this->routeParser = $routeParser;
         $this->repository = $repository;

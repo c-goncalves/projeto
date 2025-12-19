@@ -1,200 +1,172 @@
 <?php
-function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) { 
-     switch ($curso){
-        case 'lic': $curso = 'Licenciatura em Matemática'; break;
-        case 'ads': $curso = 'Tecnologia em Análise e Desenvolvimento de Sistemas'; break;
-        case 'tai': $curso = 'Tecnologia em Automação Industrial'; break;
-        case 'eg': $curso = 'Engenharia de Computação'; break;
-        case 'eca': $curso = 'Engenharia de Controle e Automação'; break;
-        default: $curso = ''; break;
+
+function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
+    // Mapeamento de cursos para exibição no título
+    switch ($curso) {
+        case 'ads': $curso_nome = 'Tecnologia em Análise e Desenvolvimento de Sistemas'; break;
+        case 'tai': $curso_nome = 'Tecnologia em Automação Industrial'; break;
+        case 'eg':  $curso_nome = 'Engenharia de Computação'; break;
+        case 'eca': $curso_nome = 'Engenharia de Controle e Automação'; break;
+        case 'lic': $curso_nome = 'Licenciatura em Matemática'; break;
+        default:    $curso_nome = 'Geral'; break;
     }
     ?>
     <div class="w-full mt-4">
-        <div id="form-layout" class="flex flex-col items-start mx-auto gap-8 w-full sm:p-1">
-            
-            <section id="content-area" class="w-full bg-white p-8 rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] ">
-                <h3 class="text-green-800 text-xl font-semibold mb-4 text-center">
-                    TCE: Termo de Compromisso de Estágio<br> <?php echo $curso; ?>
+        <section id="content-area" class="w-full bg-white p-8 rounded-xl shadow-lg border-t-8 border-green-600">
+            <div class="mb-10 text-center border-b pb-6">
+                <h3 class="text-[#006633] text-2xl font-black uppercase tracking-tight">
+                    TCE: Termo de Compromisso de Estágio
                 </h3>
-                
-                <form id="termoForm" action="<?= $BASE_URL ?>solicitacao/enviar" method="POST" enctype="multipart/form-data" class="space-y-10">
-                    <?php if ($erro): ?>
-                        <div class="p-4 mb-6 bg-red-50 border-l-4 border-red-600 text-red-800 shadow-sm rounded-r">
-                            <div class="flex items-start">
-                                <div>
-                                    <strong class="block mb-1">ERRO:</strong>
-                                    <ul class="list-disc list-inside text-sm space-y-1">
-                                        <?php 
-                                        $listaErros = explode('|', $erro);
-                                        foreach ($listaErros as $item): ?>
-                                            <li><?= htmlspecialchars(trim($item)) ?></li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </div>
-                            </div>
+                <p class="text-gray-500 font-bold mt-1"><?= $curso_nome ?></p>
+            </div>
+
+            <?php if ($erro): ?>
+                <div class="p-4 mb-8 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm shadow-sm">
+                    <div class="flex items-center mb-2">
+                        <span class="mr-2">⚠️</span> <strong>Atenção: Verifique os campos abaixo</strong>
+                    </div>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <?php foreach (explode('|', $erro) as $item): ?>
+                            <li><?= htmlspecialchars(trim($item)) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <form id="termoForm" action="<?= $BASE_URL ?>solicitacao/processar" method="POST" class="space-y-12">
+                <input type="hidden" name="doc_type" value="tce">
+                <input type="hidden" name="estagiario[curso]" value="<?= $curso_nome ?>">
+
+                <div class="space-y-6">
+                    <h4 class="text-green-700 font-black border-b pb-2 flex items-center gap-3">
+                        <span class="bg-green-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+                        UNIDADE CONCEDENTE (EMPRESA)
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">Razão Social *</label>
+                            <input name="unidade_concedente[razao_social]" value="<?= htmlspecialchars($old['unidade_concedente']['razao_social'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
                         </div>
-                    <?php endif; ?>
-                    <input type="hidden" name="doc_type" value="tce">
-                    
-                    <div class="bg-gray-50 p-4 rounded-lg border">
-                        <?php orientacoes($SERVER_URI, $BASE_URL); ?>
-                    </div>
-
-                    <div>
-                        <?php unidade_instituicao_concedente($old); ?>
-                    </div>
-
-                    <div class="pt-6 border-t">
-                        <?php supervisor($old); ?>
-                    </div>
-
-                    <div class="pt-6 border-t">
-                        <?php estagiario($old); ?>
-                    </div>
-
-                    <div class="pt-6 border-t">
-                        <?php dados_complementares($old); ?>
-                    </div>
-
-                    <div class="pt-8 border-t flex flex-col items-center">
-                        <div id="error-message-container" class="hidden w-full mb-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700 text-sm flex items-center shadow-sm">
-                            <span id="error-message-text"></span>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">CNPJ (00.000.000/0000-00) *</label>
+                            <input name="unidade_concedente[cnpj]" value="<?= htmlspecialchars($old['unidade_concedente']['cnpj'] ?? '') ?>" placeholder="00.000.000/0000-00" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">Telefone *</label>
+                            <input name="unidade_concedente[telefone]" value="<?= htmlspecialchars($old['unidade_concedente']['telefone'] ?? '') ?>" placeholder="(11) 2222-3333" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
                         </div>
                         
-                        <button type="submit" class="w-full md:w-1/2 bg-[#006633] text-white font-bold py-4 rounded-lg hover:bg-[#004d26] transition-all text-lg shadow-lg">
-                            Validar e Gerar Documento (PDF)
-                        </button>
+                        <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-6 rounded-xl border-2 border-dashed border-gray-200">
+                            <div class="md:col-span-2">
+                                <label class="text-[10px] font-bold uppercase text-gray-400 italic">Endereço e Número *</label>
+                                <input name="unidade_concedente[endereco][endereco]" value="<?= htmlspecialchars($old['unidade_concedente']['endereco']['endereco'] ?? '') ?>" required class="w-full border p-2 rounded text-sm bg-white">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-gray-400 italic">CEP *</label>
+                                <input name="unidade_concedente[endereco][cep]" value="<?= htmlspecialchars($old['unidade_concedente']['endereco']['cep'] ?? '') ?>" required class="w-full border p-2 rounded text-sm bg-white">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-gray-400 italic">Bairro *</label>
+                                <input name="unidade_concedente[endereco][bairro]" value="<?= htmlspecialchars($old['unidade_concedente']['endereco']['bairro'] ?? '') ?>" required class="w-full border p-2 rounded text-sm bg-white">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-gray-400 italic">Cidade *</label>
+                                <input name="unidade_concedente[endereco][cidade]" value="<?= htmlspecialchars($old['unidade_concedente']['endereco']['cidade'] ?? '') ?>" required class="w-full border p-2 rounded text-sm bg-white">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-gray-400 italic">Estado (UF) *</label>
+                                <input name="unidade_concedente[endereco][estado]" maxlength="2" value="<?= htmlspecialchars($old['unidade_concedente']['endereco']['estado'] ?? '') ?>" required class="w-full border p-2 rounded text-sm bg-white">
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </section>
-        </div>
-    </div>
-<?php }
+                </div>
 
-function orientacoes($current_uri, $pages_path) { ?>
-    <h5 class="text-[#09332a] font-semibold mb-3 text-base">Orientações Gerais</h5>
-    <ul class="space-y-2 text-sm text-gray-700 list-inside">
-        <li><span class="text-[#006633] font-bold">➤</span> Carga Horária: Máximo 6h diárias / 30h semanais.</li>
-        <li><span class="text-[#006633] font-bold">➤</span> Vigência: Máximo de 2 anos na mesma instituição.</li>
-    </ul>
-<?php }
+                <div class="pt-10 border-t space-y-6">
+                    <h4 class="text-green-700 font-black border-b pb-2 flex items-center gap-3">
+                        <span class="bg-green-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+                        SUPERVISOR DA EMPRESA
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">Nome Completo do Supervisor *</label>
+                            <input name="supervisor[nome]" value="<?= htmlspecialchars($old['supervisor']['nome'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">CPF do Supervisor *</label>
+                            <input name="supervisor[cpf]" value="<?= htmlspecialchars($old['supervisor']['cpf'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">Cargo *</label>
+                            <input name="supervisor[cargo]" value="<?= htmlspecialchars($old['supervisor']['cargo'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
+                        </div>
+                    </div>
+                </div>
 
-function unidade_instituicao_concedente($old = []) { ?>
-    <h4 class="text-[#006633] font-semibold mb-4 flex items-center gap-2">
-        <span class="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
-        Unidade Concedente
-    </h4>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="md:col-span-2">
-            <label class="font-semibold text-sm block mb-1">Nome / Razão Social *</label>
-            <input name="nome_razao_social_concedente" value="<?= htmlspecialchars($old['nome_razao_social_concedente'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
-        </div>
-        <div>
-            <label class="font-semibold text-sm block mb-1">CNPJ</label>
-            <input name="cnpj_concedente" value="<?= htmlspecialchars($old['cnpj_concedente'] ?? '') ?>" class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-        <div>
-            <label class="font-semibold text-sm block mb-1">Telefone</label>
-            <input name="fone_concedente" value="<?= htmlspecialchars($old['fone_concedente'] ?? '') ?>" class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-        <div class="md:col-span-2">
-            <label class="font-semibold text-sm block mb-1">Endereço Completo</label>
-            <input name="endereco_concedente" value="<?= htmlspecialchars($old['endereco_concedente'] ?? '') ?>" class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-    </div>
-<?php }
+                <div class="pt-10 border-t space-y-6">
+                    <h4 class="text-green-700 font-black border-b pb-2 flex items-center gap-3">
+                        <span class="bg-green-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
+                        DADOS DO ESTAGIÁRIO
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">Seu Nome Completo *</label>
+                            <input name="estagiario[nome]" value="<?= htmlspecialchars($old['estagiario']['nome'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">Prontuário (GU) *</label>
+                            <input name="estagiario[prontuario]" value="<?= htmlspecialchars($old['estagiario']['prontuario'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">CPF *</label>
+                            <input name="estagiario[cpf]" value="<?= htmlspecialchars($old['estagiario']['cpf'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">E-mail para Contato *</label>
+                            <input name="estagiario[email]" type="email" value="<?= htmlspecialchars($old['estagiario']['email'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">Celular *</label>
+                            <input name="estagiario[celular]" value="<?= htmlspecialchars($old['estagiario']['celular'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm focus:border-green-500 outline-none transition-all">
+                        </div>
+                    </div>
+                </div>
 
-function supervisor($old = []) { ?>
-    <h4 class="text-[#006633] font-semibold mb-4 flex items-center gap-2">
-        <span class="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
-        Dados do Supervisor
-    </h4>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="md:col-span-2">
-            <label class="font-semibold text-sm block mb-1">Nome completo do Supervisor *</label>
-            <input name="nome_supervisor" value="<?= htmlspecialchars($old['nome_supervisor'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-        <div>
-            <label class="font-semibold text-sm block mb-1">CPF *</label>
-            <input name="cpf_supervisor" value="<?= htmlspecialchars($old['cpf_supervisor'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-        <div>
-            <label class="font-semibold text-sm block mb-1">Cargo *</label>
-            <input name="cargo_supervisor" value="<?= htmlspecialchars($old['cargo_supervisor'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-    </div>
-<?php }
+                <div class="pt-10 border-t space-y-6">
+                    <h4 class="text-green-700 font-black border-b pb-2 flex items-center gap-3">
+                        <span class="bg-green-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">4</span>
+                        DATAS E SEGURO
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">Data Início *</label>
+                            <input name="dados_estagio[data_inicio]" type="date" value="<?= htmlspecialchars($old['dados_estagio']['data_inicio'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-gray-400 tracking-wider">Data Término *</label>
+                            <input name="dados_estagio[data_termino]" type="date" value="<?= htmlspecialchars($old['dados_estagio']['data_termino'] ?? '') ?>" required class="w-full border-2 border-gray-100 p-3 rounded-lg text-sm">
+                        </div>
+                        
+                        <div class="md:col-span-2 bg-blue-50 p-6 rounded-xl border border-blue-100 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="md:col-span-2 text-blue-800 font-black text-xs uppercase mb-2 tracking-widest">Informações da Apólice de Seguro</div>
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-gray-500">Nome da Seguradora *</label>
+                                <input name="dados_estagio[nome_seguradora]" value="<?= htmlspecialchars($old['dados_estagio']['nome_seguradora'] ?? '') ?>" required class="w-full border p-2 rounded text-sm bg-white">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-gray-500">Número da Apólice *</label>
+                                <input name="dados_estagio[numero_apolice_seguro]" value="<?= htmlspecialchars($old['dados_estagio']['numero_apolice_seguro'] ?? '') ?>" required class="w-full border p-2 rounded text-sm bg-white">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-function estagiario($old = []) { ?>
-    <h4 class="text-[#006633] font-semibold mb-4 flex items-center gap-2">
-        <span class="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
-        Dados do Estagiário
-    </h4>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="md:col-span-2">
-            <label class="font-medium text-sm block mb-1">Nome Completo *</label>
-            <input name="nome_aluno" value="<?= htmlspecialchars($old['nome_aluno'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-        <div>
-            <label class="font-medium text-sm block mb-1">Prontuário *</label>
-            <input name="prontuario_aluno" value="<?= htmlspecialchars($old['prontuario_aluno'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm" placeholder="GU9999999">
-        </div>
-        <div>
-            <label class="font-medium text-sm block mb-1">CPF *</label>
-            <input name="cpf_aluno" value="<?= htmlspecialchars($old['cpf_aluno'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-        <div class="md:col-span-2">
-            <label class="font-medium text-sm block mb-1">E-mail *</label>
-            <input name="email_aluno" type="email" value="<?= htmlspecialchars($old['email_aluno'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm">
-        </div>
-    </div>
-<?php }
-
-function dados_complementares($old = []) { ?>
-    <h4 class="text-[#006633] font-semibold mb-4 flex items-center gap-2">
-        <span class="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">4</span>
-        Período e Atividades
-    </h4>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div>
-            <label class="font-semibold text-sm block mb-1">Data Início *</label>
-            <input name="data_inicio_estagio" type="date" value="<?= htmlspecialchars($old['data_inicio_estagio'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm"/>
-        </div>
-        <div>
-            <label class="font-semibold text-sm block mb-1">Data Término *</label>
-            <input name="data_termino_estagio" type="date" value="<?= htmlspecialchars($old['data_termino_estagio'] ?? '') ?>" required class="w-full border rounded px-3 py-2 text-sm"/>
-        </div>
-    </div>
-
-    <div class="bg-gray-50 p-5 rounded-lg border space-y-4">
-        <label class="block text-sm font-bold text-gray-700">Horário Semanal</label>
-        
-        <select id="select_dias" name="selected_days[]" multiple class="w-full p-2 border rounded text-sm h-32 bg-white">
-            <?php 
-            $dias = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-            $selecionados = $old['selected_days'] ?? [];
-            foreach ($dias as $dia): 
-            ?>
-                <option value="<?= $dia ?>" <?= in_array($dia, $selecionados) ? 'selected' : '' ?>><?= $dia ?></option>
-            <?php endforeach; ?>
-        </select>
-        
-        <div class="grid grid-cols-2 gap-4">
-            <div>
-                <label class="text-xs text-gray-500">Início</label>
-                <input type="time" id="hora_inicio_unico" class="w-full p-2 border rounded text-sm">
-            </div>
-            <div>
-                <label class="text-xs text-gray-500">Término</label>
-                <input type="time" id="hora_fim_unico" class="w-full p-2 border rounded text-sm">
-            </div>
-        </div>
-
-        <div class="flex justify-between items-center p-3 bg-white border rounded">
-            <p id="total_horas" class="text-lg font-bold text-gray-700">Total Semanal: 00:00h</p>
-            <span id="msg_limite" class="hidden bg-red-100 text-red-700 text-xs px-2 py-1 rounded font-bold">Limite de 30h excedido!</span>
-        </div>
-        <input type="hidden" id="estagio_horario_json" name="dias_estagio" value='<?= htmlspecialchars($old['dias_estagio'] ?? "[]") ?>' />
+                <div class="flex flex-col items-center pt-10">
+                    <button type="submit" class="w-full md:w-2/3 bg-[#006633] text-white font-black py-5 rounded-2xl shadow-2xl hover:bg-green-700 transition-all hover:scale-105 uppercase tracking-widest text-lg">
+                        Validar Informações e Gerar PDF
+                    </button>
+                    <p class="text-xs text-gray-400 mt-4 italic">Ao clicar, o sistema validará os dados e abrirá o documento para impressão.</p>
+                </div>
+            </form>
+        </section>
     </div>
 <?php } ?>

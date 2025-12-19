@@ -1,5 +1,42 @@
 <?php
+function traduzirErroApi($erroBruto) {
+    $campos = [
+        'unidade_concedente -> cnpj'     => 'CNPJ da Empresa',
+        'unidade_concedente -> telefone' => 'Telefone da Empresa',
+        'unidade_concedente -> endereco -> cep'    => 'CEP da Empresa',
+        'unidade_concedente -> endereco -> estado' => 'UF da Empresa',
+        'supervisor -> cpf'              => 'CPF do Supervisor',
+        'supervisor -> email'            => 'E-mail do Supervisor',
+        'estagiario -> cpf'              => 'Seu CPF',
+        'estagiario -> celular'          => 'Seu Celular',
+        'estagiario -> endereco -> cep'  => 'Seu CEP',
+        'estagiario -> endereco -> estado' => 'Sua UF',
+        'dados_estagio -> data_inicio'   => 'Data de Início',
+        'dados_estagio -> data_termino'  => 'Data de Término',
+        'dados_estagio -> horas_semanais' => 'Horas Semanais',
+    ];
 
+    $mensagens = [
+        'Value error, O número do CNPJ é inválido.' => 'O CNPJ informado não é válido ou não existe.',
+        'Value error, O número do CPF é inválido.'  => 'O CPF informado é inválido.',
+        'Value error, O número de telefone é inválido.' => 'O número de telefone deve ser válido (Ex: 11 99999-9999).',
+        'Value error, UF inválida.' => 'Estado inválido. Use a sigla (Ex: SP).',
+        'Value error, CEP inválido: deve conter apenas números.' => 'O CEP deve conter apenas números.',
+        'String should have at most 9 characters' => 'O formato do CEP está incorreto.',
+    ];
+
+    $item = str_replace('body -> ', '', $erroBruto);
+    
+    $partes = explode(': ', $item, 2);
+    if (count($partes) < 2) return $erroBruto;
+
+    $caminhoTecnico = trim($partes[0]);
+    $msgTecnica = trim($partes[1]);
+    $nomeCampo = $campos[$caminhoTecnico] ?? $caminhoTecnico;
+    $novaMsg = $mensagens[$msgTecnica] ?? $msgTecnica;
+
+    return "<strong>$nomeCampo</strong>: $novaMsg";
+}
 function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
     switch ($curso) {
         case 'ads': $curso_nome = 'Tecnologia em Análise e Desenvolvimento de Sistemas'; break;
@@ -17,18 +54,33 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
             </h3>
 
             <?php if ($erro): ?>
-                <div class="p-4 mb-6 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
-                    <strong>Erros:</strong>
-                    <ul class="list-disc list-inside mt-2">
-                        <?php foreach (explode('|', $erro) as $item): ?>
-                            <li><?= htmlspecialchars(trim($item)) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
+    <div class="w-full mb-8 bg-white border-2 border-red-200 rounded-2xl overflow-hidden shadow-sm">
+        
+        
+        <div class="p-6 bg-red-50/50">
+            <ul class="space-y-3">
+                <?php 
+                $listaErros = explode('|', $erro);
+                foreach ($listaErros as $item): 
+                    if (empty(trim($item))) continue;
+                ?>
+                    <li class="flex items-start text-red-800 text-sm">
+                        <span class="bg-red-200 text-red-700 w-5 h-5 rounded-full flex items-center justify-center text-[10px] mr-3 mt-0.5 shrink-0">X</span>
+                        <span><?= traduzirErroApi($item) ?></span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            
+            <p class="mt-6 text-xs text-red-400 italic border-t border-red-100 pt-4">
+                * Por favor, corrija os campos marcados em vermelho abaixo e tente gerar o documento novamente.
+            </p>
+        </div>
+    </div>
+<?php endif; ?>
 
-            <form id="termoForm" action="<?= $BASE_URL ?>solicitacao/processar" method="POST" class="space-y-10" target="_blank">
+            <form id="termoForm" action="<?= $BASE_URL ?>solicitacao/processar" method="POST" class="space-y-10" >
                 <input type="hidden" name="doc_type" value="tce">
+                
                 <input type="hidden" name="estagiario[curso]" value="<?= $curso_nome ?>">
 
                 <div class="space-y-4">
@@ -266,3 +318,48 @@ function print_tce($BASE_URL, $SERVER_URI, $curso, $old = [], $erro = null) {
         </section>
     </div>
 <?php } ?>
+
+<script>
+document.getElementById('termoForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const formData = new FormData(form);
+    const btn = form.querySelector('button[type="submit"]');
+    const originalBtnText = btn.innerHTML;
+
+    btn.disabled = true;
+    btn.innerHTML = 'Validando dados...';
+
+    try {
+        const response = await fetch('<?= $BASE_URL ?>solicitacao/processar', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `TCE_${new Date().getTime()}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            document.getElementById('successModal').classList.remove('hidden');
+            btn.innerHTML = 'Validado com Sucesso!';
+        } else {
+            const text = await response.text();
+            document.open();
+            document.write(text);
+            document.close();
+        }
+    } catch (error) {
+        alert('Erro de conexão com o servidor.');
+        btn.disabled = false;
+        btn.innerHTML = originalBtnText;
+    }
+});
+</script>

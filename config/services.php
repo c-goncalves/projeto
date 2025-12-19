@@ -94,7 +94,7 @@ return [
     AcompanhamentoController::class => function (ContainerInterface $c) {
         $routeParser = $c->has(RouteParserInterface::class) ? $c->get(RouteParserInterface::class) : null;
         $repo = $c->get(Repository::class);
-        return new AcompanhamentoController($routeParser, $repo);
+        return new AcompanhamentoController($repo, $routeParser);
     },
 
 ];

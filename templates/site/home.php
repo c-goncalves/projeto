@@ -1,119 +1,116 @@
 <?php
 $page_title = "Início - Coordenação de Estágios";
-
-
 ?>
 
-<section class="bg-white py-1 px-6 rounded-xl  flex flex-col md:flex-row items-start justify-between gap-4">
-  <div class="flex-1">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-2">Bem-vindo(a) ao Sistema de Gestão de Estágios (SGE)</h2>
-    <p class="text-gray-700">Solicite e acompanhe a documentação do seu Estágio Obrigatório dos cursos da IFSP Campus Guarulhos</p>
+<section class="w-full bg-white py-6 px-8 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+  <div class="flex-1 text-center md:text-left">
+    <h2 class="text-3xl font-extrabold text-gray-800 mb-2">Bem-vindo(a) ao Sistema de Gestão de Estágios (SGE)</h2>
+    <p class="text-lg text-gray-600">Solicite e acompanhe a documentação do seu Estágio no IFSP Campus Guarulhos</p>
   </div>
   <div class="flex-shrink-0">
-    <a href="solicitacao/"
-       class="inline-block bg-[#006633] text-white font-bold px-6 py-2 rounded hover:bg-[#004d26] transition-colors">
+    <a href="<?= $routeParser->urlFor('solicitacao.index') ?>"
+       class="inline-block bg-[#006633] text-white font-black px-10 py-4 rounded-lg hover:bg-[#004d26] transition-all shadow-lg hover:scale-105 uppercase tracking-wider">
        Iniciar Solicitação
     </a>
   </div>
 </section>
 
-<section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md shadow-[0_0_15px_rgba(0,0,0,0.1)]" id="content-area">
-    <h3 class="text-xl font-bold text-[#006633] mb-4">Estágio Curricular no IFSP</h3>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
+    <div class="lg:col-span-2 space-y-6">
+        <section class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold text-[#006633] mb-6 flex items-center">
+                <i class="fas fa-stream mr-3"></i> Estágio no IFSP
+            </h3>
 
-    <p class="text-gray-700 text-sm mb-6">
-        Aqui você encontra o passo a passo completo do estágio, do início ao encerramento. Seguindo as etapas abaixo, você garante que todos os requisitos sejam cumpridos e que o processo seja finalizado sem problemas.
-    </p>
+            <div class="flex flex-col gap-6">
+                <a href="<?= $routeParser->urlFor('solicitacao.index') ?>" 
+                   class="group block transition-all duration-300 shadow-sm hover:shadow-xl rounded-xl border border-gray-100 overflow-hidden">
+                    <div class="p-6 bg-white group-hover:bg-green-50/30 transition-colors"> 
+                        <h4 class="font-bold text-[#006633] text-xl mb-3 flex items-center">
+                            <span class="bg-green-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs mr-3">1</span>
+                            Comece aqui
+                        </h4>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Preencha o Termo de Compromisso (TCE) e o Plano de Atividades. <strong>Só inicie o estágio após a assinatura de todas as partes!</strong>
+                        </p>
+                        <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-inner">
+                            <h5 class="text-xs font-black text-gray-400 uppercase mb-3 tracking-widest text-center">Requisitos Principais</h5>
+                            <div class="grid grid-cols-2 gap-4 text-xs text-gray-700">
+                                <div class="flex items-center"><i class="fas fa-clock mr-2 text-green-600"></i> Máx. 6h diárias / 30h semanais</div>
+                                <div class="flex items-center"><i class="fas fa-school mr-2 text-green-600"></i> Seguro contra acidentes</div>
+                                <div class="flex items-center"><i class="fas fa-check-circle mr-2 text-green-600"></i> Empresa conveniada</div>
+                                <div class="flex items-center"><i class="fas fa-user-tie mr-2 text-green-600"></i> Professor Orientador</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
 
-    <div class="flex flex-col gap-6 ">
+                <a href="<?= $routeParser->urlFor('site.recursos') ?>" 
+                   class="group block transition-all duration-300 shadow-sm hover:shadow-xl rounded-xl border border-gray-100 overflow-hidden">
+                    <div class="p-6 bg-white group-hover:bg-blue-50/30 transition-colors">
+                        <h4 class="font-bold text-blue-800 text-xl mb-3 flex items-center">
+                            <span class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs mr-3">2</span>
+                            Acompanhamento e Relatórios
+                        </h4>
+                        <p class="text-gray-600 text-sm">
+                            Consulte os modelos de Relatórios Semestrais e Fichas de Acompanhamento. Lembre-se: o relatório deve ser enviado a cada 6 meses.
+                        </p>
+                    </div>
+                </a>
 
-        <a href="solicitacao" 
-           class="block transition-all duration-300 ease-in-out shadow-md rounded-lg hover:shadow-xl hover:-translate-y-1">
-            
-            <div class="p-4 rounded-lg"> 
-                <h4 class="font-semibold text-[#09332a] text-lg mb-3">
-                    Início:
-                </h4>
-                
-                <p class="text-sm text-gray-700 mb-3">
-                    Preencha o Termo de Compromisso de Estágio (TCE) e o Plano de Atividades para aprovação. Só inicie suas atividades após a aprovação e assinatura do TCE!
-                </p>
-
-                <h5 class="text-[#004d26] font-bold text-sm mb-2">O que você precisa saber:</h5>
-                <ul class="list-disc pl-6 space-y-2 text-gray-800 text-sm">
-                  <li><strong>Total de horas:</strong> 400 horas, divididas em 4 etapas de 100 horas cada.</li>
-                  <li><strong>Local:</strong> Livre, menos para as licenciaturas que devem ser feitas na escolas de educação básica.</li>
-                  <li><strong>Início:</strong> Pode começar já no 1º semestre do curso.</li>
-                  <li><strong>Orientação:</strong> Um professor orientador irá acompanhar cada etapa. Não se perca!</li>
-                  <li><strong>Início do seu estágio:</strong> O Termo de Compromisso de Estágio (TCE) devem ser aprovados antes de começar.</li>
-                  
-                </ul>
+                <a href="<?= $routeParser->urlFor('site.recursos') ?>" 
+                   class="group block transition-all duration-300 shadow-sm hover:shadow-xl rounded-xl border border-gray-100 overflow-hidden">
+                    <div class="p-6 bg-white group-hover:bg-amber-50/30 transition-colors">
+                        <h4 class="font-bold text-amber-800 text-xl mb-3 flex items-center">
+                            <span class="bg-amber-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs mr-3">3</span>
+                            Termos Aditivos
+                        </h4>
+                        <p class="text-gray-600 text-sm">
+                            Mudou o horário? Prorrogou o contrato? Trocou de supervisor? Você precisa registrar um Termo Aditivo imediatamente.
+                        </p>
+                    </div>
+                </a>
             </div>
-        </a>
+        </section>
+    </div>
 
-        <a href="documentos" class=" text-[#09332a] hover:no-underline block mb-1 text-lg">
-        <div class="transition-all duration-300 ease-in-out shadow-md rounded-lg hover:shadow-xl hover:-translate-y-1">
-                <div class=" p-4 rounded-lg">
-                    <h4 class="font-semibold text-[#09332a] hover:no-underline block mb-1 text-lg">
-                        Acompanhamento e Entrega de Relatórios
-                    </h4>
-                    <p class="text-sm text-gray-700">
-                      Você deverá preencher a Ficha de Acompanhamento, entregar o Certificado Individual de Seguro e preencher os relatórios periódicos no sistema SUAP. Em caso de alterações, é necessário preencher um Termo Aditivo.
-                    </p>
-                </div>
-              </div>
-            </a>
-
-            <a href="aditivos" class="text-[#09332a] hover:no-underline block mb-1 text-lg">
-        <div class="transition-all duration-300 ease-in-out shadow-md rounded-lg hover:shadow-xl hover:-translate-y-1">
-                <div class="p-4 rounded-lg">
-                    <h4 class="font-semibold text-[#09332a] hover:no-underline block mb-1 text-lg">
-                        Termos Aditivos e Mudanças de Contrato
-                    </h4>
-                    <p class="text-sm text-gray-700">
-                        Em caso de mudança na carga horária, atividades ou vigência, é obrigatório preencher um Termo Aditivo. Registre qualquer alteração para manter a validade legal do seu estágio.
-                    </p>
-                </div>
-              </div>
-            </a>
-
-            <a href="encerramento" class=" text-[#09332a] hover:no-underline block mb-1 text-lg">
-        <div class="transition-all duration-300 ease-in-out shadow-md rounded-lg hover:shadow-xl hover:-translate-y-1">
-                <div class="p-4 rounded-lg">
-                    <h4 class="font-semibold text-[#09332a] hover:no-underline block mb-1 text-lg">
-                        Encerramento do Estágio
-                    </h4>
-                    <p class="text-sm text-gray-700">
-                      Já no final do seu estágio você deverá entregar o Certificado Individual de Seguro, os relatórios mensais ou semestrais e garantir que todas as telas do SUAP estejam preenchidas.
-                    </p>
-                </div>
+    <aside class="space-y-6">
+        <div class="bg-[#006633] p-6 rounded-2xl shadow-lg text-white">
+            <h4 class="text-xl font-bold mb-4">Oportunidades</h4>
+            <p class="text-sm text-green-100 mb-6">Confira as vagas de estágio abertas para o Câmpus Guarulhos.</p>
+            <a href="https://gru.ifsp.edu.br/vagas" target="_blank" 
+               class="block w-full bg-white text-[#006633] text-center font-bold py-3 rounded-lg hover:bg-green-50 transition-colors">
+               Ver Vagas no Portal
             </a>
         </div>
-    </div>
-</section>
 
-
-
-
-<aside class="bg-white p-6 shadow-md border-l-4 border-[#006633] rounded hidden md:block">  
-  <div class="mb-4 p-3 bg-green-100 ">
-    <a href="https://gru.ifsp.edu.br/vagas" target="_blank" 
-       class="text-[#006633] font-semibold hover:no-underline">
-      Oportunidades de estágio
-    </a>
-  </div>
-
-  <h4 class="text-[#006633] font-semibold mb-3 bg-green-100 p-3"><a href="recursos" >Recursos e Documentos</a></h4>
-
-  <ul class="space-y-2 px-4">
-    <li><a href="#" class="text-sm text-gray-700 hover:no-underline">Modelos de Documentos</a></li>
-    <li><a href="#" class="text-sm text-gray-700 hover:no-underline">Normas e Regulamentos</a></li>
-    <li><a href="#" class="text-sm text-gray-700 hover:no-underline">Dúvidas Frequentes</a></li>
-  </ul>
-
-  <div class="mt-4">
-    <a href="/pages/recursos/" class="text-[#006633] font-semibold hover:no-underline">
-      + Recursos
-    </a>
-  </div>
-</aside>
-
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <h4 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Links Rápidos</h4>
+            <ul class="space-y-4">
+                <li>
+                    <a href="<?= $routeParser->urlFor('site.recursos') ?>" class="flex items-center text-sm text-gray-600 hover:text-[#006633] font-medium transition-colors">
+                        <i class="fas fa-file-pdf mr-3 text-red-500"></i> Modelos de Documentos
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $routeParser->urlFor('site.recursos') ?>" class="flex items-center text-sm text-gray-600 hover:text-[#006633] font-medium transition-colors">
+                        <i class="fas fa-gavel mr-3 text-gray-400"></i> Normas e Regulamentos
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $routeParser->urlFor('acompanhamento.index') ?>" class="flex items-center text-sm text-gray-600 hover:text-[#006633] font-medium transition-colors">
+                        <i class="fas fa-search mr-3 text-blue-500"></i> Acompanhar Protocolo
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bg-gray-50 p-6 rounded-2xl border border-dashed border-gray-300">
+            <h4 class="text-sm font-bold text-gray-700 mb-2 uppercase tracking-tighter">Dúvidas?</h4>
+            <p class="text-xs text-gray-500">Entre em contato com a CEX:</p>
+            <a href="mailto:coord.estagios@ifsp.edu.br" class="text-sm font-bold text-[#006633] block mt-1 hover:underline">
+                coord.estagios@ifsp.edu.br
+            </a>
+        </div>
+    </aside>
+</div>
