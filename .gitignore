@@ -1,6 +1,5 @@
 .env
 *.log
-/vendor/
 # mPDF
 /storage/tmp/mpdf/ttfontdata/*
 !/storage/tmp/mpdf/ttfontdata/.gitkeep
