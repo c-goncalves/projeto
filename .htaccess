@@ -1,5 +1,4 @@
 RewriteEngine On
-RewriteBase /sistema-gestao-estagios/
 Options -MultiViews
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

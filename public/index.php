@@ -29,9 +29,9 @@ $app = AppFactory::create();
 // RouteParser
 $routeParser = $app->getRouteCollector()->getRouteParser();
 $container->set(RouteParserInterface::class, $routeParser);
-$app->setBasePath('/sistema-gestao-estagios');
+// $app->setBasePath('/sistema-gestao-estagios');
 // middlewares
-$app->add(new \App\Middleware\UrlSlashMiddleware('remove', 301));
+// $app->add(new \App\Middleware\UrlSlashMiddleware('remove', 301));
 $app->addRoutingMiddleware();
 
 $displayErrorDetails = true; // false em produção
